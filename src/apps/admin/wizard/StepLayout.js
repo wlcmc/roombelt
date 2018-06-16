@@ -2,10 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 300px auto;
+  display: flex;
   justify-content: space-between;
-  grid-gap: 20px;
   padding: 30px 0 0 30px;
   margin: 0;
   overflow: hidden;
@@ -13,9 +11,19 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
+const Content = styled.div`
+  flex: 300px 0 0;
+`
+
+const Image = styled.img`
+  height: 100%;
+  margin-left: 20px;
+  flex: auto 0 1;
+`;
+
 export default props => (
   <Wrapper>
-    <div>{props.children}</div>
-    <img src={props.img} alt="" height="100%" />
+    <Content>{props.children}</Content>
+    <Image src={props.img} alt="" />
   </Wrapper>
 );
