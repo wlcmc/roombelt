@@ -19,8 +19,14 @@ module.exports = class {
   }
 
   async getAccessTokenDetails(token) {
-    const model = token && token !== "null" && token !== "undefined" && (await this.Model.findOne({ where: { token } }));
-    return model || { scope: "none", isVerified: false };
+    const defaultResult = { scope: "none", isVerified: false };
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+    if (!uuidRegex.test(token)) {
+      return defaultResult;
+    }
+
+    return (await this.Model.findOne({ where: { token } })) || defaultResult;
   }
 
   async verifyDeviceAccessToken(deviceId, userId) {
