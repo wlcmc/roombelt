@@ -19,7 +19,7 @@ module.exports = class {
   }
 
   async getAccessTokenDetails(token) {
-    const model = token && token !== "null" && (await this.Model.findOne({ where: { token } }));
+    const model = token && token !== "null" && token !== "undefined" && (await this.Model.findOne({ where: { token } }));
     return model || { scope: "none", isVerified: false };
   }
 
