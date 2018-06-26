@@ -1,2 +1,4 @@
-export const getAccessToken = () => window.localStorage.getItem("roombelt-access-token");
-export const setAccessToken = value => window.localStorage.setItem("roombelt-access-token", value);
+import store from "store";
+
+export const getAccessToken = () => store.get("roombelt-access-token");
+export const setAccessToken = value => store.set("roombelt-access-token", value);
