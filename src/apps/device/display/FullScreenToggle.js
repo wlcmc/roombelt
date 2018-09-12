@@ -10,8 +10,7 @@ const Wrapper = styled.div`
   opacity: 0.5;
   background: black;
   color: white;
-  padding: calc(var(--font-size) * 0.5);
-  font-size: var(--font-size);
+  padding: 0.5em;
   cursor: pointer;
 `;
 

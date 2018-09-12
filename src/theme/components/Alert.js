@@ -19,7 +19,7 @@ export default styled.div`
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 3px;
-  font-size: calc(var(--font-size) * 0.9);
+  font-size: 0.9em;
 
   ${props => props.primary && styles.primary};
   ${props => props.info && styles.info};

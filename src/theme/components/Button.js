@@ -54,8 +54,8 @@ const compactStyles = props => {
 
   return css`
     font-weight: 400;
-    padding: calc(var(--font-size) * 0.1) calc(var(--font-size) * 0.4);
-    font-size: calc(var(--font-size) * 0.8);
+    padding: 0.1em 0.4em;
+    font-size: 0.8em;
   `;
 };
 
@@ -97,12 +97,12 @@ const UnderlyingComponent = props =>
 
 const Button = styled(UnderlyingComponent)`
   display: ${props => (props.block ? "block" : "inline-block")};
-  min-width: calc(var(--font-size) * 6);
-  font-size: var(--font-size);
+  min-width: 6em;
   text-align: center;
   font-family: "Roboto", sans-serif;
-  border-radius: var(--radius);
-  padding: calc(var(--font-size) * 0.75);
+  border-radius: 0.2em
+  font-size: 1em;
+  padding: 0.75em;
   user-select: none;
   white-space: nowrap;
   cursor: pointer;

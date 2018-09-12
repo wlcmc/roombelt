@@ -2,7 +2,7 @@ import React from "react";
 import Button from "./Button";
 import Loader from "./Loader";
 
-const size = "calc(var(--font-size) - 2px)";
+const size = "calc(1em - 2px)";
 
 export default ({ isLoading, disabled, children, ...props }) => (
   <Button {...props} disabled={disabled || isLoading}>

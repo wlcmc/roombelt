@@ -6,8 +6,8 @@ const rotation = keyframes`
 
 export default styled.div`
   display: inline-block;
-  height: calc(var(--font-size) * 2.5);
-  width: calc(var(--font-size) * 2.5);
+  height: 2.5em;
+  width: 2.5em;
   color: ${props => (props.white ? "white" : "#467fcf")};
   position: relative;
 
@@ -25,12 +25,12 @@ export default styled.div`
 
   &:before {
     border-radius: 50%;
-    border: calc(var(--font-size) * 0.2) solid currentColor;
+    border: 0.2em solid currentColor;
     opacity: 0.15;
   }
 
   &:after {
-    border: calc(var(--font-size) * 0.2) solid transparent;
+    border: 0.2em solid transparent;
     border-top-color: currentColor;
     border-radius: 50%;
     animation: infinite ${rotation} 0.6s linear;

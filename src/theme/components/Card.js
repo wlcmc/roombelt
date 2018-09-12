@@ -10,7 +10,6 @@ const CardWrapper = styled.div`
   background-clip: content-box;
   border: 1px solid rgba(0, 40, 100, 0.12);
   border-radius: 3px;
-  font-size: var(--font-size);
 
   display: ${props => (props.block ? "block" : "inline-block")};
 `;
@@ -18,7 +17,7 @@ const CardWrapper = styled.div`
 const CardHeader = styled.div`
   border-radius: 2px 2px 0 0;
   padding: 15px;
-  font-size: calc(var(--font-size) * 1.2);
+  font-size: 1.2em;
   line-height: 1.2;
   border-bottom: 1px solid rgba(0, 40, 100, 0.12);
 `;

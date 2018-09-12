@@ -18,86 +18,87 @@ const Wrapper = styled.div`
   background: #f5f7fb;
   font-family: "Roboto", sans-serif;
 
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    "calendar-name current-time"
-    "main-content main-content"
-    "next-meeting next-meeting";
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  --font-size: 6px;
+  font-size: 6px;
 
   @media (min-width: 300px) {
-    --font-size: 10px;
+    font-size: 10px;
   }
 
   @media (min-width: 500px) {
-    --font-size: 16px;
+    font-size: 16px;
   }
 
   @media (min-width: 700px) {
-    --font-size: 20px;
+    font-size: 20px;
   }
 
   @media (min-width: 900px) {
-    --font-size: 24px;
+    font-size: 24px;
   }
 
   @media (min-width: 1100px) {
-    --font-size: 30px;
+    font-size: 30px;
   }
 
   @media (min-width: 1300px) {
-    --font-size: 35px;
+    font-size: 35px;
   }
 
   @media (min-width: 1500px) {
-    --font-size: 40px;
+    font-size: 40px;
   }
 
   @media (min-width: 1700px) {
-    --font-size: 46px;
+    font-size: 46px;
   }
 `;
 
-const CalendarName = styled.div`
-  grid-area: calendar-name;
-  color: var(--text);
-  font-size: calc(var(--font-size) * 1.5);
+const Header = styled.header`
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: space-between;
   background: white;
-  padding: calc(var(--font-size) * 0.5);
+  border-bottom: 0.1rem solid #ccc;
 `;
 
-const CurrentTime = styled.div`
-  grid-area: current-time;
+const CalendarName = styled.span`
   color: var(--text);
-  font-size: calc(var(--font-size) * 1.5);
-  background: white;
-  padding: calc(var(--font-size) * 0.5);
+  font-size: 1.5em;
+  padding: 0.3em;
+`;
+
+const CurrentTime = styled.span`
+  color: var(--text);
+  font-size: 1.5em;
+  padding: 0.3em;
 `;
 
 const MainContent = styled.div`
-  grid-area: main-content;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-top: 0.1rem solid #ccc;
-  padding: calc(var(--font-size) * 0.5);
+  padding: 0.5em;
 `;
 
 const Footer = styled.div`
-  grid-area: next-meeting;
-  padding: calc(var(--font-size) * 0.5);
+  padding: 0.5em;
+  flex: 0 0 auto;
 `;
 
 const CalendarView = props => (
   <Wrapper style={props.style}>
     <PageLoaded />
-    <CalendarName available={!props.currentMeeting}>{props.calendarName}</CalendarName>
-    <CurrentTime>
-      <Time timestamp={props.currentTimestamp} blinking />
-    </CurrentTime>
+    <Header>
+      <CalendarName available={!props.currentMeeting}>{props.calendarName}</CalendarName>
+      <CurrentTime>
+        <Time timestamp={props.currentTimestamp} blinking />
+      </CurrentTime>
+    </Header>
     <MainContent>
       {props.currentMeeting ? <CurrentMeeting /> : <RoomAvailable />}
       <ActionsBar />

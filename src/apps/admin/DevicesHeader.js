@@ -5,7 +5,7 @@ import IoPlusRound from "react-icons/lib/io/plus";
 import { PageTitle, Button } from "../../theme";
 
 const ConnectDeviceButton = props => (
-  <Button primary compact style={{ marginLeft: 10 }} onClick={props.onClick}>
+  <Button primary compact style={{ marginLeft: 10, fontSize: 13 }} onClick={props.onClick}>
     <IoPlusRound /> <span style={{ verticalAlign: "middle" }}>Connect device</span>
   </Button>
 );

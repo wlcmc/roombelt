@@ -6,15 +6,13 @@ import { LoaderButton, Button } from "../../../../theme";
 const ErrorTitle = styled.div`
   display: inline-block;
   background: white;
-  padding: calc(var(--font-size) * 0.75);
-  margin-right: var(--font-size);
-  font-size: var(--font-size);
-  border-radius: var(--radius);
+  padding: 0.75em;
+  margin-right: 1em;
+  border-radius: 0.2em;
 `;
 
 const ErrorSubtitle = styled.div`
-  margin-top: var(--font-size);
-  font-size: var(--font-size);
+  margin-top: 1em;
 `;
 
 export default props => (

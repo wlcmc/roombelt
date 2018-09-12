@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   text-align: center;
 
-  --font-size: 2.5vw;
+  font-size: 2.5vw;
 `;
 
 export default props => (
@@ -24,7 +24,7 @@ export default props => (
     <PageLoaded />
     <PageTitle>{props.title}</PageTitle>
     <PageSection>{props.message}</PageSection>
-    <PageSection style={{ marginBottom: "calc(var(--font-size) * 2)" }}>
+    <PageSection style={{ marginBottom: "2em" }}>
       If this problem continues to occur please contact IT administrator
     </PageSection>
     <Button primary onClick={() => (window.location = window.location)}>

@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 export const MeetingHeader = styled.div`
-  margin-bottom: calc(var(--font-size) * 0.5);
+  margin-bottom: 0.5em;
 `;
 
 export const MeetingTitle = styled.div`
-  font-size: calc(var(--font-size) * 1.2);
+  font-size: 1.2em;
 `;
 
 export const MeetingSubtitle = styled.div`
-  font-size: var(--font-size);
+  
 `;

@@ -1,9 +1,11 @@
 import axios from "axios";
 import { getAccessToken } from "./access-token";
 
-axios.interceptors.request.use(function(config) {
-  return { ...config, headers: { ...config.headers, Authorization: `Bearer ${getAccessToken()}` } };
-});
+axios.interceptors.request.use(config => ({
+  ...config,
+  headers: { ...config.headers, Authorization: `Bearer ${getAccessToken()}` },
+  url: config.url + "?_ts=" + Date.now()
+}));
 
 axios.interceptors.response.use(response => response.data, error => Promise.reject(error.response));
 
@@ -16,7 +18,7 @@ export function createDevice() {
 }
 
 export function getUserDetails() {
-  return axios.get('/api/admin/user')
+  return axios.get("/api/admin/user");
 }
 
 export function getConnectedDevices() {
