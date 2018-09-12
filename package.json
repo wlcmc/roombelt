@@ -37,6 +37,7 @@
     }
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "body-parser": "^1.18.2",
     "chalk": "^2.4.1",
     "dotenv": "^5.0.1",
