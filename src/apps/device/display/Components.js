@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const MeetingHeader = styled.div`
   margin-bottom: 0.5em;
+  font-size: 1.5em;
 `;
 
 export const MeetingTitle = styled.div`
