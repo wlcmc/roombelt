@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 
-import { currentMeetingSelector, nextMeetingSelector, minutesToNextMeetingSelector } from "../../store/selectors";
+import { currentMeetingSelector, nextMeetingSelector, minutesAvailableTillNextMeetingSelector } from "../../store/selectors";
 
 import ActionError from "./ActionError";
 import RoomAvailable from "./RoomAvailable";
@@ -83,7 +83,7 @@ const mapStateToProps = state => ({
   currentTimestamp: state.timestamp,
   currentMeeting: currentMeetingSelector(state),
   nextMeeting: nextMeetingSelector(state),
-  minutesToNextMeeting: minutesToNextMeetingSelector(state),
+  minutesToNextMeeting: minutesAvailableTillNextMeetingSelector(state),
 
   isActionInProgress: state.currentMeetingActions.action !== null,
   currentAction: state.currentMeetingActions.action,

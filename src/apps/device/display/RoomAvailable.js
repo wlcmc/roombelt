@@ -3,7 +3,7 @@ import { Badge } from "../../../theme";
 import { prettyFormatMinutes } from "../../../services/formatting";
 import { MeetingHeader, MeetingSubtitle } from "./Components";
 import { connect } from "react-redux";
-import { nextMeetingSelector, minutesToNextMeetingSelector } from "../store/selectors";
+import { nextMeetingSelector, minutesAvailableTillNextMeetingSelector } from "../store/selectors";
 
 const RoomAvailable = props => {
   const nextMeetingStartTimestamp = props.nextMeeting && props.nextMeeting.startTimestamp;
@@ -23,7 +23,7 @@ const RoomAvailable = props => {
 
 const mapStateToProps = state => ({
   nextMeeting: nextMeetingSelector(state),
-  minutesToNextMeeting: minutesToNextMeetingSelector(state)
+  minutesToNextMeeting: minutesAvailableTillNextMeetingSelector(state)
 });
 
 export default connect(mapStateToProps)(RoomAvailable);

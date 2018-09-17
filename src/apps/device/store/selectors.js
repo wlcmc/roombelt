@@ -1,9 +1,8 @@
 import { createSelector } from "reselect";
 import { timeDifferenceInMinutes } from "../../../services/formatting";
 
-const timestampSelector = state => state.timestamp;
-const deviceSelector = state => state.device;
-const actionsSelector = state => state.currentMeetingActions;
+export const timestampSelector = state => state.timestamp;
+export const deviceSelector = state => state.device;
 
 export const connectionCodeSelector = state => state.auth.connectionCode;
 
@@ -27,7 +26,7 @@ export const nextMeetingSelector = createSelector([deviceSelector, currentMeetin
   })
 );
 
-export const minutesToNextMeetingSelector = createSelector(
+export const minutesAvailableTillNextMeetingSelector = createSelector(
   [timestampSelector, currentMeetingSelector, nextMeetingSelector],
   (currentTimestamp, currentMeeting, nextMeeting) => {
     return timeDifferenceInMinutes(
@@ -36,8 +35,3 @@ export const minutesToNextMeetingSelector = createSelector(
     );
   }
 );
-
-export const isCreatingMeeting = createSelector(actionsSelector, actions => actions.action === "ACTION_TYPE_CREATE");
-export const creatingMeetingTime = createSelector(actionsSelector, actions => actions.argument);
-
-export const getIsOffline = state => state.appState.isOffline;
