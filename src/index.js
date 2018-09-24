@@ -7,5 +7,6 @@ import registerServiceWorker from "./registerServiceWorker";
 import "./index.css";
 import "./fonts/index.css";
 
-ReactDOM.render(<BrowserRouter children={<Router />} />, document.querySelector("#root"));
+ReactDOM.render(<BrowserRouter children={<Router/>}/>, document.querySelector("#root"));
+
 registerServiceWorker();

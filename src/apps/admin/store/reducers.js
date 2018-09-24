@@ -41,6 +41,8 @@ const editedDevice = (state = { data: null, isSaving: false }, action) => {
       return { data: null };
     case ":edit-device--set-calendar":
       return { data: { ...state.data, calendarId: action.calendarId } };
+    case ":edit-device--set-language":
+      return { data: { ...state.data, language: action.language } };
     default:
       return state;
   }
@@ -64,6 +66,7 @@ const defaultConnectDeviceWizardState = {
   connectionCode: "",
   deviceId: null,
   calendarId: null,
+  language: "en-US",
   errorMessage: null,
   isSubmitting: false
 };
@@ -84,6 +87,8 @@ const connectDeviceWizard = (state = defaultConnectDeviceWizardState, action) =>
       return { ...state, errorMessage: action.errorMessage, isSubmitting: false };
     case ":connect-device-wizard--set-calendar":
       return { ...state, calendarId: action.calendarId };
+    case ":connect-device-wizard--set-language":
+      return { ...state, language: action.language };
     case ":connect-device-wizard--set-device":
       return { ...state, deviceId: action.deviceId };
     case ":connect-device-wizard--set-current-step":
@@ -93,11 +98,17 @@ const connectDeviceWizard = (state = defaultConnectDeviceWizardState, action) =>
   }
 };
 
+const availableLanguages = () => [
+  { value: "en-US", label: "English" },
+  { value: "pl-PL", label: "Polski" }
+];
+
 export default combineReducers({
   user,
   devices,
   calendars,
   editedDevice,
   removedDevice,
-  connectDeviceWizard
+  connectDeviceWizard,
+  availableLanguages
 });

@@ -6,6 +6,7 @@ module.exports = class {
       deviceId: { type: Sequelize.UUID, defaultValue: Sequelize.UUIDV4, primaryKey: true },
       connectionCode: { type: Sequelize.STRING, defaultValue: () => Math.floor(Math.random() * 100000).toString() },
       userId: Sequelize.STRING,
+      language: { type: Sequelize.ENUM("en-US", "pl-PL"), defaultValue: "en-US" },
       calendarId: Sequelize.STRING,
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
@@ -44,5 +45,9 @@ module.exports = class {
 
   async setCalendarForDevice(deviceId, calendarId) {
     await this.Model.update({ calendarId }, { where: { deviceId } });
+  }
+
+  async setLanguageForDevice(deviceId, language) {
+    await this.Model.update({ language }, { where: { deviceId } });
   }
 };

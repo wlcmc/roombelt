@@ -9,6 +9,7 @@ import CurrentMeeting from "./CurrentMeeting";
 import RoomAvailable from "./RoomAvailable";
 import FullScreenToggle from "./FullScreenToggle";
 import ActionsBar from "./actions-bar";
+import I18n from '../../../theme/components/I18n'
 
 const Wrapper = styled.div`
   height: 100%;
@@ -96,6 +97,7 @@ const CalendarView = props => (
     <Header>
       <CalendarName available={!props.currentMeeting}>{props.calendarName}</CalendarName>
       <CurrentTime>
+        <I18n>{t => t('language')}</I18n>
         <Time timestamp={props.currentTimestamp} blinking />
       </CurrentTime>
     </Header>

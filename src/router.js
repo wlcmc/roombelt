@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 import { withRouter } from "react-router";
 import { Switch, Route } from "react-router-dom";
 import { getAuth } from "./services/api";
-import { setAccessToken } from "./services/access-token";
+import { setAccessToken } from "./services/persistent-store";
 
 import FatalError from "./theme/layouts/FatalError";
 import LoginApp from "./apps/Login";

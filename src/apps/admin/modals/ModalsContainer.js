@@ -18,6 +18,8 @@ const Modals = props => (
       onCancel={props.onCancelEditDevice}
       onSubmit={props.onSubmitEditDevice}
       onChangeCalendar={props.onChangeDeviceCalendar}
+      onChangeLanguage={props.onChangeLanguage}
+      availableLanguages={props.availableLanguages}
     />
 
     <RemoveDeviceModal
@@ -32,13 +34,15 @@ const Modals = props => (
 const mapStateToProps = state => ({
   calendars: state.calendars,
   editedDevice: state.editedDevice,
-  removedDevice: state.removedDevice
+  removedDevice: state.removedDevice,
+  availableLanguages: state.availableLanguages
 });
 
 const mapDispatchToProps = dispatch => ({
   onSubmitEditDevice: () => dispatch({ type: ":edit-device--submit" }),
   onCancelEditDevice: () => dispatch({ type: ":edit-device--cancel" }),
   onChangeDeviceCalendar: calendarId => dispatch({ type: ":edit-device--set-calendar", calendarId }),
+  onChangeLanguage: language => dispatch({ type: ":edit-device--set-language", language }),
 
   onConfirmRemoveDevice: () => dispatch({ type: ":remove-device--confirm" }),
   onCancelRemoveDevice: () => dispatch({ type: ":remove-device--cancel" })

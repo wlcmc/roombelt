@@ -4,7 +4,7 @@ import {
   getConnectedDevices,
   getUserDetails,
   disconnectDevice,
-  setCalendarForDevice
+  setOptionsForDevice
 } from "../../../services/api";
 
 const logger = action => {
@@ -46,9 +46,9 @@ const connectDeviceWizardSubmitStep2 = async (action, store) => {
     return;
   }
 
-  const { deviceId, calendarId } = store.getState().connectDeviceWizard;
+  const { deviceId, calendarId, language } = store.getState().connectDeviceWizard;
 
-  await setCalendarForDevice(deviceId, calendarId);
+  await setOptionsForDevice(deviceId, calendarId, language);
   store.dispatch({ type: ":devices--set", devices: await getConnectedDevices() });
   store.dispatch({ type: ":connect-device-wizard--hide" });
 };
@@ -59,7 +59,7 @@ const submitEditDevice = async (action, store) => {
   }
 
   const device = store.getState().editedDevice.data;
-  await setCalendarForDevice(device.id, device.calendarId);
+  await setOptionsForDevice(device.id, device.calendarId, device.language);
 
   store.dispatch({ type: ":edit-device--done", device });
 };

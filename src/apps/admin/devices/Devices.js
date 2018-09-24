@@ -20,7 +20,7 @@ import {
   Loader
 } from "../../../theme/index";
 
-import EmptyState from './EmptyState'
+import EmptyState from "./EmptyState";
 
 const CalendarRowWrapper = styled(TableRow)`
   &:hover {
@@ -37,8 +37,11 @@ const SingleDeviceRow = props => (
       </Text>
     </TableRowColumn>
     <TableRowColumn onClick={props.onRowClicked} style={{ cursor: "pointer" }}>
+      {props.availableLanguages.find(lang => lang.value === props.device.language).label}
+    </TableRowColumn>
+    <TableRowColumn onClick={props.onRowClicked} style={{ cursor: "pointer" }}>
       <Text block>
-        <StatusIcon success={props.device.isOnline} danger={!props.device.isOnline} />
+        <StatusIcon success={props.device.isOnline} danger={!props.device.isOnline}/>
         {props.device.isOnline ? "Online" : "Offline"}
       </Text>
       <Text muted small>
@@ -46,7 +49,7 @@ const SingleDeviceRow = props => (
       </Text>
     </TableRowColumn>
     <TableRowColumn style={{ textAlign: "right" }}>
-      <DropdownMenu trigger={<IoAndroidMoreVertical style={{ cursor: "pointer", color: "#555" }} />}>
+      <DropdownMenu trigger={<IoAndroidMoreVertical style={{ cursor: "pointer", color: "#555" }}/>}>
         <DropdownMenuItem onClick={props.onConfigureClicked}>Configure</DropdownMenuItem>
         <DropdownMenuItem onClick={props.onDeleteClicked}>Disconnect</DropdownMenuItem>
       </DropdownMenu>
@@ -59,13 +62,13 @@ const Devices = props => {
   if (!props.isLoaded) {
     return (
       <Card block style={{ textAlign: "center" }}>
-        <Loader />
+        <Loader/>
       </Card>
     );
   }
 
   if (props.isLoaded && props.devices.length === 0) {
-    return <EmptyState />
+    return <EmptyState/>;
   }
 
   const rows = props.devices.map(device => (
@@ -74,6 +77,7 @@ const Devices = props => {
       onRowClicked={() => props.onConfigureDeviceClicked && props.onConfigureDeviceClicked(device)}
       onConfigureClicked={() => props.onConfigureDeviceClicked && props.onConfigureDeviceClicked(device)}
       onDeleteClicked={() => props.onDeleteDeviceClicked && props.onDeleteDeviceClicked(device)}
+      availableLanguages={props.availableLanguages}
       device={device}
       calendar={props.calendars[device.calendarId]}
     />
@@ -85,11 +89,12 @@ const Devices = props => {
         <TableHeader>
           <TableRow>
             <TableHeaderColumn>Calendar</TableHeaderColumn>
+            <TableHeaderColumn>Language</TableHeaderColumn>
             <TableHeaderColumn>Status</TableHeaderColumn>
-            <TableHeaderColumn style={{ width: 50 }} />
+            <TableHeaderColumn style={{ width: 50 }}/>
           </TableRow>
         </TableHeader>
-        <TableBody children={rows} />
+        <TableBody children={rows}/>
       </Table>
     </Card>
   );
@@ -98,7 +103,8 @@ const Devices = props => {
 const mapStateToProps = state => ({
   isLoaded: state.devices.isLoaded,
   devices: state.devices.data,
-  calendars: state.calendars
+  calendars: state.calendars,
+  availableLanguages: state.availableLanguages
 });
 
 const mapDispatchToProps = dispatch => ({

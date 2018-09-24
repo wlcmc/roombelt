@@ -14,3 +14,5 @@ export { Table, TableRowColumn, TableHeaderColumn, TableRow, TableHeader, TableB
 export { DropdownMenu, DropdownMenuItem } from "./components/DropdownMenu";
 export { PageTitle, PageSection } from "./components/Header";
 export { Input } from "./components/Form";
+export { default as Select } from "./components/Select";
+export { default as I18n } from "./components/I18n";

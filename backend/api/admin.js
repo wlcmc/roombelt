@@ -1,9 +1,10 @@
 const router = require("express-promise-router")();
 
-const deviceRepresentation = ({ deviceId, createdAt, updatedAt, calendarId }) => ({
+const deviceRepresentation = ({ deviceId, createdAt, updatedAt, calendarId, language }) => ({
   id: deviceId,
   createdAt,
   calendarId,
+  language: language || 'en',
   isOnline: updatedAt > Date.now() - 70 * 1000,
   msSinceLastActivity: Date.now() - updatedAt
 });
@@ -73,6 +74,7 @@ router.put("/admin/device/:deviceId", async function(req, res) {
   }
 
   await req.context.storage.devices.setCalendarForDevice(req.params.deviceId, req.body.calendarId);
+  await req.context.storage.devices.setLanguageForDevice(req.params.deviceId, req.body.language);
 
   res.sendStatus(204);
 });
