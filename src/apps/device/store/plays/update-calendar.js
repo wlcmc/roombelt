@@ -11,7 +11,7 @@ export default async function(action, store) {
       const device = await getDeviceDetails(action.accessToken);
       store.dispatch({ type: ":device--set-data", device });
     } catch (e) {
-      if (e && e.status) {
+      if (e && e.status && e.status !== 503) {
         store.dispatch({ type: ":device--unexpected-error", error: new Error(`${e.status}: ${e.statusText}`) });
       }
     }
