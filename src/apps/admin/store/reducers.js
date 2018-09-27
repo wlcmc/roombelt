@@ -98,17 +98,11 @@ const connectDeviceWizard = (state = defaultConnectDeviceWizardState, action) =>
   }
 };
 
-const availableLanguages = () => [
-  { value: "en-US", label: "English" },
-  { value: "pl-PL", label: "Polski" }
-];
-
 export default combineReducers({
   user,
   devices,
   calendars,
   editedDevice,
   removedDevice,
-  connectDeviceWizard,
-  availableLanguages
+  connectDeviceWizard
 });

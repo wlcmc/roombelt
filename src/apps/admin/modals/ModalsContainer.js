@@ -19,7 +19,6 @@ const Modals = props => (
       onSubmit={props.onSubmitEditDevice}
       onChangeCalendar={props.onChangeDeviceCalendar}
       onChangeLanguage={props.onChangeLanguage}
-      availableLanguages={props.availableLanguages}
     />
 
     <RemoveDeviceModal
@@ -35,7 +34,6 @@ const mapStateToProps = state => ({
   calendars: state.calendars,
   editedDevice: state.editedDevice,
   removedDevice: state.removedDevice,
-  availableLanguages: state.availableLanguages
 });
 
 const mapDispatchToProps = dispatch => ({

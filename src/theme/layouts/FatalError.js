@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Button, PageTitle, PageSection, PageLoaded } from "..";
+import { Button, PageTitle, PageSection, PageLoaded, I18n } from "..";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -19,15 +19,17 @@ const Wrapper = styled.div`
 `;
 
 export default props => (
-  <Wrapper>
-    <PageLoaded />
-    <PageTitle>{props.title}</PageTitle>
-    <PageSection>{props.message}</PageSection>
-    <PageSection style={{ marginBottom: "2em" }}>
-      If this problem continues to occur please contact IT administrator
-    </PageSection>
-    <Button primary onClick={() => (window.location = window.location)}>
-      Refresh page
-    </Button>
-  </Wrapper>
+  <I18n>{t =>
+    <Wrapper>
+      <PageLoaded/>
+      <PageTitle>{props.title}</PageTitle>
+      <PageSection>{props.message}</PageSection>
+      <PageSection style={{ marginBottom: "2em" }}>
+        {t("errors.action-error-subtitle")}
+      </PageSection>
+      <Button primary onClick={() => (window.location = window.location)}>
+        {t("errors.refresh-page")}
+      </Button>
+    </Wrapper>
+  }</I18n>
 );

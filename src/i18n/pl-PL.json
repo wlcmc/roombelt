@@ -1,0 +1,44 @@
+{
+  "key": "pl-PL",
+  "language": "Polski",
+  "availability": {
+    "available": "Wolne",
+    "available-for": "Wolne przez {{ time }}",
+    "whole-day": "Wolne przez cały dzień",
+    "occupied": "Zajęte",
+    "starts": {
+      "now": "Zaczyna się teraz",
+      "ago_0": "Zaczęło się minutę temu",
+      "ago_1": "Zaczęło się {{ count }} minuty temu",
+      "ago_2": "Zaczęło się {{ count }} minut temu",
+      "in_0": "Zacznie się za minutę",
+      "in_1": "Zacznie się za {{ count }} minuty",
+      "in_2": "Zacznie się za {{ count }} minut"
+    }
+  },
+  "meeting": {
+    "no-title": "(Brak tematu)",
+    "guests_0": "i 1 gość",
+    "guests_1": "i {{ count }} gości",
+    "guests_2": "i {{ count }} gości",
+    "next": "Następne spotkanie dzisiaj"
+  },
+  "actions": {
+    "end-now": "Zakończ teraz",
+    "confirm": "Zatwierdź",
+    "extend": "Przedłuż",
+    "back": "Wstecz",
+    "cancel": "Anuluj",
+    "retry": "Spróbuj ponownie",
+    "check-in": "Zamelduj się",
+    "start-early": "Zacznij wcześniej",
+    "cancel-meeting": "Odwołaj spotkanie"
+  },
+  "full-screen": "Pełen ekran",
+  "errors": {
+    "action-error-title": "Wystąpił błąd podczas wykonywania tej operacji",
+    "action-error-subtitle": "Jeśli ten problem będzie się powtarzał skontaktuj się z administratorem IT",
+    "no-internet": "Brak połączenia z internetem",
+    "refresh-page": "Odśwież stronę"
+  }
+}

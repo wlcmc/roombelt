@@ -51,7 +51,6 @@ class ConnectDeviceWizard extends React.Component {
               calendars={this.props.calendars}
               calendarId={this.props.calendarId}
               language={this.props.language}
-              availableLanguages={this.props.availableLanguages}
               onSetCalendar={this.props.onSetCalendar}
               onSetLanguage={this.props.onSetLanguage}
             />
@@ -84,8 +83,7 @@ const mapStateToProps = state => ({
   connectionCode: state.connectDeviceWizard.connectionCode,
   connectionError: state.connectDeviceWizard.errorMessage,
   calendarId: state.connectDeviceWizard.calendarId,
-  language: state.connectDeviceWizard.language,
-  availableLanguages: state.availableLanguages
+  language: state.connectDeviceWizard.language
 });
 
 const mapDispatchToProps = dispatch => ({

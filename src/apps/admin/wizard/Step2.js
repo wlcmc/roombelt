@@ -1,6 +1,7 @@
 import React from "react";
 import StepLayout from "./StepLayout";
 import { Text, Select } from "../../../theme";
+import translations from "../../../i18n";
 
 export default class extends React.PureComponent {
   constructor(props) {
@@ -36,8 +37,10 @@ export default class extends React.PureComponent {
       <Select
         instanceId="edit-device-choose-language"
         value={this.props.language}
-        options={this.props.availableLanguages}
-        onChange={event => this.props.onSetLanguage && this.props.onSetLanguage(event && event.value)}
+        options={Object.values(translations)}
+        getOptionLabel={lang => lang.language}
+        getOptionValue={lang => lang.key}
+        onChange={translation => this.props.onSetLanguage && this.props.onSetLanguage(translation && translation.key)}
         menuPortalTarget={document.body}
       />
     </StepLayout>

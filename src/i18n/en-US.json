@@ -1,0 +1,9 @@
+{
+  "key": "en-US",
+  "language": "English",
+  "available": "Available",
+  "errors": {
+    "action-error-title": "Problem with performing this operation",
+    "action-error-subtitle": "If this problem continues to occur contact your IT administrator."
+  }
+}

@@ -5,15 +5,15 @@ import { connectionCodeSelector, isDeviceConnectedSelector, isCalendarSelectedSe
 import Display from "./display";
 import ConnectionCode from "./connect/ConnectionCode";
 import NoCalendar from "./connect/NoCalendar";
-import { I18nProvider } from "../../theme/components/I18n";
+import I18n, { I18nProvider } from "../../theme/components/I18n";
 import FatalError from "../../theme/layouts/FatalError";
 
-const Router = props => {
-  if (props.unexpectedError) return <FatalError title={props.unexpectedError.message}/>;
-  if (props.isOffline) return <FatalError title="No internet connection"/>;
-  if (props.connectionCode) return <ConnectionCode connectionCode={props.connectionCode}/>;
-  if (props.isCalendarSelected) return <Display/>;
-  if (props.isDeviceConnected) return <NoCalendar/>;
+const Router = ({ connectionCode, isCalendarSelected, isDeviceConnected, isOffline, unexpectedError, t }) => {
+  if (unexpectedError) return <FatalError title={unexpectedError.message}/>;
+  if (isOffline) return <FatalError title={t("errors.no-internet")}/>;
+  if (connectionCode) return <ConnectionCode connectionCode={connectionCode}/>;
+  if (isCalendarSelected) return <Display/>;
+  if (isDeviceConnected) return <NoCalendar/>;
 
   return null;
 };
@@ -28,7 +28,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(props =>
-  <I18nProvider
-    lang={props.language}><Router {...props}/>
+  <I18nProvider lang={props.language}>
+    <I18n>{t => <Router {...props} t={t}/>}</I18n>
   </I18nProvider>
 );

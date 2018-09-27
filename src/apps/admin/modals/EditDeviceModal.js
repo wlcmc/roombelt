@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { Modal, Button, LoaderButton, Select } from "../../../theme";
+import translations from "../../../i18n";
 
 const FormField = styled.div`
   margin-bottom: 20px;
@@ -57,8 +58,10 @@ class EditDeviceModal extends React.PureComponent {
           <Select
             instanceId="edit-device-choose-language"
             value={(this.props.device && this.props.device.language) || "en-US"}
-            options={this.props.availableLanguages}
-            onChange={event => this.props.onChangeLanguage && this.props.onChangeLanguage(event && event.value)}
+            options={Object.values(translations)}
+            getOptionLabel={lang => lang.language}
+            getOptionValue={lang => lang.key}
+            onChange={translation => this.props.onChangeLanguage && this.props.onChangeLanguage(translation && translation.key)}
           />
         </FormField>
       </Modal>

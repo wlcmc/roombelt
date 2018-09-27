@@ -3,13 +3,12 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { deviceNameSelector, currentMeetingSelector, nextMeetingSelector } from "../store/selectors";
 
-import { Time, PageLoaded } from "../../../theme";
+import { Time, PageLoaded, I18n } from "../../../theme";
 import NextMeeting from "./NextMeeting";
 import CurrentMeeting from "./CurrentMeeting";
 import RoomAvailable from "./RoomAvailable";
 import FullScreenToggle from "./FullScreenToggle";
 import ActionsBar from "./actions-bar";
-import I18n from '../../../theme/components/I18n'
 
 const Wrapper = styled.div`
   height: 100%;
@@ -97,7 +96,6 @@ const CalendarView = props => (
     <Header>
       <CalendarName available={!props.currentMeeting}>{props.calendarName}</CalendarName>
       <CurrentTime>
-        <I18n>{t => t('language')}</I18n>
         <Time timestamp={props.currentTimestamp} blinking />
       </CurrentTime>
     </Header>

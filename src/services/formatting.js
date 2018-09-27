@@ -1,9 +1,3 @@
-import moment from "moment/moment";
-
-export function pluralize(number, word) {
-  return `${number} ${word}${number === 1 ? "" : "s"}`;
-}
-
 export function timeDifferenceInMinutes(latterEventTimestamp, formerEventTimestamp) {
   if (!latterEventTimestamp && formerEventTimestamp) {
     return Number.POSITIVE_INFINITY;
@@ -21,15 +15,4 @@ export function prettyFormatMinutes(totalMinutes) {
   const minutes = totalMinutes - hours * 60;
 
   return (hours ? `${hours} h ` : "") + (minutes ? `${minutes} min` : "");
-}
-
-export function prettyFormatDays(eventTimestamp, currentTimestamp) {
-  return moment(eventTimestamp).calendar(currentTimestamp, {
-    sameDay: "[today]",
-    nextDay: "[tomorrow]",
-    nextWeek: "(dddd)",
-    lastDay: "[yesterday]",
-    lastWeek: "[last] dddd",
-    sameElse: "DD/MM/YYYY"
-  });
 }

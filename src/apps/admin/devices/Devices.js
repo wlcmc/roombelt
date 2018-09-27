@@ -5,6 +5,8 @@ import moment from "moment";
 
 import IoAndroidMoreVertical from "react-icons/lib/io/android-more-vertical";
 
+import translations from "../../../i18n";
+
 import {
   Card,
   Text,
@@ -37,7 +39,7 @@ const SingleDeviceRow = props => (
       </Text>
     </TableRowColumn>
     <TableRowColumn onClick={props.onRowClicked} style={{ cursor: "pointer" }}>
-      {props.availableLanguages.find(lang => lang.value === props.device.language).label}
+      {translations[props.device.language].language}
     </TableRowColumn>
     <TableRowColumn onClick={props.onRowClicked} style={{ cursor: "pointer" }}>
       <Text block>
@@ -77,7 +79,6 @@ const Devices = props => {
       onRowClicked={() => props.onConfigureDeviceClicked && props.onConfigureDeviceClicked(device)}
       onConfigureClicked={() => props.onConfigureDeviceClicked && props.onConfigureDeviceClicked(device)}
       onDeleteClicked={() => props.onDeleteDeviceClicked && props.onDeleteDeviceClicked(device)}
-      availableLanguages={props.availableLanguages}
       device={device}
       calendar={props.calendars[device.calendarId]}
     />
@@ -103,8 +104,7 @@ const Devices = props => {
 const mapStateToProps = state => ({
   isLoaded: state.devices.isLoaded,
   devices: state.devices.data,
-  calendars: state.calendars,
-  availableLanguages: state.availableLanguages
+  calendars: state.calendars
 });
 
 const mapDispatchToProps = dispatch => ({

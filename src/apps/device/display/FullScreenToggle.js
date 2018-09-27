@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import IoAndroidExpand from "react-icons/lib/io/android-expand";
+import { I18n } from "../../../theme";
+
 
 const Wrapper = styled.div`
   position: absolute;
@@ -18,9 +20,11 @@ const FullScreenToggle = props => {
   if (!props.isFullScreenSupported || props.isFullScreen) return null;
 
   return (
-    <Wrapper onClick={props.requestFullScreen}>
-      <IoAndroidExpand /> <span style={{ verticalAlign: "middle" }}>Fullscreen</span>
-    </Wrapper>
+    <I18n>{t =>
+      <Wrapper onClick={props.requestFullScreen}>
+        <IoAndroidExpand/> <span style={{ verticalAlign: "middle" }}>{t("full-screen")}</span>
+      </Wrapper>
+    }</I18n>
   );
 };
 

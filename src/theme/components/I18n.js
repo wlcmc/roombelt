@@ -1,5 +1,6 @@
 import i18next from "i18next";
 import React from "react";
+import translations from "../../i18n";
 
 const i18nContext = React.createContext();
 
@@ -10,10 +11,10 @@ export class I18nProvider extends React.PureComponent {
     this.i18n = i18next.createInstance({
       lng: this.props.lang,
       resources: {
-        en: { translation: require("../../i18n/en.json") },
-        pl: { translation: require("../../i18n/pl.json") }
+        'en-US': { translation: require("../../i18n/en-US.json") },
+        'pl-PL': { translation: require("../../i18n/pl-PL.json") }
       }
-    }, this.handleLangChange.bind(this))
+    }, this.handleLangChange.bind(this));
   }
 
   componentDidUpdate(prevProps) {
@@ -25,6 +26,7 @@ export class I18nProvider extends React.PureComponent {
   }
 
   handleLangChange(error, t) {
+    console.log('LANGE CHANGEEE', t('language'))
     if (error) {
       return console.error(error);
     }
@@ -33,6 +35,7 @@ export class I18nProvider extends React.PureComponent {
   }
 
   render() {
+    console.log(this.state.t('language'))
     return <i18nContext.Provider value={this.state.t}>{this.props.children}</i18nContext.Provider>;
   }
 }
