@@ -50,7 +50,7 @@ router.post("/device/meeting", async function(req, res) {
     startTimestamp: Date.now(),
     endTimestamp: Math.min(desiredStartTime, nextEventStartTime),
     isCheckedIn: true,
-    summary: `Meeting in ${calendar.summary}`
+    summary: req.body.summary || `Meeting in ${calendar.summary}`
   });
 
   res.sendStatus(201);
@@ -107,7 +107,7 @@ router.use("/device", (err, req, res, next) => {
   }
 
   if (err.code === 403 && err.message === "Forbidden") {
-    res.statusMessage = 'CALENDAR_NO_WRITE_ACCESS';
+    res.statusMessage = "CALENDAR_NO_WRITE_ACCESS";
     return res.sendStatus(403);
   }
 

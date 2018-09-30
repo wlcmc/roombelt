@@ -21,7 +21,8 @@
     "guests_0": "i 1 gość",
     "guests_1": "i {{ count }} gości",
     "guests_2": "i {{ count }} gości",
-    "next": "Następne spotkanie dzisiaj"
+    "next": "Następne spotkanie dzisiaj",
+    "quick-meeting-title": "Spotkanie w {{ roomName }}"
   },
   "actions": {
     "end-now": "Zakończ teraz",

@@ -49,8 +49,8 @@ export function getDeviceDetails() {
   return axios.get("/api/device");
 }
 
-export function createMeeting(timeInMinutes) {
-  return axios.post("/api/device/meeting", { timeInMinutes });
+export function createMeeting(timeInMinutes, summary) {
+  return axios.post("/api/device/meeting", { timeInMinutes, summary });
 }
 
 export function updateMeeting(meetingId, { startNow, endNow, extensionTime, checkIn }) {
