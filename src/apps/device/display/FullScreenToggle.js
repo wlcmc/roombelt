@@ -1,4 +1,5 @@
 import React from "react";
+import i18next from "i18next";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import IoAndroidExpand from "react-icons/lib/io/android-expand";
@@ -19,7 +20,7 @@ const FullScreenToggle = props => {
 
   return (
     <Wrapper onClick={props.requestFullScreen}>
-      <IoAndroidExpand /> <span style={{ verticalAlign: "middle" }}>Fullscreen</span>
+      <IoAndroidExpand/> <span style={{ verticalAlign: "middle" }}>{i18next.t("full-screen")}</span>
     </Wrapper>
   );
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import i18next from "i18next";
 import styled from "styled-components";
 import ButtonSet from "./ButtonSet";
 import { LoaderButton, Button } from "../../../../theme";
@@ -17,13 +18,13 @@ const ErrorSubtitle = styled.div`
 
 export default props => (
   <ButtonSet>
-    <ErrorTitle>Problem with performing this operation</ErrorTitle>
+    <ErrorTitle>{i18next.t("errors.action-error-title")}</ErrorTitle>
     <LoaderButton primary onClick={props.onRetry} isLoading={props.isRetrying}>
-      Retry
+      {i18next.t("actions.retry")}
     </LoaderButton>
     <Button disabled={props.isRetrying} onClick={props.onCancel}>
-      Cancel
+      {i18next.t("actions.cancel")}
     </Button>
-    <ErrorSubtitle>If this problem continues to occur contact your IT administrator.</ErrorSubtitle>
+    <ErrorSubtitle>{i18next.t("errors.action-error-subtitle")}</ErrorSubtitle>
   </ButtonSet>
 );

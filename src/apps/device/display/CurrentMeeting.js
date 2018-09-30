@@ -1,6 +1,6 @@
 import React from "react";
+import i18next from "i18next";
 import { connect } from "react-redux";
-import { pluralize } from "../../../services/formatting";
 import { Badge, Time } from "../../../theme";
 import { MeetingHeader, MeetingTitle, MeetingSubtitle } from "./Components";
 import { currentMeetingSelector, nextMeetingSelector } from "../store/selectors";
@@ -14,16 +14,18 @@ const CurrentMeeting = props => {
   return (
     <React.Fragment>
       <MeetingHeader>
-        {isCheckedIn && <Badge danger>Occupied</Badge>}
-        {!isCheckedIn && fromStart === 0 && <Badge info>Starts now</Badge>}
-        {!isCheckedIn && fromStart > 0 && <Badge warning>Started {pluralize(fromStart, "minute")} ago</Badge>}
-        {!isCheckedIn && fromStart < 0 && <Badge info>Starts in {pluralize(-fromStart, "minute")}</Badge>}
+        {isCheckedIn && <Badge danger>{i18next.t("availability.occupied")}</Badge>}
+        {!isCheckedIn && fromStart === 0 && <Badge info>{i18next.t("availability.starts.now")}</Badge>}
+        {!isCheckedIn && fromStart > 0 &&
+        <Badge warning>{i18next.t("availability.starts.ago", { count: fromStart })}</Badge>}
+        {!isCheckedIn && fromStart < 0 &&
+        <Badge info>{i18next.t("availability.starts.in", { count: -fromStart })}</Badge>}
       </MeetingHeader>
       <MeetingTitle>
-        {summary || "(No title)"} <Time timestamp={startTimestamp} /> - <Time timestamp={endTimestamp} />
+        {summary || i18next.t("meeting.no-title")} <Time timestamp={startTimestamp}/> - <Time timestamp={endTimestamp}/>
       </MeetingTitle>
       <MeetingSubtitle>
-        {organizer.displayName} {guestsCount > 0 && `and ${pluralize(guestsCount, "guest")}`}
+        {organizer.displayName} {guestsCount > 0 && i18next.t("meeting.guests", { count: guestsCount })}
       </MeetingSubtitle>
     </React.Fragment>
   );

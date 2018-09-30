@@ -46,4 +46,8 @@ module.exports = class {
   async setCalendarForDevice(deviceId, calendarId) {
     await this.Model.update({ calendarId }, { where: { deviceId } });
   }
+
+  async setLanguageForDevice(deviceId, language) {
+    await this.Model.update({ language }, { where: { deviceId } });
+  }
 };

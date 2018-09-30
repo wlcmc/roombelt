@@ -1,15 +1,15 @@
 import React from "react";
+import i18next from "i18next";
 import { connect } from "react-redux";
 
 import { Time } from "../../../theme";
 import { MeetingTitle, MeetingSubtitle } from "./Components";
 import { nextMeetingSelector, timestampSelector } from "../store/selectors";
-import { prettyFormatDays } from "../../../services/formatting";
 
 const NextMeeting = props =>
   <React.Fragment>
     <MeetingTitle>
-      Next meeting {prettyFormatDays(props.nextMeeting.startTimestamp, props.timestamp)}
+      {i18next.t("meeting.next")}
     </MeetingTitle>
     <MeetingSubtitle>
       {props.nextMeeting.summary + " "}

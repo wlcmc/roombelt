@@ -1,4 +1,5 @@
 import React from "react";
+import i18next from "i18next";
 import styled from "styled-components";
 import { Button, PageTitle, PageSection, PageLoaded } from "..";
 
@@ -20,14 +21,14 @@ const Wrapper = styled.div`
 
 export default props => (
   <Wrapper>
-    <PageLoaded />
+    <PageLoaded/>
     <PageTitle>{props.title}</PageTitle>
     <PageSection>{props.message}</PageSection>
     <PageSection style={{ marginBottom: "2em" }}>
-      If this problem continues to occur please contact IT administrator
+      {i18next.t("errors.action-error-subtitle")}
     </PageSection>
     <Button primary onClick={() => (window.location = window.location)}>
-      Refresh page
+      {i18next.t("errors.refresh-page")}
     </Button>
   </Wrapper>
 );

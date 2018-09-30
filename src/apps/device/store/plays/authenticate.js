@@ -1,5 +1,5 @@
 import { createDevice, getAuth } from "../../../../services/api";
-import { setAccessToken } from "../../../../services/access-token";
+import { setAccessToken } from "../../../../services/persistent-store";
 
 export default async function(action, store) {
   if (action.type !== ":device--authenticate") {

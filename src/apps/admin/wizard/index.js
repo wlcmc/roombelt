@@ -26,7 +26,7 @@ class ConnectDeviceWizard extends React.Component {
   render = () => (
     <Modal footer={null} header={null} visible={this.props.isVisible} compact wide>
       <Layout>
-        <WizardHeader currentStep={this.props.currentStep} />
+        <WizardHeader currentStep={this.props.currentStep}/>
         <Parallax
           ref={this.parallax}
           scrolling={false}
@@ -50,7 +50,9 @@ class ConnectDeviceWizard extends React.Component {
               ref={this.step2}
               calendars={this.props.calendars}
               calendarId={this.props.calendarId}
+              language={this.props.language}
               onSetCalendar={this.props.onSetCalendar}
+              onSetLanguage={this.props.onSetLanguage}
             />
           </ParallaxLayer>
         </Parallax>
@@ -80,13 +82,15 @@ const mapStateToProps = state => ({
   currentStep: state.connectDeviceWizard.currentStep,
   connectionCode: state.connectDeviceWizard.connectionCode,
   connectionError: state.connectDeviceWizard.errorMessage,
-  calendarId: state.connectDeviceWizard.calendarId
+  calendarId: state.connectDeviceWizard.calendarId,
+  language: state.connectDeviceWizard.language
 });
 
 const mapDispatchToProps = dispatch => ({
   onCancel: () => dispatch({ type: ":connect-device-wizard--hide" }),
   onChangeConnectionCode: connectionCode => dispatch({ type: ":connect-device-wizard--set-code", connectionCode }),
   onSetCalendar: calendarId => dispatch({ type: ":connect-device-wizard--set-calendar", calendarId }),
+  onSetLanguage: language => dispatch({ type: ":connect-device-wizard--set-language", language }),
   onClickNext: () => dispatch({ type: ":connect-device-wizard--submit-step-1" }),
   onClickVoila: () => dispatch({ type: ":connect-device-wizard--submit-step-2" })
 });

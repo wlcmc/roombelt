@@ -1,25 +1,23 @@
 import React from "react";
+import i18next from "i18next";
 import { Badge } from "../../../theme";
 import { prettyFormatMinutes } from "../../../services/formatting";
 import { MeetingHeader, MeetingSubtitle } from "./Components";
 import { connect } from "react-redux";
 import { nextMeetingSelector, minutesAvailableTillNextMeetingSelector } from "../store/selectors";
 
-const RoomAvailable = props => {
-  const nextMeetingStartTimestamp = props.nextMeeting && props.nextMeeting.startTimestamp;
-  const availability = nextMeetingStartTimestamp
-    ? `Available for ${prettyFormatMinutes(props.minutesToNextMeeting)}`
-    : "Available whole day";
-
-  return (
+const RoomAvailable = props => (
     <React.Fragment>
       <MeetingHeader>
-        <Badge success>Available</Badge>
+        <Badge success>{i18next.t("availability.available")}</Badge>
       </MeetingHeader>
-      <MeetingSubtitle>{availability}</MeetingSubtitle>
+      <MeetingSubtitle>
+        {(props.nextMeeting && props.nextMeeting.startTimestamp)
+          ? i18next.t("availability.available-for", { time: prettyFormatMinutes(props.minutesToNextMeeting) })
+          : i18next.t("availability.whole-day")}
+      </MeetingSubtitle>
     </React.Fragment>
-  );
-};
+);
 
 const mapStateToProps = state => ({
   nextMeeting: nextMeetingSelector(state),

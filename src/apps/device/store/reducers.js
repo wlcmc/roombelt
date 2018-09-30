@@ -25,7 +25,7 @@ const currentMeetingActions = (state = defaultCurrentMeetingActionsState, action
   switch (action.type) {
     case ":device--meeting-action--run":
       return { ...state, action: action.action, argument: action.argument, isRetrying: action.isRetrying };
-    case ':device--meeting-action--reset':
+    case ":device--meeting-action--reset":
       return defaultCurrentMeetingActionsState;
     case ":device--meeting-action--error":
       return { ...state, isError: true, isRetrying: false };

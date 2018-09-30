@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccessToken } from "./access-token";
+import { getAccessToken } from "./persistent-store";
 
 axios.interceptors.request.use(config => ({
   ...config,
@@ -37,8 +37,8 @@ export function getCalendars() {
   return axios.get("/api/admin/calendar");
 }
 
-export function setCalendarForDevice(deviceId, calendarId) {
-  return axios.put(`/api/admin/device/${encodeURIComponent(deviceId)}`, { calendarId });
+export function setOptionsForDevice(deviceId, calendarId, language) {
+  return axios.put(`/api/admin/device/${encodeURIComponent(deviceId)}`, { calendarId, language });
 }
 
 export function heartbeatDevice() {
