@@ -1,7 +1,7 @@
 import React from "react";
 import StepLayout from "./StepLayout";
 import { Text, Select } from "../../../theme";
-import translations from "../../../i18n";
+import { translations } from "../../../i18n";
 
 export default class extends React.PureComponent {
   constructor(props) {

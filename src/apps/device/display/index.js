@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import { deviceNameSelector, currentMeetingSelector, nextMeetingSelector } from "../store/selectors";
 
-import { Time, PageLoaded, I18n } from "../../../theme";
+import { Time, PageLoaded } from "../../../theme";
 import NextMeeting from "./NextMeeting";
 import CurrentMeeting from "./CurrentMeeting";
 import RoomAvailable from "./RoomAvailable";

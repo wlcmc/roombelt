@@ -5,7 +5,7 @@ import moment from "moment";
 
 import IoAndroidMoreVertical from "react-icons/lib/io/android-more-vertical";
 
-import translations from "../../../i18n";
+import { translations } from "../../../i18n";
 
 import {
   Card,

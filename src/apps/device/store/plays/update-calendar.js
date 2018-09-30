@@ -1,5 +1,6 @@
 import { getDeviceDetails } from "../../../../services/api";
 import { isCalendarSelectedSelector } from "../selectors";
+import { changeLanguage } from "../../../../i18n";
 
 export default async function(action, store) {
   if (action.type !== ":device--initialize-after-authentication") {
@@ -9,11 +10,10 @@ export default async function(action, store) {
   while (true) {
     try {
       const device = await getDeviceDetails(action.accessToken);
+      changeLanguage(device.language);
       store.dispatch({ type: ":device--set-data", device });
     } catch (e) {
-      if (e && e.status) {
-        store.dispatch({ type: ":device--unexpected-error", error: new Error(`${e.status}: ${e.statusText}`) });
-      }
+      console.error(e);
     }
 
     const timeout = isCalendarSelectedSelector(store.getState()) ? 30 : 5;

@@ -1,5 +1,6 @@
 import React from "react";
-import { LoaderButton, Button, I18n } from "../../../../theme";
+import i18next from "i18next";
+import { LoaderButton, Button } from "../../../../theme";
 import { prettyFormatMinutes } from "../../../../services/formatting";
 import ButtonSet from "./ButtonSet";
 
@@ -17,24 +18,22 @@ export default props => {
   );
 
   return (
-    <I18n>{t =>
-      <React.Fragment>
-        <Button white disabled={!!props.showLoaderFor} onClick={props.endMeeting}>
-          {t("actions.end-now")}
-        </Button>
+    <React.Fragment>
+      <Button white disabled={!!props.showLoaderFor} onClick={props.endMeeting}>
+        {i18next.t("actions.end-now")}
+      </Button>
 
-        {props.minutesToNextMeeting > 0 && (
-          <ButtonSet style={{ marginLeft: 20 }}>
-            <Button success disabled>
-              {t("actions.extend")}
-            </Button>
-            {props.minutesToNextMeeting > 20 && <ExtendButton value={15}/>}
-            {props.minutesToNextMeeting > 40 && <ExtendButton value={30}/>}
-            {props.minutesToNextMeeting > 70 && <ExtendButton value={60}/>}
-            {showCustomExtensionTime && <ExtendButton value={props.minutesToNextMeeting}/>}
-          </ButtonSet>
-        )}
-      </React.Fragment>
-    }</I18n>
+      {props.minutesToNextMeeting > 0 && (
+        <ButtonSet style={{ marginLeft: 20 }}>
+          <Button success disabled>
+            {i18next.t("actions.extend")}
+          </Button>
+          {props.minutesToNextMeeting > 20 && <ExtendButton value={15}/>}
+          {props.minutesToNextMeeting > 40 && <ExtendButton value={30}/>}
+          {props.minutesToNextMeeting > 70 && <ExtendButton value={60}/>}
+          {showCustomExtensionTime && <ExtendButton value={props.minutesToNextMeeting}/>}
+        </ButtonSet>
+      )}
+    </React.Fragment>
   );
 };

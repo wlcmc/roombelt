@@ -36,9 +36,10 @@
   },
   "full-screen": "Pełen ekran",
   "errors": {
+    "unable-to-connect-server": "Nie można połączyć się z serwerem",
+    "check-internet-and-try-again": "Sprawdź połączenie z internetem i spróbuj ponownie",
     "action-error-title": "Wystąpił błąd podczas wykonywania tej operacji",
     "action-error-subtitle": "Jeśli ten problem będzie się powtarzał skontaktuj się z administratorem IT",
-    "no-internet": "Brak połączenia z internetem",
     "refresh-page": "Odśwież stronę"
   }
 }

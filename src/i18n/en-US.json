@@ -1,9 +1,42 @@
 {
   "key": "en-US",
   "language": "English",
-  "available": "Available",
+  "availability": {
+    "available": "Available",
+    "available-for": "Available for {{ time }}",
+    "whole-day": "Available whole day",
+    "occupied": "Occupied",
+    "starts": {
+      "now": "Starts now",
+      "ago": "Started 1 minute ago",
+      "ago_plural": "Started {{ count }} minutes ago",
+      "in": "Starts in 1 minute",
+      "in_plural": "Starts in {{ count }} minutes"
+    }
+  },
+  "meeting": {
+    "no-title": "(No title)",
+    "guests_0": "and 1 guest",
+    "guests_1": "and {{ count }} guests",
+    "next": "Next meeting today"
+  },
+  "actions": {
+    "end-now": "End now",
+    "confirm": "Confirm",
+    "extend": "Extend",
+    "back": "Back",
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "check-in": "Check in",
+    "start-early": "Start early",
+    "cancel-meeting": "Cancel meeting"
+  },
+  "full-screen": "Full screen",
   "errors": {
-    "action-error-title": "Problem with performing this operation",
-    "action-error-subtitle": "If this problem continues to occur contact your IT administrator."
+    "unable-to-connect-server": "Unable to connect to the server",
+    "check-internet-and-try-again": "Check internet connection and try again",
+    "action-error-title": "An error occurred",
+    "action-error-subtitle": "If this problem continues to occur contact your IT administrator",
+    "refresh-page": "Refresh page"
   }
 }

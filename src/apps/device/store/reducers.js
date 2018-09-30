@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import { getLanguage, setLanguage } from "../../../services/persistent-store";
 
 const auth = (state = { connectionCode: null }, action) => {
   switch (action.type) {
@@ -55,21 +54,10 @@ const fullScreen = (state = { isFullScreen: null, isSupported: null }, action) =
   }
 };
 
-const language = (state = getLanguage(), action) => {
-  switch (action.type) {
-    case ":device--set-data":
-      setLanguage(action.device.language);
-      return getLanguage();
-    default:
-      return state;
-  }
-};
-
 export default combineReducers({
   fullScreen,
   appState,
   timestamp,
-  language,
   auth,
   device,
   currentMeetingActions

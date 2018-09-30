@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { Modal, Button, LoaderButton, Select } from "../../../theme";
-import translations from "../../../i18n";
+import { translations } from "../../../i18n";
 
 const FormField = styled.div`
   margin-bottom: 20px;

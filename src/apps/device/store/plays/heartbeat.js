@@ -14,7 +14,7 @@ async function heartbeat(action, store) {
   while (true) {
     const { isOffline, sleepTime } = await heartbeatDevice().then(
       () => ({ isOffline: false, sleepTime: 30 }),
-      error => ({ isOffline: error === undefined, sleepTime: 5 })
+      () => ({ isOffline: true, sleepTime: 5 })
     );
 
     store.dispatch({ type: ":device--update-offline-status", isOffline });

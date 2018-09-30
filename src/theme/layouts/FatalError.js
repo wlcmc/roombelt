@@ -1,6 +1,7 @@
 import React from "react";
+import i18next from "i18next";
 import styled from "styled-components";
-import { Button, PageTitle, PageSection, PageLoaded, I18n } from "..";
+import { Button, PageTitle, PageSection, PageLoaded } from "..";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -19,17 +20,15 @@ const Wrapper = styled.div`
 `;
 
 export default props => (
-  <I18n>{t =>
-    <Wrapper>
-      <PageLoaded/>
-      <PageTitle>{props.title}</PageTitle>
-      <PageSection>{props.message}</PageSection>
-      <PageSection style={{ marginBottom: "2em" }}>
-        {t("errors.action-error-subtitle")}
-      </PageSection>
-      <Button primary onClick={() => (window.location = window.location)}>
-        {t("errors.refresh-page")}
-      </Button>
-    </Wrapper>
-  }</I18n>
+  <Wrapper>
+    <PageLoaded/>
+    <PageTitle>{props.title}</PageTitle>
+    <PageSection>{props.message}</PageSection>
+    <PageSection style={{ marginBottom: "2em" }}>
+      {i18next.t("errors.action-error-subtitle")}
+    </PageSection>
+    <Button primary onClick={() => (window.location = window.location)}>
+      {i18next.t("errors.refresh-page")}
+    </Button>
+  </Wrapper>
 );

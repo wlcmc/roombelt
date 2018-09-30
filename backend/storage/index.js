@@ -8,8 +8,8 @@ module.exports = class {
     this.oauth = new OAuth(sequelize);
     this.devices = new Devices(sequelize);
 
-    sequelize.sync({ alter: true }).catch(error => {
-      console.error(error.message);
+    sequelize.sync({  }).catch(error => {
+      console.error(error);
       process.exit(1);
     });
   }

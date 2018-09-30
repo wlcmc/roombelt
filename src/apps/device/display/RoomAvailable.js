@@ -1,23 +1,22 @@
 import React from "react";
-import { Badge, I18n } from "../../../theme";
+import i18next from "i18next";
+import { Badge } from "../../../theme";
 import { prettyFormatMinutes } from "../../../services/formatting";
 import { MeetingHeader, MeetingSubtitle } from "./Components";
 import { connect } from "react-redux";
 import { nextMeetingSelector, minutesAvailableTillNextMeetingSelector } from "../store/selectors";
 
 const RoomAvailable = props => (
-  <I18n>{t =>
     <React.Fragment>
       <MeetingHeader>
-        <Badge success>{t("availability.available")}</Badge>
+        <Badge success>{i18next.t("availability.available")}</Badge>
       </MeetingHeader>
       <MeetingSubtitle>
         {(props.nextMeeting && props.nextMeeting.startTimestamp)
-          ? t("availability.available-for", { time: prettyFormatMinutes(props.minutesToNextMeeting) })
-          : t("availability.whole-day")}
+          ? i18next.t("availability.available-for", { time: prettyFormatMinutes(props.minutesToNextMeeting) })
+          : i18next.t("availability.whole-day")}
       </MeetingSubtitle>
     </React.Fragment>
-  }</I18n>
 );
 
 const mapStateToProps = state => ({

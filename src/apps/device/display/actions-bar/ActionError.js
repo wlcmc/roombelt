@@ -1,7 +1,8 @@
 import React from "react";
+import i18next from "i18next";
 import styled from "styled-components";
 import ButtonSet from "./ButtonSet";
-import { LoaderButton, Button, I18n } from "../../../../theme";
+import { LoaderButton, Button } from "../../../../theme";
 
 const ErrorTitle = styled.div`
   display: inline-block;
@@ -16,16 +17,14 @@ const ErrorSubtitle = styled.div`
 `;
 
 export default props => (
-  <I18n>{t =>
-    <ButtonSet>
-      <ErrorTitle>{t("errors.action-error-title")}</ErrorTitle>
-      <LoaderButton primary onClick={props.onRetry} isLoading={props.isRetrying}>
-        {t("actions.retry")}
-      </LoaderButton>
-      <Button disabled={props.isRetrying} onClick={props.onCancel}>
-        {t("actions.cancel")}
-      </Button>
-      <ErrorSubtitle>{t("errors.action-error-subtitle")}</ErrorSubtitle>
-    </ButtonSet>
-  }</I18n>
+  <ButtonSet>
+    <ErrorTitle>{i18next.t("errors.action-error-title")}</ErrorTitle>
+    <LoaderButton primary onClick={props.onRetry} isLoading={props.isRetrying}>
+      {i18next.t("actions.retry")}
+    </LoaderButton>
+    <Button disabled={props.isRetrying} onClick={props.onCancel}>
+      {i18next.t("actions.cancel")}
+    </Button>
+    <ErrorSubtitle>{i18next.t("errors.action-error-subtitle")}</ErrorSubtitle>
+  </ButtonSet>
 );

@@ -1,16 +1,15 @@
 import React from "react";
+import i18next from "i18next";
 
-import { Button, LoaderButton, I18n } from "../../../../theme";
+import { Button, LoaderButton } from "../../../../theme";
 
 export default props => (
-  <I18n>{t =>
-    <React.Fragment>
-      <Button disabled={props.inProgress} onClick={props.onCancel} white>
-        {t("actions.back")}
-      </Button>
-      <LoaderButton isLoading={props.inProgress} onClick={props.onSubmit} danger>
-        {t("actions.confirm")}
-      </LoaderButton>
-    </React.Fragment>
-  }</I18n>
+  <React.Fragment>
+    <Button disabled={props.inProgress} onClick={props.onCancel} white>
+      {i18next.t("actions.back")}
+    </Button>
+    <LoaderButton isLoading={props.inProgress} onClick={props.onSubmit} danger>
+      {i18next.t("actions.confirm")}
+    </LoaderButton>
+  </React.Fragment>
 );

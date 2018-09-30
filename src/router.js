@@ -1,4 +1,5 @@
 import React from "react";
+import i18next from "i18next";
 import Cookie from "js-cookie";
 import { withRouter } from "react-router";
 import { Switch, Route } from "react-router-dom";
@@ -18,7 +19,7 @@ class Login extends React.PureComponent {
     if (this.props.auth.scope === "admin") this.props.history.replace("/admin");
   }
 
-  render = () => <LoginApp />;
+  render = () => <LoginApp/>;
 }
 
 class Admin extends React.PureComponent {
@@ -28,11 +29,11 @@ class Admin extends React.PureComponent {
     }
   }
 
-  render = () => (this.props.auth.scope === "admin" ? <AdminApp /> : null);
+  render = () => (this.props.auth.scope === "admin" ? <AdminApp/> : null);
 }
 
 class Device extends React.PureComponent {
-  render = () => <DeviceApp />;
+  render = () => <DeviceApp/>;
 }
 
 class Router extends React.PureComponent {
@@ -59,15 +60,16 @@ class Router extends React.PureComponent {
 
   render() {
     if (this.state.error) {
-      return <FatalError title="Unable to connect to the server" message="Check internet connection and try again" />;
+      return <FatalError title={i18next.t("errors.unable-to-connect-server")}
+                         message={i18next.t("errors.check-internet-and-try-again")}/>;
     }
 
     if (this.state.auth) {
       return (
         <Switch>
-          <Route exact path={"/"} render={() => <Login auth={this.state.auth} history={this.props.history} />} />
-          <Route exact path={"/device"} render={() => <Device auth={this.state.auth} history={this.props.history} />} />
-          <Route exact path={"/admin"} render={() => <Admin auth={this.state.auth} history={this.props.history} />} />
+          <Route exact path={"/"} render={() => <Login auth={this.state.auth} history={this.props.history}/>}/>
+          <Route exact path={"/device"} render={() => <Device auth={this.state.auth} history={this.props.history}/>}/>
+          <Route exact path={"/admin"} render={() => <Admin auth={this.state.auth} history={this.props.history}/>}/>
         </Switch>
       );
     }
