@@ -2,15 +2,15 @@
   "key": "sv-SE",
   "language": "Svenska",
   "availability": {
-    "available": "Tillgängliga",
-    "available-for": "Tillgängliga i {{ time }}",
-    "whole-day": "Tillgänglig hel dag",
+    "available": "Ledig",
+    "available-for": "Ledig i {{ time }}",
+    "whole-day": "Ledig hel dag",
     "occupied": "Upptagen",
     "starts": {
       "now": "Börjar nu",
       "ago": "Startade för 1 minut sedan",
       "ago_plural": "Startade för {{ count }} minuter sedan",
-      "in": "Startar om 1 minute",
+      "in": "Startar om 1 minut",
       "in_plural": "Startar om {{ count }} minuter"
     }
   },
