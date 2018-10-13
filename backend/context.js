@@ -11,11 +11,16 @@ const storage = new Storage(
   })
 );
 
-router.use(async req => {
-  const accessToken = await storage.login.getAccessTokenDetails(req.token);
-  const calendarProvider = new GoogleCalendar(config, await storage.oauth.getTokens(accessToken.userId));
+router.use(async (req, res) => {
+  const sessionToken = req.cookies.sessionToken || req.token;
+  const session = await storage.session.getSession(sessionToken) || await storage.session.createSession();
 
-  req.context = { storage, calendarProvider, accessToken };
+  const calendarProvider = new GoogleCalendar(config, await storage.oauth.getTokens(session.userId));
+
+  req.context = { storage, calendarProvider, session };
+
+  const year = 1000 * 60 * 60 * 24 * 365;
+  res.cookie("sessionToken", session.token, { httpOnly: true, maxAge: year });
 
   return "next";
 });

@@ -1,39 +1,35 @@
 const router = require("express-promise-router")();
 
 router.use("/device", async function(req, res) {
-  if (req.context.accessToken.scope !== "device" || !req.context.accessToken.isVerified) {
+  if (req.context.session.scope !== "device") {
     return res.sendStatus(403);
   }
 
-  req.context.device = await req.context.storage.devices.getDeviceById(req.context.accessToken.deviceId);
+  req.context.device = await req.context.storage.devices.getDeviceById(req.context.session.deviceId);
+
+  if (!req.context.device) {
+    return res.sendStatus(404);
+  }
 
   return "next";
 });
 
 router.get("/device", async function(req, res) {
-  const calendarId = req.context.device && req.context.device.calendarId;
-
-  if (!calendarId) {
-    return res.json({ isCalendarSelected: false });
-  }
-
-  const calendar = await req.context.calendarProvider.getCalendar(calendarId);
-  const calendarEvents = await req.context.calendarProvider.getEvents(calendarId);
-
-  const events = calendarEvents.filter(event => event.endTimestamp > Date.now()).slice(0, 3);
+  const calendarId = req.context.device.calendarId;
+  const calendar = calendarId && await req.context.calendarProvider.getCalendar(calendarId);
+  const calendarEvents = calendarId && await req.context.calendarProvider.getEvents(calendarId);
+  const events = calendarId && calendarEvents.filter(event => event.endTimestamp > Date.now()).slice(0, 3);
 
   res.json({
-    isCalendarSelected: true,
-    name: calendar.summary,
+    connectionCode: req.context.device.connectionCode,
+    isCalendarSelected: !!calendarId,
+    name: calendar && calendar.summary,
     language: req.context.device.language,
-    canModifyEvents: calendar.accessRole === "writer" || calendar.accessRole === "owner",
+    canModifyEvents: calendar && (calendar.accessRole === "writer" || calendar.accessRole === "owner"),
     events
   });
-});
 
-router.put("/device/heartbeat", async function(req, res) {
-  await req.context.storage.devices.heartbeatDevice(req.context.accessToken.deviceId);
-  res.sendStatus(204);
+  await req.context.storage.devices.heartbeatDevice(req.context.session.deviceId);
 });
 
 router.use("/device/meeting", (req, res, next) => (req.context.device.calendarId ? next() : res.sendStatus(400)));
@@ -98,20 +94,6 @@ router.delete("/device/meeting/:meetingId", async function(req, res) {
   await req.context.calendarProvider.deleteEvent(req.context.device.calendarId, req.params.meetingId);
 
   res.sendStatus(204);
-});
-
-router.use("/device", (err, req, res, next) => {
-  // As documented on https://expressjs.com/en/guide/error-handling.html#the-default-error-handler
-  if (res.headersSent) {
-    return next(err);
-  }
-
-  if (err.code === 403 && err.message === "Forbidden") {
-    res.statusMessage = "CALENDAR_NO_WRITE_ACCESS";
-    return res.sendStatus(403);
-  }
-
-  next(err);
 });
 
 module.exports = router;
