@@ -1,19 +1,52 @@
 {
   "name": "roombelt",
   "version": "0.3.0",
-  "scripts": {
-    "dev:frontend": "cd frontend && cross-env PORT=3001 NODE_PATH=./src BROWSER=none npm run dev",
-    "dev:backend": "cross-env PORT=3000 NODE_ENV=development nodemon --watch backend index.js",
-    "prestart": "cd frontend && npm run build",
-    "start": "node index.js",
-    "install:frontend": "cd frontend && npm i",
-    "install:backend": "cd backend && npm i",
-    "postinstall": "npm run install:frontend && npm run install:backend"
-  },
   "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "build:frontend": "cd frontend && cross-env NODE_PATH=./src react-scripts build",
+    "dev:frontend": "cd frontend && cross-env PORT=3001 NODE_PATH=./src BROWSER=none react-scripts start",
+    "dev:backend": "cross-env PORT=3000 NODE_ENV=development nodemon --watch backend index.js",
+    "heroku-postbuild": "npm run build:frontend"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chalk": "^2.4.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-bearer-token": "^2.1.1",
+    "express-promise-router": "^3.0.2",
+    "googleapis": "^27.0.0",
+    "helmet": "^3.12.1",
+    "pg": "^7.4.3",
+    "sequelize": "^4.37.10",
+    "sqlite3": "^4.0.0"
+  },
   "devDependencies": {
     "cross-env": "^5.1.4",
     "http-proxy-middleware": "^0.19.0",
-    "nodemon": "^1.17.3"
+    "nodemon": "^1.17.3",
+    "@babel/polyfill": "^7.0.0",
+    "axios": "^0.18.0",
+    "i18next": "^11.9.0",
+    "moment": "^2.22.0",
+    "prettier": "1.11.1",
+    "prop-types": "^15.6.1",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-icons": "^2.2.7",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "2.0.4",
+    "react-select": "^2.0.0",
+    "react-spring": "^5.1.2",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^3.0.1",
+    "screenfull": "^3.3.2",
+    "store": "^2.0.12",
+    "styled-components": "^3.2.5"
   }
 }
