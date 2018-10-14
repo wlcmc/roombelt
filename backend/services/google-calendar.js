@@ -86,7 +86,8 @@ module.exports = class {
     const query = {
       calendarId: encodeURIComponent(calendarId),
       timeMin: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-      timeMax: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+      timeMax: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      singleEvents: true
     };
 
     const { data } = await new Promise((res, rej) =>
