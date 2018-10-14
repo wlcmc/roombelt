@@ -9,7 +9,8 @@ import {
 import {
   DEVICE_MEETING_ACTION_START,
   DEVICE_MEETING_ACTION_RESET,
-  DEVICE_MEETING_ACTION_ERROR
+  DEVICE_MEETING_ACTION_ERROR,
+  DEVICE_MEETING_ACTION_RETRY
 } from "apps/device/store/meeting-actions";
 
 import { combineReducers } from "redux";
@@ -20,17 +21,20 @@ const device = (state = null, action) => (action.type === DEVICE_SET_DATA ? acti
 const defaultCurrentMeetingActionsState = {
   source: null,
   action: null,
-  isError: false
+  isError: false,
+  isRetrying: false
 };
 
 const currentMeetingActions = (state = defaultCurrentMeetingActionsState, action) => {
   switch (action.type) {
     case DEVICE_MEETING_ACTION_START:
-      return { source: action.source, action: action.action, isError: false };
+      return { source: action.source, action: action.action, isError: false, isRetrying: false };
     case DEVICE_MEETING_ACTION_RESET:
       return defaultCurrentMeetingActionsState;
     case DEVICE_MEETING_ACTION_ERROR:
-      return { ...state, isError: true };
+      return { ...state, isError: true, isRetrying: false };
+    case DEVICE_MEETING_ACTION_RETRY:
+      return { ...state, isError: false, isRetrying: true };
     default:
       return state;
   }

@@ -6,15 +6,16 @@ import { DEVICE_SET_DATA } from "apps/device/store/actions";
 export const DEVICE_MEETING_ACTION_START = "DEVICE/START_MEETING_ACTION";
 export const DEVICE_MEETING_ACTION_RESET = "DEVICE/RESET_MEETING_ACTION";
 export const DEVICE_MEETING_ACTION_ERROR = "DEVICE/MEETING_ACTION_ERROR";
+export const DEVICE_MEETING_ACTION_RETRY = "DEVICE/RETRY_MEETING_ACTION";
 
 export const runMeetingAction = (action, source) => dispatch => {
   dispatch({ type: DEVICE_MEETING_ACTION_START, source, action });
   dispatch(action);
 };
 
-export const retryMeetingAction = (source) => (dispatch, getState) => {
-  const action = currentMeetingActionSelector(getState());
-  dispatch(runMeetingAction(action, source));
+export const retryMeetingAction = () => (dispatch, getState) => {
+  dispatch({ type: DEVICE_MEETING_ACTION_RETRY });
+  dispatch(currentMeetingActionSelector(getState()));
 };
 
 export const cancelMeetingAction = () => dispatch => {

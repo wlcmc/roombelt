@@ -74,6 +74,16 @@ This is plan for manual tests run before every release.
 4. Click "Cancel meeting" and "Back.
 5. Click "Cancel meeting" and "Confirm".
 
+### Recurring events
+1. Go to Google Calendar and remove all meetings for today.
+1. Create a recurring event from the last week starting 10 minutes before now.
+1. Wait 30s and validate that the "Check in" button is visible.
+1. Check-in to this meeting.
+1. Extend the meeting by 30 minutes.
+1. Validate that only this instance of recurring meeting is altered.
+1. End meeting.
+1. Validate that only this instance of recurring meeting is altered.
+
 ### Full screen
 1. On device window click "Full screen". 
 2. The app should move full screen and the "Full screen" link should disappear.
