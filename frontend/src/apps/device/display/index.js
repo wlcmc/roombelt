@@ -97,7 +97,7 @@ const CalendarView = props => (
   <Wrapper style={props.style}>
     <PageLoaded/>
     <Header>
-      <CalendarName available={!props.currentMeeting}>NEW - {props.calendarName}</CalendarName>
+      <CalendarName available={!props.currentMeeting}>{props.calendarName}</CalendarName>
       <CurrentTime>
         <Time timestamp={props.currentTimestamp} blinking/>
       </CurrentTime>
