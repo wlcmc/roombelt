@@ -1,6 +1,12 @@
 import axios from "axios";
+import { getAccessToken } from "./persistent-store";
 
-axios.interceptors.request.use(config => ({ ...config, url: config.url + "?_ts=" + Date.now() }));
+axios.interceptors.request.use(config => ({
+  ...config,
+  url: config.url + "?_ts=" + Date.now(),
+  headers: { ...config.headers, Authorization: `Bearer ${getAccessToken()}` },
+}));
+
 axios.interceptors.response.use(response => response.data);
 
 export async function isOnline() {
