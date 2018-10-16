@@ -1,10 +1,10 @@
 const Devices = require("./devices");
-const Login = require("./login");
+const Session = require("./session");
 const OAuth = require("./oauth");
 
 module.exports = class {
   constructor(sequelize) {
-    this.login = new Login(sequelize);
+    this.session = new Session(sequelize);
     this.oauth = new OAuth(sequelize);
     this.devices = new Devices(sequelize);
 

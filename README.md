@@ -11,30 +11,6 @@ Sign-on to cloud version at [app.roombelt.com](https://app.roombelt.com).
 For instruction on installing Roombelt On-Premises visit
 [documentation](https://docs.roombelt.com/installation/on-premises).
 
-## Status of this project
-
-This project started as a playground to learn ReactJS. Then it turned out that it's actually useful 
-so I decided to finish and release it. With early adopters I will continue development.  
-
-## What's under the hood
-
-Roombelt takes advantage of the following tools:
-- code formatting - [prettier](https://prettier.io/) 
-- bootstrapping ReactJS app - [create react app](https://github.com/facebook/create-react-app)
-- backend server - [express.js](https://expressjs.com/)
-- ORM - [sequelize](http://docs.sequelizejs.com/)
-- app state management - [redux](https://redux.js.org/)
-- side effects in redux - [redux-play](https://github.com/ziolko/redux-play)
-- selectors library - [reselect](https://github.com/reduxjs/reselect)
-- frontend routing - [react-router](https://reacttraining.com/react-router/)
-- animation library - [react-spring](https://github.com/drcmda/react-spring)
-- offline mode - create react app web worker + [custom code for handling offline](https://github.com/ziolko/roombelt/blob/master/src/apps/device/store/plays/heartbeat.js)
-
-I've tried a few technologies that eventually didn't make it: 
-- [redux-observable](https://redux-observable.js.org/) - I didn't have time to do PhD on observables. I've decided to use redux-play instead.
-- [GraphQL](https://graphql.org) - Too much boilerplate for this kind of app. Good old REST API was both easier and faster to develop.
-- [next.js](https://github.com/zeit/next.js) - Server side rendering didn't really make sense in this app. Decided to use CRA instead.  
-
 ## Feedback
 
 Feel free to request new feature on [Github](https://github.com/ziolko/roombelt/issues)
@@ -46,6 +22,6 @@ Roombelt is licensed under permissive [ISC license](https://github.com/ziolko/ro
 
 ---
 
-Cross-browser testing provided by:
+Cross-browser testing provided by: <br>
 <a href="http://browserstack.com"><img height="70" src="https://p3.zdusercontent.com/attachment/1015988/PWfFdN71Aung2evRkIVQuKJpE?token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..aUrNFb8clSXsFwgw5BUTcg.IJr5piuCen7PmSSBHSrOnqM9K5YZfxX3lvbp-5LCqoKOi4CjjgdA419iqjofs0nLtm26FMURvZ8JRTuKB4iHer6lGu5f8dXHtIkYAHjP5fXDWkl044Yg2mSdrhF6uPy62GdlBYoYxwvgkNrac8nN_In8GY-qOC7bYmlZyJT7tsTZUTYbNMQiXS86YA5LgdCEWzWreMvc3C6cvZtVXIrcVgpkroIhvsTQPm4vQA-Uq6iCbTPA4oX5cpEtMtrlg4jYBnnAE4BTw5UwU_dY83ep5g.7wpc1IKv0rSRGsvqCG_q3g" alt="BrowserStack"></a>
 

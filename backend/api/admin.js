@@ -4,7 +4,7 @@ const deviceRepresentation = ({ deviceId, createdAt, updatedAt, calendarId, lang
   id: deviceId,
   createdAt,
   calendarId,
-  language: language || 'en',
+  language: language || "en",
   isOnline: updatedAt > Date.now() - 70 * 1000,
   msSinceLastActivity: Date.now() - updatedAt
 });
@@ -20,7 +20,7 @@ const calendarRepresentation = ({ id, location, summary, description, accessRole
 const userRepresentation = ({ displayName, image }) => ({ displayName, avatarUrl: image.url });
 
 router.use("/admin", async function(req, res) {
-  if (req.context.accessToken.scope !== "admin" || !req.context.accessToken.isVerified) {
+  if (req.context.session.scope !== "admin") {
     return res.sendStatus(403);
   }
 
@@ -38,7 +38,7 @@ router.get("/admin/calendar", async function(req, res) {
 });
 
 router.get("/admin/device", async function(req, res) {
-  const devices = await req.context.storage.devices.getDevicesForUser(req.context.accessToken.userId);
+  const devices = await req.context.storage.devices.getDevicesForUser(req.context.session.userId);
   res.json(devices.map(deviceRepresentation));
 });
 
@@ -49,9 +49,14 @@ router.post("/admin/device", async function(req, res) {
     return res.sendStatus(404);
   }
 
+  console.log("connecting device: " + device.deviceId);
+
+  const deviceSession = await req.context.storage.session.getSessionForDevice(device.deviceId);
+  const userId = req.context.session.userId;
+
   await Promise.all([
-    req.context.storage.devices.connectDevice(device.deviceId, req.context.accessToken.userId),
-    req.context.storage.login.verifyDeviceAccessToken(device.deviceId, req.context.accessToken.userId)
+    req.context.storage.devices.connectDevice(device.deviceId, userId),
+    req.context.storage.session.updateSession(deviceSession.token, { userId })
   ]);
 
   res.json(deviceRepresentation(device));
@@ -60,7 +65,7 @@ router.post("/admin/device", async function(req, res) {
 router.put("/admin/device/:deviceId", async function(req, res) {
   const device = await req.context.storage.devices.getDeviceById(req.params.deviceId);
 
-  if (!device || device.userId !== req.context.accessToken.userId) {
+  if (!device || device.userId !== req.context.session.userId) {
     res.status(404).send(`No device with id ${req.params.deviceId}`);
   }
 
@@ -82,8 +87,8 @@ router.put("/admin/device/:deviceId", async function(req, res) {
 router.delete("/admin/device/:deviceId", async function(req, res) {
   const device = await req.context.storage.devices.getDeviceById(req.params.deviceId);
 
-  if (device && device.userId === req.context.accessToken.userId) {
-    req.context.storage.devices.removeDevice(req.params.deviceId, req.context.accessToken.userId);
+  if (device && device.userId === req.context.session.userId) {
+    req.context.storage.devices.removeDevice(req.params.deviceId, req.context.session.userId);
   }
 
   res.sendStatus(204);

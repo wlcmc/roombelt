@@ -23,13 +23,11 @@ router.use("/oauth/callback", async (req, res) => {
     return res.redirect(req.context.calendarProvider.getAuthUrl(true));
   }
 
-  const accessToken = await req.context.storage.login.createAccessToken({
+  await req.context.storage.session.updateSession(req.context.session.token, {
     userId: tokens.userId,
-    scope: "admin",
-    isVerified: true
+    scope: "admin"
   });
 
-  res.cookie("accessToken", accessToken);
   res.redirect(`/admin`);
 });
 
