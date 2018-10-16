@@ -25,6 +25,7 @@ export default class extends React.PureComponent {
         placeholder="e.g. 12345"
         style={{ marginTop: 15, marginBottom: 10 }}
         error={this.props.connectionError}
+        tabIndex={this.props.isActiveStep ? 0 : -1}
       />
       <Text muted small>
         To get connection code open Roombelt website using browser on your tablet and click "Register device".

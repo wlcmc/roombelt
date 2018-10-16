@@ -39,6 +39,7 @@ class ConnectDeviceWizard extends React.Component {
           <ParallaxLayer offset={0}>
             <Step1
               ref={this.step1}
+              isActiveStep={this.props.currentStep === 0}
               connectionCode={this.props.connectionCode}
               connectionError={this.props.connectionError}
               onChangeConnectionCode={this.props.onChangeConnectionCode}
@@ -49,6 +50,7 @@ class ConnectDeviceWizard extends React.Component {
           <ParallaxLayer offset={1}>
             <Step2
               ref={this.step2}
+              isActiveStep={this.props.currentStep === 1}
               calendars={this.props.calendars}
               calendarId={this.props.calendarId}
               language={this.props.language}

@@ -29,6 +29,7 @@ export default class extends React.PureComponent {
         styles={{ container: base => ({ ...base, marginTop: 15, marginBottom: 10 }) }}
         ref={this.select}
         menuPortalTarget={document.body}
+        tabIndex={this.props.isActiveStep ? 0 : -1}
       />
       <Text muted small>
         Pick a calendar that will be shown on this device.
@@ -42,6 +43,7 @@ export default class extends React.PureComponent {
         getOptionValue={lang => lang.key}
         onChange={translation => this.props.onSetLanguage && this.props.onSetLanguage(translation && translation.key)}
         menuPortalTarget={document.body}
+        tabIndex={this.props.isActiveStep ? 0 : -1}
       />
     </StepLayout>
   );
