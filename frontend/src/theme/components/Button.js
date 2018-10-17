@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import styled, { css } from "styled-components";
+import styled, { css } from "styled-components/macro";
 
 import colors from "../colors";
 
@@ -100,7 +100,7 @@ const Button = styled(UnderlyingComponent)`
   min-width: 6em;
   text-align: center;
   font-family: "Roboto", sans-serif;
-  border-radius: 0.2em
+  border-radius: 0.2em;
   font-size: 1em;
   padding: 0.75em;
   user-select: none;
@@ -121,7 +121,8 @@ const Button = styled(UnderlyingComponent)`
     cursor: default;
   }
 
-  ${() => Button} + & {
+  + button ,
+  + a {
     ${props => (props.block ? "margin-top: 0.5rem" : "margin-left: 0.75rem;")};
   }
 `;

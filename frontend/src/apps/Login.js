@@ -1,6 +1,6 @@
 import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled from "styled-components/macro";
+import { withRouter } from "react-router-dom";
 
 import { Button, PageLoaded } from "../theme";
 import Logo from "./Logo";
@@ -12,23 +12,18 @@ const PageLogo = styled(Logo)`
   display: block;
 `;
 
-const MenuButton = Button.withComponent(props => (
-  <Link className={props.className} to={props.to} children={props.children} />
-)).extend`
+const MenuButton = styled(Button)`
   width: calc(100vw - 100px);
   max-width: 300px;
   margin: 20px 0;
+  text-decoration: none;
 `;
 
-export default props => (
-  <CardAndFooterLayout footer={<Footer />}>
-    <PageLoaded />
-    <PageLogo withName size={30} />
-    <MenuButton block primary to={"/admin"}>
-      Log in to admin panel
-    </MenuButton>
-    <MenuButton block to={"/device"}>
-      Register device
-    </MenuButton>
+export default withRouter(({ history }) => (
+  <CardAndFooterLayout footer={<Footer/>}>
+    <PageLoaded/>
+    <PageLogo withName size={30}/>
+    <MenuButton block primary onClick={() => history.push("/admin")}>Log in to admin panel</MenuButton>
+    <MenuButton block onClick={() => history.push("/device")}>Register device</MenuButton>
   </CardAndFooterLayout>
-);
+));

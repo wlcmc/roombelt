@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export const MeetingHeader = styled.div`
   margin-bottom: 0.5em;

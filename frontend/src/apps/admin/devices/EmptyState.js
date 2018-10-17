@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 import { Card, Button, Text } from "../../../theme";
 import { connectDeviceWizard } from "apps/admin/store/actions";

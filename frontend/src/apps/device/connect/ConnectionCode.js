@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 
 import { PageLoaded } from "../../../theme";
@@ -27,14 +27,12 @@ const Code = styled.div`
   font-size: 28px;
 `;
 
-const BackLink = Button.withComponent(Link);
-
 export default props => (
-  <CardAndFooterLayout footer={<Footer />}>
-    <PageLoaded />
-    <PageLogo withName size={30} />
+  <CardAndFooterLayout footer={<Footer/>}>
+    <PageLoaded/>
+    <PageLogo withName size={30}/>
     <Message>Type the following connection code in the administration panel.</Message>
     <Code>{props.connectionCode}</Code>
-    <BackLink to={"/"}>Back</BackLink>
+    <Button to={"/"} as={Link}>Back</Button>
   </CardAndFooterLayout>
 );

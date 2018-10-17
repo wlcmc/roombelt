@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export const PageTitle = styled.h1`
   margin: 0 0 1.5em 0;

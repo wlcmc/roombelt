@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { Text, Input } from "../../../theme";
 import StepLayout from "./StepLayout";
 
@@ -12,13 +12,15 @@ const ErrorMessage = styled.p`
 `;
 
 export default class extends React.PureComponent {
+  input = React.createRef();
+
   render = () => (
     <StepLayout img={require("./tablet.png")}>
       <Text large block>
         Connection code
       </Text>
       <Input
-        innerRef={input => (this.input = input)}
+        ref={this.input}
         onChange={event => this.props.onChangeConnectionCode(event.target.value)}
         onKeyDown={this.onKeyDown.bind(this)}
         value={this.props.connectionCode}
@@ -40,12 +42,12 @@ export default class extends React.PureComponent {
   };
 
   focus() {
-    this.input.focus();
+    this.input.current.focus();
   }
 
   componentDidUpdate(prevProps) {
     if (!prevProps.connectionError && this.props.connectionError) {
-      this.input.focus();
+      this.input.current.focus();
     }
   }
 }
