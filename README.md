@@ -11,10 +11,6 @@ Sign-on to cloud version at [app.roombelt.com](https://app.roombelt.com).
 For instruction on installing Roombelt On-Premises visit
 [documentation](https://docs.roombelt.com/installation/on-premises).
 
-## Docker
-
-Clone the directory. Set up your roombelt.env file. Run the command ```docker build -t roombelt .```
-
 ## Feedback
 
 Feel free to request new feature on [Github](https://github.com/ziolko/roombelt/issues)

@@ -3,11 +3,13 @@
   "version": "0.3.0",
   "private": true,
   "scripts": {
-    "start": "node index.js",
-    "build:frontend": "cd frontend && cross-env NODE_PATH=./src react-scripts build",
     "dev:frontend": "cd frontend && cross-env PORT=3001 NODE_PATH=./src BROWSER=none react-scripts start",
     "dev:backend": "cross-env PORT=3000 NODE_ENV=development nodemon --watch backend index.js",
-    "heroku-postbuild": "npm run build:frontend"
+    "build:frontend": "cd frontend && cross-env NODE_PATH=./src react-scripts build",
+    "heroku-postbuild": "npm run build:frontend",
+    "start": "node index.js",
+    "docker:build": "cross-env-shell docker build -t ziolko/roombelt:$npm_package_version -t ziolko/roombelt:latest .",
+    "docker:publish": "cross-env-shell docker push ziolko/roombelt:$npm_package_version && docker push ziolko/roombelt:latest"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
