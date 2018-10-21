@@ -1,19 +1,25 @@
 FROM node:8.12
 
-RUN mkdir /app
+ENV NODE_ENV=production
 
-ADD https://github.com/ziolko/roombelt/archive/master.tar.gz /app/roombelt.tar.gz
+ENV GOOGLE_CLIENT_ID=""
+ENV GOOGLE_CLIENT_SECRET=""
+ENV GOOGLE_REDIRECT_URL=""
+ENV DATABASE_URL=""
+ENV FORCE_HTTPS=false
 
+RUN mkdir /roombelt
 
-RUN tar zxvf /app/roombelt.tar.gz -C /app
+WORKDIR /roombelt
 
-COPY roombelt.env /app/roombelt-master
+COPY package.json package-lock.json index.js LICENSE.txt README.md ./
+COPY backend backend/
+COPY frontend frontend/
 
-WORKDIR /app/roombelt-master
-
-RUN npm i
-RUN npm run build:frontend
-
+RUN npm i --only=dev && \
+    npm i --only=prod && \
+    npm run build:frontend && \
+    npm prune --production
 
 EXPOSE 3000
 
