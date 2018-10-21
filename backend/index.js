@@ -1,12 +1,9 @@
-require("dotenv").config();
-
 const helmet = require("helmet");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const bearerToken = require("express-bearer-token");
-
-const port = process.env.PORT || 3000;
+const config = require ('./config')
 
 const app = express();
 
@@ -18,12 +15,12 @@ app.use("/api", bodyParser.json());
 app.use("/api", require("./context"));
 app.use("/api", require("./api"));
 
-app.listen(port, err => {
+app.listen(config.port, config.acceptHost, err => {
   if (err) {
     console.error(err);
     process.exit(1);
   }
-  console.log(`> Ready on http://localhost:${port}`);
+  console.log(`> Ready on http://${config.acceptHost}:${config.port}`);
 });
 
 module.exports = app;

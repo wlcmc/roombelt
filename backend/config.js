@@ -8,7 +8,9 @@ const result = {
   clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
   redirectUrl: process.env["GOOGLE_REDIRECT_URL"],
   databaseUrl: process.env["DATABASE_URL"],
-  forceHttps: process.env["FORCE_HTTPS"] === "true" || process.env["FORCE_HTTPS"] === "1"
+  forceHttps: process.env["FORCE_HTTPS"] === "true" || process.env["FORCE_HTTPS"] === "1",
+  port: process.env["PORT"] || 3000,
+  acceptHost: process.env["ACCEPT_HOST"] || "0.0.0.0",
 };
 
 if (!result.clientId || !result.clientSecret || !result.redirectUrl) {
