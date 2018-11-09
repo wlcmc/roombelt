@@ -1,6 +1,6 @@
 import React from "react";
 import i18next from "i18next";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { connect } from "react-redux";
 import IoAndroidExpand from "react-icons/lib/io/android-expand";
 import { requestFullScreen } from "apps/device/store/actions";

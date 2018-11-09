@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styled, { injectGlobal, css } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
+import styled from "styled-components/macro";
 
 import Card from "./Card";
 import Button from "./Button";
@@ -8,7 +9,7 @@ import IoAndroidClose from "react-icons/lib/io/android-close";
 
 const glassVisibleClass = "rui-modal-glass";
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   :root[class*=${glassVisibleClass}] {
     max-height: 100%;
     overflow: hidden;
@@ -131,15 +132,16 @@ class Modal extends React.Component {
 
   render() {
     const header = this.props.header !== null && (
-      <HeaderWrapper children={this.props.header || <DefaultHeader {...this.props} />} />
+      <HeaderWrapper children={this.props.header || <DefaultHeader {...this.props} />}/>
     );
 
     const footer = this.props.footer !== null && (
-      <FooterWrapper children={this.props.footer || <DefaultFooter {...this.props} />} />
+      <FooterWrapper children={this.props.footer || <DefaultFooter {...this.props} />}/>
     );
 
     return (
       <Glass visible={this.props.visible}>
+        <GlobalStyle/>
         <Card
           block
           compact={this.props.compact}

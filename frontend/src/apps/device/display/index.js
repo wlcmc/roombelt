@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { deviceNameSelector, currentMeetingSelector, nextMeetingSelector } from "../store/selectors";
 
 import { Time, PageLoaded } from "../../../theme";

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { Button } from "theme/index";
 
 export default styled.div`

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import moment from "moment";
 
 import IoAndroidMoreVertical from "react-icons/lib/io/android-more-vertical";

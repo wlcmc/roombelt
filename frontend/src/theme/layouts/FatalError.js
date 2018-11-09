@@ -1,6 +1,6 @@
 import React from "react";
 import i18next from "i18next";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { Button, PageTitle, PageSection, PageLoaded } from "..";
 
 const Wrapper = styled.div`
