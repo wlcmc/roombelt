@@ -51,7 +51,10 @@ export const startClock = () => dispatch => {
 
 export const initializeFullScreenSupport = () => dispatch => {
   dispatch(updateFullScreenInfo());
-  screenfull.onchange(() => dispatch(updateFullScreenInfo()));
+
+  if (typeof screenfull.onchange === "function") {
+    screenfull.onchange(() => dispatch(updateFullScreenInfo()));
+  }
 };
 
 export const updateFullScreenInfo = () => ({
