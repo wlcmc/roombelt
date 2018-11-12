@@ -62,9 +62,9 @@ class Router extends React.PureComponent {
 
     return (
       <Switch>
-        <Route exact path={"/"} render={() => <Login history={this.props.history}/>}/>
-        <Route exact path={"/device"} render={() => <Device history={this.props.history}/>}/>
-        <Route exact path={"/admin"} render={() => <Admin history={this.props.history}/>}/>
+        <Route exact path={"/device"} render={() => <Device/>}/>
+        <Route exact path={"/admin"} render={() => <Admin/>}/>
+        <Route render={() => <Login/>}/>
       </Switch>
     );
   }
