@@ -45,8 +45,7 @@ export const disconnectDevice = () => async dispatch => {
 };
 
 export const startClock = () => dispatch => {
-  dispatch({ type: DEVICE_SET_CLOCK, timestamp: Date.now() });
-  setTimeout(() => dispatch(startClock()), 10 * 1000);
+  setInterval(() => dispatch({ type: DEVICE_SET_CLOCK, timestamp: Date.now() }), 10 * 1000);
 };
 
 export const initializeFullScreenSupport = () => dispatch => {
