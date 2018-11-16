@@ -45,6 +45,8 @@ export const disconnectDevice = () => async dispatch => {
 };
 
 export const startClock = () => dispatch => {
+  dispatch({ type: DEVICE_SET_CLOCK, timestamp: Date.now() });
+  
   setInterval(() => dispatch({ type: DEVICE_SET_CLOCK, timestamp: Date.now() }), 10 * 1000);
 };
 
