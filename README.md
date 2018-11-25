@@ -18,7 +18,7 @@ or contact me using the chat widget on [roombelt.com](https://roombelt.com).
 
 ## License
 
-Roombelt is licensed under permissive [ISC license](https://github.com/ziolko/roombelt/blob/master/LICENSE.txt).
+Roombelt uses the [AGPL license](https://tldrlegal.com/license/gnu-affero-general-public-license-v3-(agpl-3.0)). 
 
 ---
 
