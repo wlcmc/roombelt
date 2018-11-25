@@ -1,50 +1,55 @@
 import React from "react";
-import StepLayout from "./StepLayout";
-import { Text, Select } from "../../../theme";
-import { translations } from "../../../i18n";
+import { connect } from "react-redux";
+import WizardStepLayout from "./WizardStepLayout";
+import { Text, Select, Button } from "theme";
+import { connectDeviceWizard } from "apps/admin/store/actions";
+import { useWizard } from "./Wizard";
 
-export default class extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.select = React.createRef();
-  }
+const Content = ({ deviceType, setDeviceType }) => {
+  const { isCurrentStep, isTransitioning } = useWizard();
+  const deviceTypes = [{ label: "Single calendar", value: "calendar" }, { label: "Dashboard", value: "dashboard" }];
 
-  focus() {
-    this.select.current.focus();
-  }
-
-  render = () => (
-    <StepLayout img={require("./calendar.png")}>
+  return (
+    <WizardStepLayout img={require("./calendar.png")}>
       <Text large block>
-        Calendar
+        Device type
       </Text>
       <Select
-        instanceId="edit-device-choose-calendar"
-        value={this.props.calendarId}
-        options={Object.values(this.props.calendars)}
-        getOptionLabel={calendar => calendar.summary + (calendar.canModifyEvents ? "" : " (read only)")}
-        getOptionValue={calendar => calendar.id}
-        isOptionDisabled={calendar => !calendar.canModifyEvents}
-        onChange={calendar => this.props.onSetCalendar(calendar && calendar.id)}
+        instanceId="edit-device-choose-type"
+        value={deviceType}
+        options={deviceTypes}
         styles={{ container: base => ({ ...base, marginTop: 15, marginBottom: 10 }) }}
-        ref={this.select}
+        onChange={option => setDeviceType(option.value)}
         menuPortalTarget={document.body}
-        tabIndex={this.props.isActiveStep ? 0 : -1}
+        autofocus={isCurrentStep && !isTransitioning}
+        tabIndex={isCurrentStep ? 0 : -1}
       />
       <Text muted small>
-        Pick a calendar that will be shown on this device.
+        <div>Pick whether device should show a single calendar or dashboard view.</div>
+        <div style={{ marginTop: 10 }}>Dashboard shows status of all your conference rooms on one display.</div>
       </Text>
-      <Text large block style={{ marginTop: 15, marginBottom: 10 }}>Language</Text>
-      <Select
-        instanceId="edit-device-choose-language"
-        value={this.props.language}
-        options={Object.values(translations)}
-        getOptionLabel={lang => lang.language}
-        getOptionValue={lang => lang.key}
-        onChange={translation => this.props.onSetLanguage && this.props.onSetLanguage(translation && translation.key)}
-        menuPortalTarget={document.body}
-        tabIndex={this.props.isActiveStep ? 0 : -1}
-      />
-    </StepLayout>
+    </WizardStepLayout>
   );
-}
+};
+
+const Buttons = ({ deviceType, onSubmit }) => (
+  <Button primary disabled={deviceType === null} onClick={onSubmit}>Next</Button>
+);
+
+
+const mapStateToProps = state => ({
+  deviceType: state.connectDeviceWizard.deviceType
+});
+
+const mapDispatchToProps = dispatch => ({
+  setDeviceType: type => dispatch(connectDeviceWizard.secondStep.setDeviceType(type)),
+  onSubmit: () => dispatch(connectDeviceWizard.secondStep.nextStep())
+});
+
+export default {
+  key: "device-type",
+  name: "Choose type",
+  content: connect(mapStateToProps, mapDispatchToProps)(Content),
+  buttons: connect(mapStateToProps, mapDispatchToProps)(Buttons)
+};
+

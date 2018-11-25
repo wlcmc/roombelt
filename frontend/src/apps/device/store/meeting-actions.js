@@ -1,4 +1,4 @@
-import { currentMeetingActionSelector, currentMeetingSelector, deviceNameSelector } from "apps/device/store/selectors";
+import { currentMeetingActionSelector, currentMeetingSelector, calendarNameSelector } from "apps/device/store/selectors";
 import i18next from "i18next";
 import * as api from "services/api";
 import { DEVICE_SET_DATA } from "apps/device/store/actions";
@@ -23,7 +23,7 @@ export const cancelMeetingAction = () => dispatch => {
 };
 
 export const createMeeting = timeInMinutes => async (dispatch, getState) => {
-  const roomName = deviceNameSelector(getState());
+  const roomName = calendarNameSelector(getState());
   const createMeetingPromise = api.createMeeting(timeInMinutes, i18next.t("meeting.quick-meeting-title", { roomName }));
 
   dispatch(handleMeetingActionPromise(createMeetingPromise));

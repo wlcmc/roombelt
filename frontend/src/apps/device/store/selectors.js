@@ -11,24 +11,31 @@ export const currentMeetingActionSelector = state => state.currentMeetingActions
 export const currentActionSourceSelector = state => state.currentMeetingActions.source;
 export const isActionErrorSelector = state => state.currentMeetingActions.isError;
 export const isRetryingActionSelector = state => state.currentMeetingActions.isRetrying;
+export const calendarIdsSelector = state => state.device ? state.device.calendars.map(calendar => calendar.id) : [];
+
+export const calendarSelector = (state, props) => {
+  if (!props || !props.calendarId) {
+    return state.device.calendars[0];
+  }
+
+  return state.device.calendars.find(calendar => calendar.id === props.calendarId);
+};
 
 export const isDeviceConnectedSelector = createSelector(deviceSelector, device => device && !device.connectionCode);
-export const isCalendarSelectedSelector = createSelector(deviceSelector, device => device && device.isCalendarSelected);
+export const isDashboardDeviceSelector = createSelector(deviceSelector, device => device && device.deviceType === "dashboard");
+export const isCalendarSelectedSelector = createSelector(deviceSelector, device => device && !!device.calendars[0]);
 
-export const deviceNameSelector = createSelector(deviceSelector, device => device && device.name);
+export const calendarNameSelector = createSelector(calendarSelector, calendar => calendar && calendar.name);
 
-export const currentMeetingSelector = createSelector([deviceSelector, timestampSelector],
-  (device, currentTimestamp) => {
-    return device.events.find(
-      event => event.startTimestamp < currentTimestamp + 5 * 60 * 1000 && event.endTimestamp > currentTimestamp
-    );
-  }
-);
+export const currentMeetingSelector = createSelector([calendarSelector, timestampSelector],
+  (calendar, currentTimestamp) => calendar.events.find(
+    event => event.startTimestamp < currentTimestamp + 5 * 60 * 1000 && event.endTimestamp > currentTimestamp
+  ));
 
 export const nextMeetingSelector = createSelector(
-  [deviceSelector, timestampSelector, currentMeetingSelector],
-  (device, currentTimestamp, currentMeeting) =>
-    device.events.find(event => {
+  [calendarSelector, timestampSelector, currentMeetingSelector],
+  (calendar, currentTimestamp, currentMeeting) =>
+    calendar.events.find(event => {
       const isToday = new Date(event.startTimestamp).toDateString() === new Date(currentTimestamp).toDateString();
       const isLater = event.startTimestamp > currentTimestamp;
       const isNotCurrentMeeting = !currentMeeting || event.id !== currentMeeting.id;
@@ -39,10 +46,10 @@ export const nextMeetingSelector = createSelector(
 export const minutesAvailableTillNextMeetingSelector = createSelector(
   [timestampSelector, currentMeetingSelector, nextMeetingSelector],
   (currentTimestamp, currentMeeting, nextMeeting) => {
-    return timeDifferenceInMinutes(
+    return Math.ceil(timeDifferenceInMinutes(
       nextMeeting && nextMeeting.startTimestamp,
       currentMeeting ? currentMeeting.endTimestamp : currentTimestamp
-    );
+    ));
   }
 );
 

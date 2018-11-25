@@ -14,19 +14,37 @@ router.use("/device", async function(req, res) {
   return "next";
 });
 
-router.get("/device", async function(req, res) {
-  const calendarId = req.context.device.calendarId;
-  const calendar = calendarId && await req.context.calendarProvider.getCalendar(calendarId);
-  const calendarEvents = calendarId && await req.context.calendarProvider.getEvents(calendarId);
+async function getCalendarInfo(calendarId, calendarProvider) {
+  const calendar = calendarId && await calendarProvider.getCalendar(calendarId);
+  const calendarEvents = calendarId && await calendarProvider.getEvents(calendarId);
   const events = calendarId && calendarEvents.filter(event => event.endTimestamp > Date.now()).slice(0, 3);
 
-  res.json({
-    connectionCode: req.context.device.connectionCode,
-    isCalendarSelected: !!calendarId,
+  return calendar && {
+    id: calendarId,
     name: calendar && calendar.summary,
-    language: process.env["REFRESH_LANG"] || req.context.device.language,
     canModifyEvents: calendar && (calendar.accessRole === "writer" || calendar.accessRole === "owner"),
     events
+  };
+}
+
+async function getUserCalendars(req) {
+  const devices = await req.context.storage.devices.getDevicesForUser(req.context.session.userId);
+  const calendarIds = devices
+    .map(device => device.deviceType === "calendar" && device.calendarId)
+    .filter(calendarId => calendarId);
+
+  const uniqueCalendarIds = [...new Set(calendarIds)];
+  return Promise.all(uniqueCalendarIds.map(calendarId => getCalendarInfo(calendarId, req.context.calendarProvider)));
+}
+
+router.get("/device", async function(req, res) {
+  const device = req.context.device;
+
+  res.json({
+    deviceType: req.context.device.deviceType,
+    language: process.env["REFRESH_LANG"] || req.context.device.language,
+    connectionCode: req.context.device.connectionCode,
+    calendars: device.deviceType === "dashboard" ? await getUserCalendars(req) : [await getCalendarInfo(device.calendarId, req.context.calendarProvider)]
   });
 
   await req.context.storage.devices.heartbeatDevice(req.context.session.deviceId);

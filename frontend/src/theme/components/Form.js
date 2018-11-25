@@ -1,6 +1,7 @@
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components/macro";
 
-export const Input = styled.input`
+const InnerInput = styled.input`
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -16,3 +17,12 @@ export const Input = styled.input`
   margin: 0;
   box-sizing: border-box;
 `;
+
+export const Input = React.forwardRef(({ autofocus, ...props }, fwRef) => {
+  const innerRef = useRef();
+  const ref = fwRef || innerRef;
+
+  useEffect(() => autofocus && ref.current && ref.current.focus(), [autofocus]);
+
+  return <InnerInput {...props} ref={ref}/>;
+});

@@ -1,14 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components/macro";
-import { deviceNameSelector, currentMeetingSelector, nextMeetingSelector } from "../store/selectors";
-
 import { Time, PageLoaded } from "../../../theme";
-import NextMeeting from "./NextMeeting";
-import CurrentMeeting from "./CurrentMeeting";
-import RoomAvailable from "./RoomAvailable";
-import FullScreenToggle from "./FullScreenToggle";
-import ActionsBar from "./actions-bar";
+import FullScreenToggle from "../components/FullScreenToggle";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -65,7 +59,7 @@ const Header = styled.header`
   border-bottom: 0.1rem solid #ccc;
 `;
 
-const CalendarName = styled.span`
+const PageTitle = styled.span`
   font-size: 1.5em;
   padding: 0.3em;
 `;
@@ -80,42 +74,27 @@ const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0.5em;
 `;
 
 const Footer = styled.div`
-  padding: 0.5em;
   flex: 0 0 auto;
 `;
 
-const ActionsBarWrapper = styled.div`
-  margin: 1rem 0;
-  height: 3rem;
-`;
-
-const CalendarView = props => (
-  <Wrapper style={props.style}>
+const CalendarView = ({ currentTimestamp, style, title, children, footer }) => (
+  <Wrapper style={style}>
     <PageLoaded/>
     <Header>
-      <CalendarName available={!props.currentMeeting}>{props.calendarName}</CalendarName>
-      <CurrentTime>
-        <Time timestamp={props.currentTimestamp} blinking/>
-      </CurrentTime>
+      <PageTitle>{title}</PageTitle>
+      <CurrentTime><Time timestamp={currentTimestamp} blinking/></CurrentTime>
     </Header>
-    <MainContent>
-      {props.currentMeeting ? <CurrentMeeting/> : <RoomAvailable/>}
-      <ActionsBarWrapper><ActionsBar/></ActionsBarWrapper>
-    </MainContent>
-    <Footer>{props.nextMeeting && <NextMeeting/>}</Footer>
+    <MainContent>{children}</MainContent>
+    <Footer>{footer}</Footer>
     <FullScreenToggle/>
   </Wrapper>
 );
 
 const mapStateToProps = state => ({
-  currentTimestamp: state.timestamp,
-  calendarName: deviceNameSelector(state),
-  currentMeeting: currentMeetingSelector(state),
-  nextMeeting: nextMeetingSelector(state)
+  currentTimestamp: state.timestamp
 });
 
 export default connect(mapStateToProps)(CalendarView);

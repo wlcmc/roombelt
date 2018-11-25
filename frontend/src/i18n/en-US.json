@@ -41,5 +41,17 @@
     "refresh-page": "Refresh page",
     "device-disconnected-title": "Device disconnected",
     "device-disconnected-message": "This device has been disconnected in admin panel. Do you want to connect it again?"
+  },
+  "dashboard": {
+    "page-title": "Conference rooms",
+    "calendar": "Room",
+    "meeting": "Meeting",
+    "status": "Status",
+    "starts-in": "Starts in {{ time }}",
+    "starts-now": "Starts now",
+    "started-ago": "Started {{ time }} ago",
+    "ends-in": "Ends in {{ time }}",
+    "free-for": "Free for {{ time }}",
+    "no-meetings-today": "No meetings today"
   }
 }

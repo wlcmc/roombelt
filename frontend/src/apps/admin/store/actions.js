@@ -7,7 +7,7 @@ import {
   setOptionsForDevice
 } from "services/api";
 
-import { newDeviceData, editDeviceDate, removedDeviceId } from "apps/admin/store/selectors";
+import { newDeviceData, editDeviceData, removedDeviceId } from "./selectors";
 
 export const SET_CALENDARS = "SET_CALENDARS";
 export const SET_DEVICES = "SET_DEVICES";
@@ -31,15 +31,20 @@ export const CONNECT_DEVICE_WIZARD = {
   SHOW: "SHOW_WIZARD",
   HIDE: "HIDE_WIZARD",
   FIRST_STEP: {
-    SET_CONNECTION_CODE: "SET_WIZARD_CONNECTION_CODE",
-    START_SUBMITTING: "START_SUBMITTING_FIRST_WIZARD_STEP",
-    SUBMIT_SUCCESS: "WIZAR_FIRST_STEP_SUCCESS",
-    SUBMIT_ERROR: "WIZAR_FIRST_STEP_ERROR"
+    SET_CONNECTION_CODE: "FIRST_STEP/SET_WIZARD_CONNECTION_CODE",
+    START_SUBMITTING: "FIRST_STEP/START_SUBMITTING_FIRST_WIZARD_STEP",
+    SUBMIT_SUCCESS: "FIRST_STEP/WIZARD_FIRST_STEP_SUCCESS",
+    SUBMIT_ERROR: "FIRST_STEP/WIZARD_FIRST_STEP_ERROR"
   },
   SECOND_STEP: {
-    SET_CALENDAR: "SET_WIZARD_CALENDAR",
-    SET_LANGUAGE: "SET_WIZARD_LANGUAGE",
-    START_SUBMITTING: "START_SUBMITTING_SECOND_WIZARD_STEP"
+    SET_DEVICE_TYPE: "SECOND_STEP/SET_DEVICE_TYPE",
+    NEXT_STEP: "SECOND_STEP/NEXT"
+  },
+  THIRD_STEP: {
+    SET_CALENDAR: "THIRD_STEP/SET_WIZARD_CALENDAR",
+    SET_LANGUAGE: "THIRD_STEP/SET_WIZARD_LANGUAGE",
+    PREVIOUS_STEP: "THIRD_STEP/PREVIOUS_STEP",
+    START_SUBMITTING: "THIRD_STEP/START_SUBMITTING_SECOND_WIZARD_STEP"
   }
 };
 
@@ -68,11 +73,18 @@ export const connectDeviceWizard = {
     }
   },
   secondStep: {
-    setCalendarId: calendarId => ({ type: CONNECT_DEVICE_WIZARD.SECOND_STEP.SET_CALENDAR, calendarId }),
-    setLanguage: language => ({ type: CONNECT_DEVICE_WIZARD.SECOND_STEP.SET_LANGUAGE, language }),
+    setDeviceType: deviceType => ({ type: CONNECT_DEVICE_WIZARD.SECOND_STEP.SET_DEVICE_TYPE, deviceType }),
+    nextStep: () => ({ type: CONNECT_DEVICE_WIZARD.SECOND_STEP.NEXT_STEP })
+  },
+  thirdStep: {
+    setCalendarId: calendarId => ({ type: CONNECT_DEVICE_WIZARD.THIRD_STEP.SET_CALENDAR, calendarId }),
+    setLanguage: language => ({ type: CONNECT_DEVICE_WIZARD.THIRD_STEP.SET_LANGUAGE, language }),
+    previousStep: () => ({ type: CONNECT_DEVICE_WIZARD.THIRD_STEP.PREVIOUS_STEP }),
     submit: () => async (dispatch, getState) => {
-      const { deviceId, calendarId, language } = newDeviceData(getState());
-      await setOptionsForDevice(deviceId, calendarId, language);
+      dispatch({ type: CONNECT_DEVICE_WIZARD.THIRD_STEP.START_SUBMITTING });
+
+      const { deviceId, deviceType, calendarId, language } = newDeviceData(getState());
+      await setOptionsForDevice(deviceId, deviceType, calendarId, language);
 
       dispatch(setDevices(await getConnectedDevices()));
       dispatch(connectDeviceWizard.hide());
@@ -83,6 +95,7 @@ export const connectDeviceWizard = {
 export const EDIT_DEVICE_DIALOG = {
   SHOW: "SHOW_EDIT_DEVICE_DIALOG",
   HIDE: "HIDE_EDIT_DEVICE_DIALOG",
+  SET_DEVICE_TYPE: "SET_EDIT_DEVICE_TYPE",
   SET_CALENDAR: "SET_EDIT_DEVICE_CALENDAR",
   SET_LANGUAGE: "SET_EDIT_DEVICE_LANGUAGE",
   START_SUBMITTING: "EDIT_DEVICE_SUBMITTED"
@@ -91,13 +104,14 @@ export const EDIT_DEVICE_DIALOG = {
 export const editDeviceDialog = {
   show: device => ({ type: EDIT_DEVICE_DIALOG.SHOW, device }),
   hide: () => ({ type: EDIT_DEVICE_DIALOG.HIDE }),
+  setDeviceType: deviceType => ({ type: EDIT_DEVICE_DIALOG.SET_DEVICE_TYPE, deviceType }),
   setCalendarId: calendarId => ({ type: EDIT_DEVICE_DIALOG.SET_CALENDAR, calendarId }),
   setLanguage: language => ({ type: EDIT_DEVICE_DIALOG.SET_LANGUAGE, language }),
   submit: () => async (dispatch, getState) => {
-    const { deviceId, calendarId, language } = editDeviceDate(getState());
+    const { deviceId, deviceType, calendarId, language } = editDeviceData(getState());
 
     dispatch({ type: EDIT_DEVICE_DIALOG.START_SUBMITTING });
-    await setOptionsForDevice(deviceId, calendarId, language);
+    await setOptionsForDevice(deviceId, deviceType, calendarId, language);
 
     dispatch(setDevices(await getConnectedDevices()));
     dispatch(editDeviceDialog.hide());

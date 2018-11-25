@@ -7,6 +7,7 @@ module.exports = class {
       connectionCode: { type: Sequelize.STRING, defaultValue: () => Math.floor(Math.random() * 100000).toString() },
       userId: Sequelize.STRING,
       language: { type: Sequelize.STRING, defaultValue: "en-US" },
+      deviceType: { type: Sequelize.STRING, defaultValue: "calendar" },
       calendarId: Sequelize.STRING,
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE
@@ -41,6 +42,10 @@ module.exports = class {
 
   async heartbeatDevice(deviceId) {
     await this.Model.update({}, { where: { deviceId } });
+  }
+
+  async setTypeForDevice(deviceId, deviceType) {
+    await this.Model.update({ deviceType }, { where: { deviceId } });
   }
 
   async setCalendarForDevice(deviceId, calendarId) {

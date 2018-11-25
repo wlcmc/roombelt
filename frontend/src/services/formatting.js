@@ -1,13 +1,13 @@
 export function timeDifferenceInMinutes(latterEventTimestamp, formerEventTimestamp) {
-  if (!latterEventTimestamp && formerEventTimestamp) {
+  if (latterEventTimestamp == null && formerEventTimestamp != null) {
     return Number.POSITIVE_INFINITY;
   }
 
-  if (latterEventTimestamp && !formerEventTimestamp) {
+  if (latterEventTimestamp != null && formerEventTimestamp == null) {
     return Number.NEGATIVE_INFINITY;
   }
 
-  return Math.ceil((latterEventTimestamp - formerEventTimestamp) / 1000 / 60);
+  return (latterEventTimestamp - formerEventTimestamp) / 1000 / 60;
 }
 
 export function prettyFormatMinutes(totalMinutes) {

@@ -1,10 +1,8 @@
 import axios from "axios";
-import { getAccessToken } from "./persistent-store";
 
 axios.interceptors.request.use(config => ({
   ...config,
-  url: config.url + "?_ts=" + Date.now(),
-  headers: { ...config.headers, Authorization: `Bearer ${getAccessToken()}` },
+  url: config.url + "?_ts=" + Date.now()
 }));
 
 axios.interceptors.response.use(response => response.data);
@@ -50,8 +48,8 @@ export function getCalendars() {
   return axios.get("/api/admin/calendar");
 }
 
-export function setOptionsForDevice(deviceId, calendarId, language) {
-  return axios.put(`/api/admin/device/${encodeURIComponent(deviceId)}`, { calendarId, language });
+export function setOptionsForDevice(deviceId, deviceType, calendarId, language) {
+  return axios.put(`/api/admin/device/${encodeURIComponent(deviceId)}`, { deviceType, calendarId, language });
 }
 
 export function getDeviceDetails() {

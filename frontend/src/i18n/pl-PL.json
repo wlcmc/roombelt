@@ -44,5 +44,17 @@
     "refresh-page": "Odśwież stronę",
     "device-disconnected-title": "Urządzenie usunięte",
     "device-disconnected-message": "To urządzenie zostało usuniętę w panelu administracyjnym. Czy chesz połączyć je ponownie?"
+  },
+  "dashboard": {
+    "page-title": "Sale konferencyjne",
+    "calendar": "Sala",
+    "meeting": "Spotkanie",
+    "no-meetings-today": "Brak spotkań dzisiaj",
+    "status": "Status",
+    "starts-in": "Zaczyna się za {{ time }}",
+    "starts-now": "Zaczyna się teraz",
+    "started-ago": "Zaczęło się {{ time }} temu",
+    "ends-in": "Kończy się za {{ time }}",
+    "free-for": "Wolne przez {{ time }}"
   }
 }

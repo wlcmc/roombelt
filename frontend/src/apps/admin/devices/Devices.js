@@ -34,7 +34,10 @@ const CalendarRowWrapper = styled(TableRow)`
 const SingleDeviceRow = props => (
   <CalendarRowWrapper>
     <TableRowColumn onClick={props.onRowClicked} style={{ cursor: "pointer" }}>
-      <Text block>{props.calendar ? props.calendar.summary : <em>No calendar connected</em>}</Text>
+      <Text block>
+        {props.device.deviceType === "dashboard" && <em>Dashboard</em>}
+        {props.device.deviceType === "calendar" && (props.calendar ? props.calendar.summary : <em>No calendar connected</em>)}
+      </Text>
       <Text muted small>
         Added: {moment(props.device.createdTimestamp).format("MMM DD, YYYY ")}
       </Text>

@@ -13,32 +13,30 @@ export const TableBody = styled.tbody``;
 export const TableHeaderColumn = styled.th`
   color: #9aa0ac;
   text-transform: uppercase;
-  font-size: 14px;
   font-weight: 400;
   text-align: left;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
   border-bottom: 1px solid #dee2e6;
 
   &:first-child {
-    padding-left: 1.5rem;
+    padding-left: 0.5em;
   }
 
   &:last-child {
-    padding-right: 1.5rem;
+    padding-right: 0.5em;
   }
 `;
 
 export const TableRowColumn = styled.td`
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  font-size: 15px;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
 
   &:first-child {
-    padding-left: 1.5rem;
+    padding-left: 0.5em;
   }
 
   &:last-child {
-    padding-right: 1.5rem;
+    padding-right: 0.5em;
   }
 `;
