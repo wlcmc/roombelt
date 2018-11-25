@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 import { connect } from "react-redux";
 
 import { Modal, Button, LoaderButton, Select } from "theme";
+import { PaidDisclaimer } from "apps/admin/Paid";
 import { translations } from "i18n";
 import { editDeviceDialog } from "apps/admin/store/actions";
 
@@ -22,6 +23,8 @@ const EditDeviceModal = ({ isVisible, isSaving, device, calendars, onCancel, onS
 
   const footer = (
     <>
+      <PaidDisclaimer/>
+      <div style={{ flexGrow: 1 }}/>
       <Button disabled={isSaving} onClick={onCancel}>Cancel</Button>
       <LoaderButton primary onClick={onSubmit} isLoading={isSaving}>
         OK
@@ -32,7 +35,7 @@ const EditDeviceModal = ({ isVisible, isSaving, device, calendars, onCancel, onS
   const getValue = ({ deviceType, calendarId }) => `${deviceType}-${calendarId}`;
 
   const viewOptions = [
-    { label: "Dashboard", deviceType: "dashboard", calendarId: null, isDisabled: false },
+    { label: "Dashboard 💰", deviceType: "dashboard", calendarId: null, isDisabled: false },
     {
       label: "Calendars",
       options: Object.values(calendars).map(calendar => ({

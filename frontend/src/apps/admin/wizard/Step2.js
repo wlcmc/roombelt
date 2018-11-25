@@ -4,10 +4,11 @@ import WizardStepLayout from "./WizardStepLayout";
 import { Text, Select, Button } from "theme";
 import { connectDeviceWizard } from "apps/admin/store/actions";
 import { useWizard } from "./Wizard";
+import { PaidDisclaimer } from "apps/admin/Paid";
 
 const Content = ({ deviceType, setDeviceType }) => {
   const { isCurrentStep, isTransitioning } = useWizard();
-  const deviceTypes = [{ label: "Single calendar", value: "calendar" }, { label: "Dashboard", value: "dashboard" }];
+  const deviceTypes = [{ label: "Single calendar", value: "calendar" }, { label: "Dashboard 💰", value: "dashboard" }];
 
   return (
     <WizardStepLayout img={require("./calendar.png")}>
@@ -33,7 +34,10 @@ const Content = ({ deviceType, setDeviceType }) => {
 };
 
 const Buttons = ({ deviceType, onSubmit }) => (
-  <Button primary disabled={deviceType === null} onClick={onSubmit}>Next</Button>
+  <>
+    <Button primary disabled={deviceType === null} onClick={onSubmit}>Next</Button>
+    <PaidDisclaimer/>
+  </>
 );
 
 

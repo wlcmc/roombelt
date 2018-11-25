@@ -55,6 +55,7 @@
     "reselect": "^3.0.1",
     "screenfull": "^3.3.2",
     "store": "^2.0.12",
-    "styled-components": "^4.0.0"
+    "styled-components": "^4.0.0",
+    "webfontloader": "^1.6.28"
   }
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, Select, Button, LoaderButton } from "theme";
 import WizardStepLayout from "./WizardStepLayout";
+import { PaidDisclaimer } from "apps/admin/Paid";
 import { translations } from "../../../i18n";
 import { connectDeviceWizard } from "apps/admin/store/actions";
 import { connect } from "react-redux";
@@ -60,8 +61,11 @@ const Content = ({ isDashboard, calendars, calendarId, onSetCalendar, language, 
 
 const Buttons = ({ onSubmit, onBack, isSubmitting }) => (
   <>
-    <LoaderButton primary onClick={onSubmit} isLoading={isSubmitting}>Voila</LoaderButton>
-    <Button disabled={isSubmitting} onClick={onBack}>Back</Button>
+    <div>
+      <Button disabled={isSubmitting} onClick={onBack}>Back</Button>
+      <LoaderButton primary onClick={onSubmit} isLoading={isSubmitting}>Voila</LoaderButton>
+    </div>
+    <PaidDisclaimer/>
   </>
 );
 
