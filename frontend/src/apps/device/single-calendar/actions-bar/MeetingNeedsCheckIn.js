@@ -7,14 +7,9 @@ import {
   currentMeetingSelector,
   hasCurrentMeetingStartedSelector
 } from "apps/device/store/selectors";
-import {
-  cancelMeeting,
-  checkInToMeeting,
-  runMeetingAction,
-  startMeetingEarly
-} from "apps/device/store/meeting-actions";
 
 import ConfirmBar from "./components/ConfirmBar";
+import { meetingActions } from "apps/device/store/actions";
 
 class MeetingNeedsCheckIn extends React.PureComponent {
   state = { idOfMeetingToCancel: null };
@@ -64,9 +59,18 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  cancelMeeting: (source) => dispatch(runMeetingAction(cancelMeeting(), source)),
-  checkInToMeeting: (source) => dispatch(runMeetingAction(checkInToMeeting(), source)),
-  startMeetingEarly: (source) => dispatch(runMeetingAction(startMeetingEarly(), source))
+  cancelMeeting: (source) => {
+    dispatch(meetingActions.cancelMeeting());
+    dispatch(meetingActions.setActionSource(source));
+  },
+  checkInToMeeting: (source) => {
+    dispatch(meetingActions.checkInToMeeting());
+    dispatch(meetingActions.setActionSource(source));
+  },
+  startMeetingEarly: (source) => {
+    dispatch(meetingActions.startMeetingEarly());
+    dispatch(meetingActions.setActionSource(source));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetingNeedsCheckIn);

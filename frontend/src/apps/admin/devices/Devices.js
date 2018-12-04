@@ -23,7 +23,7 @@ import {
 } from "../../../theme/index";
 
 import EmptyState from "./EmptyState";
-import { editDeviceDialog, removeDeviceDialog } from "apps/admin/store/actions";
+import { editDeviceDialogActions, removeDeviceDialogActions } from "apps/admin/store/actions";
 
 const CalendarRowWrapper = styled(TableRow)`
   &:hover {
@@ -115,8 +115,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onConfigureDeviceClicked: device => dispatch(editDeviceDialog.show(device)),
-  onDeleteDeviceClicked: device => dispatch(removeDeviceDialog.show(device))
+  onConfigureDeviceClicked: device => dispatch(editDeviceDialogActions.show(device)),
+  onDeleteDeviceClicked: device => dispatch(removeDeviceDialogActions.show(device))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Devices);

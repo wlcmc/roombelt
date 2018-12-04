@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Button, LoaderButton } from "theme";
 import { prettyFormatMinutes } from "services/formatting";
 import { currentActionSourceSelector, minutesAvailableTillNextMeetingSelector } from "apps/device/store/selectors";
-import { createMeeting, runMeetingAction } from "apps/device/store/meeting-actions";
+import { meetingActions } from "apps/device/store/actions";
 
 import ButtonSet from "./components/ButtonSet";
 
@@ -36,7 +36,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createMeeting: (minutes, source) => dispatch(runMeetingAction(createMeeting(minutes), source))
+  createMeeting: (minutes, source) => {
+    dispatch(meetingActions.createMeeting(minutes));
+    dispatch(meetingActions.setActionSource(source));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RoomAvailable);

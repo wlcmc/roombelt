@@ -5,9 +5,9 @@ import { connect } from "react-redux";
 
 import { LoaderButton, Button } from "theme/index";
 import { isActionErrorSelector, isRetryingActionSelector } from "apps/device/store/selectors";
-import { cancelMeetingAction, retryMeetingAction } from "apps/device/store/meeting-actions";
 
 import ButtonSet from "./components/ButtonSet";
+import { meetingActions } from "apps/device/store/actions";
 
 const ErrorTitle = styled.div`
   display: inline-block;
@@ -40,8 +40,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  retryAction: () => dispatch(retryMeetingAction()),
-  cancelAction: () => dispatch(cancelMeetingAction())
+  retryAction: () => dispatch(meetingActions.retry()),
+  cancelAction: () => dispatch(meetingActions.endAction())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActionError);

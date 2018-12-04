@@ -1,112 +1,184 @@
+import { action } from "utils/redux";
 import screenfull from "screenfull";
 import axios from "axios";
 
 import { createDevice, getDeviceDetails, removeAuth } from "services/api";
 
 import {
+  calendarNameSelector,
+  currentActionSelector,
+  currentMeetingSelector,
   isCalendarSelectedSelector,
   isInitializedSelector,
   isInOfflineModeSelector
 } from "apps/device/store/selectors";
-import { DEVICE_MEETING_ACTION_RESET } from "apps/device/store/meeting-actions";
 import { changeLanguage } from "i18n";
 
-export const DEVICE_REMOVED = "DEVICE/REMOVED";
-export const DEVICE_INITIALIZED = "DEVICE/INITIALIZED";
-export const DEVICE_SET_CLOCK = "DEVICE/SET_CLOCK";
-export const DEVICE_SET_FULL_SCREEN_STATE = "DEVICE/SET_FULL_SCREEN_STATE";
-export const DEVICE_SET_OFFLINE_STATUS = "DEVICE/SET_OFFLINE_STATUS";
-export const DEVICE_SET_DATA = "DEVICE/SET_DATA";
+import i18next from "i18next";
+import * as api from "services/api";
 
-export const initializeDevice = () => async (dispatch, getState) => {
-  if (isInitializedSelector(getState())) {
-    return;
-  }
-
-  dispatch({ type: DEVICE_INITIALIZED });
-
-  try {
-    await getDeviceDetails();
-  } catch (error) {
-    if (error.response && error.response.status === 403) {
-      await createDevice();
-    }
-  }
-
-  dispatch(startClock());
-  dispatch(fetchDeviceDetails());
-  dispatch(initializeFullScreenSupport());
-  dispatch(initializeOfflineObserver());
-};
-
-export const disconnectDevice = () => async dispatch => {
-  await removeAuth();
-  window.location.reload();
-};
-
-export const startClock = () => dispatch => {
-  dispatch({ type: DEVICE_SET_CLOCK, timestamp: Date.now() });
-  
-  setInterval(() => dispatch({ type: DEVICE_SET_CLOCK, timestamp: Date.now() }), 10 * 1000);
-};
-
-export const initializeFullScreenSupport = () => dispatch => {
-  dispatch(updateFullScreenInfo());
-
-  if (typeof screenfull.onchange === "function") {
-    screenfull.onchange(() => dispatch(updateFullScreenInfo()));
-  }
-};
-
-export const updateFullScreenInfo = () => ({
-  type: DEVICE_SET_FULL_SCREEN_STATE,
-  isSupported: screenfull.enabled,
-  isFullScreen: screenfull.isFullscreen
-});
-
-export const requestFullScreen = () => () => {
-  if (screenfull.enabled) {
-    screenfull.request();
-  }
-};
-
-export const initializeOfflineObserver = () => (dispatch, getState) => {
-  const successCallback = result => {
-    if (isInOfflineModeSelector(getState())) {
-      dispatch({ type: DEVICE_MEETING_ACTION_RESET });
-      dispatch({ type: DEVICE_SET_OFFLINE_STATUS, isOffline: false });
+export const deviceActions = {
+  markInitialized: action(),
+  initialize: () => async (dispatch, getState) => {
+    if (isInitializedSelector(getState())) {
+      return;
     }
 
-    return result;
-  };
+    dispatch(deviceActions.markInitialized());
 
-  const errorCallback = error => {
-    if (error.response === undefined && !isInOfflineModeSelector(getState())) {
-      dispatch({ type: DEVICE_SET_OFFLINE_STATUS, isOffline: true });
+    try {
+      await getDeviceDetails();
+    } catch (error) {
+      if (error.response && error.response.status === 403) {
+        await createDevice();
+      }
     }
 
-    return Promise.reject(error);
-  };
+    dispatch(deviceActions.startClock());
+    dispatch(deviceActions.fetchDeviceData());
+    dispatch(deviceActions.initializeFullScreenSupport());
+    dispatch(deviceActions.initializeOfflineObserver());
+  },
 
-  axios.interceptors.response.use(successCallback, errorCallback);
+  updateDeviceData: action(device => ({ device })),
+  fetchDeviceData: () => async (dispatch, getState) => {
+    try {
+      const device = await getDeviceDetails();
+
+      dispatch(deviceActions.updateDeviceData(device));
+      dispatch(deviceActions.setLanguage(device.language));
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        dispatch(deviceActions.markRemoved());
+      }
+    }
+
+    const timeout = isCalendarSelectedSelector(getState()) ? 30000 : 5000;
+    setTimeout(() => dispatch(deviceActions.fetchDeviceData()), timeout);
+  },
+
+  updateClock: action(timestamp => ({ timestamp })),
+  startClock: () => dispatch => {
+    dispatch(deviceActions.updateClock(Date.now()));
+
+    setInterval(() => dispatch(deviceActions.updateClock(Date.now())), 10 * 1000);
+  },
+
+  updateFullScreenState: action((isSupported, isFullScreen) => ({ isSupported, isFullScreen })),
+  initializeFullScreenSupport: () => dispatch => {
+    const updateStatus = () => {
+      dispatch(deviceActions.updateFullScreenState(screenfull.enabled, screenfull.isFullscreen));
+    };
+
+    updateStatus();
+
+    if (typeof screenfull.onchange === "function") {
+      screenfull.onchange(updateStatus);
+    }
+  },
+  requestFullScreen: () => () => {
+    if (screenfull.enabled) {
+      screenfull.request();
+    }
+  },
+
+  updateOfflineStatus: action(isOffline => ({ isOffline })),
+  initializeOfflineObserver: () => (dispatch, getState) => {
+    const successCallback = result => {
+      if (isInOfflineModeSelector(getState())) {
+        dispatch(meetingActions.endAction());
+        dispatch(deviceActions.updateOfflineStatus(false));
+      }
+
+      return result;
+    };
+
+    const errorCallback = error => {
+      if (error.response === undefined && !isInOfflineModeSelector(getState())) {
+        dispatch(deviceActions.updateOfflineStatus(true));
+      }
+
+      return Promise.reject(error);
+    };
+
+    axios.interceptors.response.use(successCallback, errorCallback);
+  },
+
+  markRemoved: action(),
+  disconnectDevice: () => async () => {
+    await removeAuth();
+    window.location.reload();
+  },
+
+  setLanguage: language => () => changeLanguage(language)
 };
 
-export const fetchDeviceDetails = () => async (dispatch, getState) => {
-  try {
-    const device = await getDeviceDetails();
+export const meetingActions = {
+  startAction: action((action) => ({ action })),
+  endAction: action(),
+  setActionError: action(),
+  setActionSource: action(source => ({ source })),
 
-    dispatch({ type: DEVICE_SET_DATA, device });
-    dispatch(setLanguage(device.language));
-  } catch (error) {
-    if (error.response && error.response.status === 404) {
-      dispatch({ type: DEVICE_REMOVED });
+  retry: () => (dispatch, getState) => dispatch(currentActionSelector(getState())),
+
+  createMeeting: timeInMinutes => (dispatch, getState) => {
+    meetingActions.startAction(meetingActions.createMeeting(timeInMinutes));
+
+    const roomName = calendarNameSelector(getState());
+    const createMeetingPromise = api.createMeeting(timeInMinutes, i18next.t("meeting.quick-meeting-title", { roomName }));
+
+    dispatch(meetingActions.handleMeetingActionPromise(createMeetingPromise));
+  },
+
+  cancelMeeting: () => async (dispatch, getState) => {
+    meetingActions.startAction(meetingActions.cancelMeeting());
+
+    const currentMeetingId = currentMeetingSelector(getState()).id;
+    const deleteMeetingPromise = api.deleteMeeting(currentMeetingId);
+
+    dispatch(meetingActions.handleMeetingActionPromise(deleteMeetingPromise));
+  },
+
+  endMeeting: () => dispatch => {
+    meetingActions.startAction(meetingActions.endMeeting());
+
+    dispatch(meetingActions.updateCurrentMeeting({ endNow: true }));
+  },
+
+  checkInToMeeting: () => dispatch => {
+    meetingActions.startAction(meetingActions.checkInToMeeting());
+
+    dispatch(meetingActions.updateCurrentMeeting({ checkIn: true }));
+  },
+
+  extendMeeting: timeInMinutes => async dispatch => {
+    meetingActions.startAction(meetingActions.extendMeeting(timeInMinutes));
+
+    dispatch(meetingActions.updateCurrentMeeting({ extensionTime: timeInMinutes }));
+  },
+
+  startMeetingEarly: () => async dispatch => {
+    meetingActions.startAction(meetingActions.startMeetingEarly());
+
+    dispatch(meetingActions.updateCurrentMeeting({ checkIn: true, startNow: true }));
+  },
+
+  updateCurrentMeeting: options => (dispatch, getState) => {
+    const currentMeetingId = currentMeetingSelector(getState()).id;
+    const updateMeetingPromise = api.updateMeeting(currentMeetingId, options);
+
+    dispatch(meetingActions.handleMeetingActionPromise(updateMeetingPromise));
+  },
+
+  handleMeetingActionPromise: actionPromise => async dispatch => {
+    try {
+      await actionPromise;
+
+      dispatch(deviceActions.updateDeviceData(await api.getDeviceDetails()));
+      dispatch(meetingActions.endAction());
+    } catch (error) {
+      console.error(error);
+      dispatch(meetingActions.setActionError());
     }
   }
-
-  const timeout = isCalendarSelectedSelector(getState()) ? 30000 : 5000;
-  setTimeout(() => dispatch(fetchDeviceDetails()), timeout);
-};
-
-export const setLanguage = language => () => {
-  changeLanguage(language);
 };

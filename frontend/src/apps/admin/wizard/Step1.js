@@ -4,7 +4,7 @@ import { Text, Input, LoaderButton, Button } from "theme";
 import styled from "styled-components/macro";
 import WizardStepLayout from "./WizardStepLayout";
 import { useWizard } from "./Wizard";
-import { connectDeviceWizard } from "apps/admin/store/actions";
+import { connectDeviceWizardActions } from "apps/admin/store/actions";
 
 const ErrorMessage = styled.p`
   font-size: 12px;
@@ -63,9 +63,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onChangeConnectionCode: connectionCode => dispatch(connectDeviceWizard.firstStep.setConnectionCode(connectionCode)),
-  onCancel: () => dispatch(connectDeviceWizard.hide()),
-  onSubmit: () => dispatch(connectDeviceWizard.firstStep.submit())
+  onChangeConnectionCode: connectionCode => dispatch(connectDeviceWizardActions.firstStep.setConnectionCode(connectionCode)),
+  onCancel: () => dispatch(connectDeviceWizardActions.hide()),
+  onSubmit: () => dispatch(connectDeviceWizardActions.firstStep.submit())
 });
 
 export default {

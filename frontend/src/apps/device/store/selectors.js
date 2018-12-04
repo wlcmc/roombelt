@@ -7,7 +7,7 @@ export const timestampSelector = state => state.timestamp;
 export const deviceSelector = state => state.device;
 export const isInOfflineModeSelector = state => state.appState.isOffline;
 export const connectionCodeSelector = state => state.device && state.device.connectionCode;
-export const currentMeetingActionSelector = state => state.currentMeetingActions.action;
+export const currentActionSelector = state => state.currentMeetingActions.action;
 export const currentActionSourceSelector = state => state.currentMeetingActions.source;
 export const isActionErrorSelector = state => state.currentMeetingActions.isError;
 export const isRetryingActionSelector = state => state.currentMeetingActions.isRetrying;

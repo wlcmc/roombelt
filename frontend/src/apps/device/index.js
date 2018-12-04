@@ -2,12 +2,12 @@ import React from "react";
 import { Provider } from "react-redux";
 
 import store from "./store";
-import { initializeDevice } from "./store/actions";
+import { deviceActions } from "./store/actions";
 import Router from "./router";
 
 class DeviceApp extends React.PureComponent {
   componentDidMount() {
-    store.dispatch(initializeDevice());
+    store.dispatch(deviceActions.initialize());
   }
 
   render() {

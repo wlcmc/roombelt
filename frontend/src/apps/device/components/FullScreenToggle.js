@@ -3,7 +3,7 @@ import i18next from "i18next";
 import styled from "styled-components/macro";
 import { connect } from "react-redux";
 import IoAndroidExpand from "react-icons/lib/io/android-expand";
-import { requestFullScreen } from "apps/device/store/actions";
+import { deviceActions } from "apps/device/store/actions";
 
 const Wrapper = styled.div`
   position: absolute;
@@ -32,7 +32,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestFullScreen: () => dispatch(requestFullScreen())
+  requestFullScreen: () => dispatch(deviceActions.requestFullScreen())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FullScreenToggle);

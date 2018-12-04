@@ -1,22 +1,11 @@
 import {
-  DEVICE_SET_DATA,
-  DEVICE_SET_CLOCK,
-  DEVICE_SET_FULL_SCREEN_STATE,
-  DEVICE_SET_OFFLINE_STATUS,
-  DEVICE_INITIALIZED, DEVICE_REMOVED
+  deviceActions, meetingActions
 } from "apps/device/store/actions";
-
-import {
-  DEVICE_MEETING_ACTION_START,
-  DEVICE_MEETING_ACTION_RESET,
-  DEVICE_MEETING_ACTION_ERROR,
-  DEVICE_MEETING_ACTION_RETRY
-} from "apps/device/store/meeting-actions";
 
 import { combineReducers } from "redux";
 
-const timestamp = (state = 0, action) => (action.type === DEVICE_SET_CLOCK ? action.timestamp : state);
-const device = (state = null, action) => (action.type === DEVICE_SET_DATA ? action.device : state);
+const timestamp = (state = 0, action) => (action.type === deviceActions.updateClock ? action.timestamp : state);
+const device = (state = null, action) => (action.type === deviceActions.updateDeviceData ? action.device : state);
 
 const defaultCurrentMeetingActionsState = {
   source: null,
@@ -27,14 +16,14 @@ const defaultCurrentMeetingActionsState = {
 
 const currentMeetingActions = (state = defaultCurrentMeetingActionsState, action) => {
   switch (action.type) {
-    case DEVICE_MEETING_ACTION_START:
-      return { source: action.source, action: action.action, isError: false, isRetrying: false };
-    case DEVICE_MEETING_ACTION_RESET:
-      return defaultCurrentMeetingActionsState;
-    case DEVICE_MEETING_ACTION_ERROR:
+    case meetingActions.setActionSource:
+      return { ...state, source: action.source };
+    case meetingActions.startAction:
+      return { ...state, action: action, isError: false, isRetrying: state.action !== null };
+    case meetingActions.setActionError:
       return { ...state, isError: true, isRetrying: false };
-    case DEVICE_MEETING_ACTION_RETRY:
-      return { ...state, isError: false, isRetrying: true };
+    case meetingActions.endAction:
+      return defaultCurrentMeetingActionsState;
     default:
       return state;
   }
@@ -49,11 +38,11 @@ const appState = (state = {
   switch (action.type) {
     case ":device--unexpected-error":
       return { ...state, unexpectedError: action.error };
-    case DEVICE_INITIALIZED:
+    case deviceActions.markInitialized:
       return { ...state, isInitialized: true };
-    case DEVICE_REMOVED:
+    case deviceActions.markRemoved:
       return { ...state, isRemoved: true };
-    case DEVICE_SET_OFFLINE_STATUS:
+    case deviceActions.updateOfflineStatus:
       return { ...state, isOffline: action.isOffline };
     default:
       return state;
@@ -62,7 +51,7 @@ const appState = (state = {
 
 const fullScreen = (state = { isFullScreen: null, isSupported: null }, action) => {
   switch (action.type) {
-    case DEVICE_SET_FULL_SCREEN_STATE:
+    case deviceActions.updateFullScreenState:
       return { isFullScreen: action.isFullScreen, isSupported: action.isSupported };
     default:
       return state;

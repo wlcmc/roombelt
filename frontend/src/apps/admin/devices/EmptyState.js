@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components/macro";
 
 import { Card, Button, Text } from "../../../theme";
-import { connectDeviceWizard } from "apps/admin/store/actions";
+import { connectDeviceWizardActions } from "apps/admin/store/actions";
 
 const ImageBackground = styled.div`
   width: 200px;
@@ -44,7 +44,7 @@ const EmptyState = props => (
 );
 
 const mapDispatchToProps = dispatch => ({
-  onConnectDeviceClick: () => dispatch(connectDeviceWizard.show())
+  onConnectDeviceClick: () => dispatch(connectDeviceWizardActions.show())
 });
 
 export default connect(null, mapDispatchToProps)(EmptyState);

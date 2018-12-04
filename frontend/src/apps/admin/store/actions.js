@@ -1,3 +1,5 @@
+import { action } from "utils/redux";
+
 import {
   connectDevice,
   disconnectDevice,
@@ -9,127 +11,93 @@ import {
 
 import { newDeviceData, editDeviceData, removedDeviceId } from "./selectors";
 
-export const SET_CALENDARS = "SET_CALENDARS";
-export const SET_DEVICES = "SET_DEVICES";
-export const SET_USER_DETAILS = "SET_USER_DETAILS";
+export const adminActions = {
+  setDevices: action(devices => ({ devices })),
+  setCalendars: action(calendars => ({ calendars })),
+  setUserDetails: action(user => ({ user })),
+  initialFetch: () => async dispatch => {
+    const [calendars, devices, user] = await Promise.all([
+      getCalendars(),
+      getConnectedDevices(),
+      getUserDetails()
+    ]);
 
-export const setDevices = devices => ({ type: SET_DEVICES, devices });
-
-export const initialFetch = () => async dispatch => {
-  const [calendars, devices, user] = await Promise.all([
-    getCalendars(),
-    getConnectedDevices(),
-    getUserDetails()
-  ]);
-
-  dispatch({ type: SET_CALENDARS, calendars });
-  dispatch({ type: SET_USER_DETAILS, user });
-  dispatch(setDevices(devices));
-};
-
-export const CONNECT_DEVICE_WIZARD = {
-  SHOW: "SHOW_WIZARD",
-  HIDE: "HIDE_WIZARD",
-  FIRST_STEP: {
-    SET_CONNECTION_CODE: "FIRST_STEP/SET_WIZARD_CONNECTION_CODE",
-    START_SUBMITTING: "FIRST_STEP/START_SUBMITTING_FIRST_WIZARD_STEP",
-    SUBMIT_SUCCESS: "FIRST_STEP/WIZARD_FIRST_STEP_SUCCESS",
-    SUBMIT_ERROR: "FIRST_STEP/WIZARD_FIRST_STEP_ERROR"
-  },
-  SECOND_STEP: {
-    SET_DEVICE_TYPE: "SECOND_STEP/SET_DEVICE_TYPE",
-    NEXT_STEP: "SECOND_STEP/NEXT"
-  },
-  THIRD_STEP: {
-    SET_CALENDAR: "THIRD_STEP/SET_WIZARD_CALENDAR",
-    SET_LANGUAGE: "THIRD_STEP/SET_WIZARD_LANGUAGE",
-    PREVIOUS_STEP: "THIRD_STEP/PREVIOUS_STEP",
-    START_SUBMITTING: "THIRD_STEP/START_SUBMITTING_SECOND_WIZARD_STEP"
+    dispatch(adminActions.setCalendars(calendars));
+    dispatch(adminActions.setUserDetails(user));
+    dispatch(adminActions.setDevices(devices));
   }
 };
 
-export const connectDeviceWizard = {
-  show: () => ({ type: CONNECT_DEVICE_WIZARD.SHOW }),
-  hide: () => ({ type: CONNECT_DEVICE_WIZARD.HIDE }),
+export const connectDeviceWizardActions = {
+  show: action(),
+  hide: action(),
   firstStep: {
-    setConnectionCode: connectionCode => ({
-      type: CONNECT_DEVICE_WIZARD.FIRST_STEP.SET_CONNECTION_CODE,
-      connectionCode
-    }),
+    setConnectionCode: action(connectionCode => ({ connectionCode })),
+    startSubmitting: action(),
+    submitSuccess: action(deviceId => ({ deviceId })),
+    submitError: action(errorMessage => ({ errorMessage })),
     submit: () => async (dispatch, getState) => {
-      dispatch({ type: CONNECT_DEVICE_WIZARD.FIRST_STEP.START_SUBMITTING });
+      dispatch(connectDeviceWizardActions.firstStep.startSubmitting());
 
       try {
         const { connectionCode } = newDeviceData(getState());
         const device = await connectDevice(connectionCode);
 
-        dispatch({ type: CONNECT_DEVICE_WIZARD.FIRST_STEP.SUBMIT_SUCCESS, deviceId: device.id });
+        dispatch(connectDeviceWizardActions.firstStep.submitSuccess(device.id));
       } catch (error) {
         const isInvalidConnectionCode = error.response && error.response.status === 404;
         const errorMessage = isInvalidConnectionCode ? "Invalid connection code" : "Unknown error. Please try again later";
 
-        dispatch({ type: CONNECT_DEVICE_WIZARD.FIRST_STEP.SUBMIT_ERROR, errorMessage });
+        dispatch(connectDeviceWizardActions.firstStep.submitError(errorMessage));
       }
     }
   },
   secondStep: {
-    setDeviceType: deviceType => ({ type: CONNECT_DEVICE_WIZARD.SECOND_STEP.SET_DEVICE_TYPE, deviceType }),
-    nextStep: () => ({ type: CONNECT_DEVICE_WIZARD.SECOND_STEP.NEXT_STEP })
+    setDeviceType: action(deviceType => ({ deviceType })),
+    nextStep: action()
   },
   thirdStep: {
-    setCalendarId: calendarId => ({ type: CONNECT_DEVICE_WIZARD.THIRD_STEP.SET_CALENDAR, calendarId }),
-    setLanguage: language => ({ type: CONNECT_DEVICE_WIZARD.THIRD_STEP.SET_LANGUAGE, language }),
-    previousStep: () => ({ type: CONNECT_DEVICE_WIZARD.THIRD_STEP.PREVIOUS_STEP }),
+    setCalendarId: action(calendarId => ({ calendarId })),
+    setLanguage: action(language => ({ language })),
+    previousStep: action(),
+    startSubmitting: action(),
     submit: () => async (dispatch, getState) => {
-      dispatch({ type: CONNECT_DEVICE_WIZARD.THIRD_STEP.START_SUBMITTING });
+      dispatch(connectDeviceWizardActions.thirdStep.startSubmitting());
 
       const { deviceId, deviceType, calendarId, language } = newDeviceData(getState());
       await setOptionsForDevice(deviceId, deviceType, calendarId, language);
 
-      dispatch(setDevices(await getConnectedDevices()));
-      dispatch(connectDeviceWizard.hide());
+      dispatch(adminActions.setDevices(await getConnectedDevices()));
+      dispatch(connectDeviceWizardActions.hide());
     }
   }
 };
 
-export const EDIT_DEVICE_DIALOG = {
-  SHOW: "SHOW_EDIT_DEVICE_DIALOG",
-  HIDE: "HIDE_EDIT_DEVICE_DIALOG",
-  SET_DEVICE_TYPE: "SET_EDIT_DEVICE_TYPE",
-  SET_CALENDAR: "SET_EDIT_DEVICE_CALENDAR",
-  SET_LANGUAGE: "SET_EDIT_DEVICE_LANGUAGE",
-  START_SUBMITTING: "EDIT_DEVICE_SUBMITTED"
-};
-
-export const editDeviceDialog = {
-  show: device => ({ type: EDIT_DEVICE_DIALOG.SHOW, device }),
-  hide: () => ({ type: EDIT_DEVICE_DIALOG.HIDE }),
-  setDeviceType: deviceType => ({ type: EDIT_DEVICE_DIALOG.SET_DEVICE_TYPE, deviceType }),
-  setCalendarId: calendarId => ({ type: EDIT_DEVICE_DIALOG.SET_CALENDAR, calendarId }),
-  setLanguage: language => ({ type: EDIT_DEVICE_DIALOG.SET_LANGUAGE, language }),
+export const editDeviceDialogActions = {
+  show: action(device => ({ device })),
+  hide: action(),
+  setDeviceType: action(deviceType => ({ deviceType })),
+  setCalendarId: action(calendarId => ({ calendarId })),
+  setLanguage: action(language => ({ language })),
+  startSubmitting: action(),
   submit: () => async (dispatch, getState) => {
     const { deviceId, deviceType, calendarId, language } = editDeviceData(getState());
 
-    dispatch({ type: EDIT_DEVICE_DIALOG.START_SUBMITTING });
+    dispatch(editDeviceDialogActions.startSubmitting());
     await setOptionsForDevice(deviceId, deviceType, calendarId, language);
 
-    dispatch(setDevices(await getConnectedDevices()));
-    dispatch(editDeviceDialog.hide());
+    dispatch(adminActions.setDevices(await getConnectedDevices()));
+    dispatch(editDeviceDialogActions.hide());
   }
 };
 
-export const REMOVE_DEVICE_DIALOG = {
-  SHOW: "SHOW_REMOVE_DEVICE_DIALOG",
-  HIDE: "HIDE_REMOVE_DEVICE_DIALOG"
-};
-
-export const removeDeviceDialog = {
-  show: device => ({ type: REMOVE_DEVICE_DIALOG.SHOW, deviceId: device.id }),
-  hide: () => ({ type: REMOVE_DEVICE_DIALOG.HIDE }),
+export const removeDeviceDialogActions = {
+  show: action(device => ({ deviceId: device.id })),
+  hide: action(),
   submit: () => async (dispatch, getState) => {
     await disconnectDevice(removedDeviceId(getState()));
 
-    dispatch(setDevices(await getConnectedDevices()));
-    dispatch(removeDeviceDialog.hide());
+    dispatch(adminActions.setDevices(await getConnectedDevices()));
+    dispatch(removeDeviceDialogActions.hide());
   }
 };

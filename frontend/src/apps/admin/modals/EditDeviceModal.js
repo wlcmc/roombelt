@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Modal, Button, LoaderButton, Select } from "theme";
 import { PaidDisclaimer } from "apps/admin/Paid";
 import { translations } from "i18n";
-import { editDeviceDialog } from "apps/admin/store/actions";
+import { editDeviceDialogActions } from "apps/admin/store/actions";
 
 const FormField = styled.div`
   margin-bottom: 20px;
@@ -94,11 +94,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: () => dispatch(editDeviceDialog.submit()),
-  onCancel: () => dispatch(editDeviceDialog.hide()),
-  onChangeType: deviceType => dispatch(editDeviceDialog.setDeviceType(deviceType)),
-  onChangeCalendar: calendarId => dispatch(editDeviceDialog.setCalendarId(calendarId)),
-  onChangeLanguage: language => dispatch(editDeviceDialog.setLanguage(language))
+  onSubmit: () => dispatch(editDeviceDialogActions.submit()),
+  onCancel: () => dispatch(editDeviceDialogActions.hide()),
+  onChangeType: deviceType => dispatch(editDeviceDialogActions.setDeviceType(deviceType)),
+  onChangeCalendar: calendarId => dispatch(editDeviceDialogActions.setCalendarId(calendarId)),
+  onChangeLanguage: language => dispatch(editDeviceDialogActions.setLanguage(language))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditDeviceModal);

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import EditDeviceModal from "./EditDeviceModal";
 import RemoveDeviceModal from "./RemoveDeviceModal";
-import { removeDeviceDialog } from "apps/admin/store/actions";
+import { removeDeviceDialogActions } from "apps/admin/store/actions";
 
 const name = (device, calendars) => {
   return device ? calendars[device.calendarId] && calendars[device.calendarId].summary : null;
@@ -27,8 +27,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onConfirmRemoveDevice: () => dispatch(removeDeviceDialog.submit()),
-  onCancelRemoveDevice: () => dispatch(removeDeviceDialog.hide())
+  onConfirmRemoveDevice: () => dispatch(removeDeviceDialogActions.submit()),
+  onCancelRemoveDevice: () => dispatch(removeDeviceDialogActions.hide())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Modals);

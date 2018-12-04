@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components/macro";
-import { ensureElement } from "services/react-utils";
+import { ensureElement } from "utils/react";
 
 const WizardLayout = styled.div`
   width: 100%;

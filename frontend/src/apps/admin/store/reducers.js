@@ -1,17 +1,15 @@
 import { combineReducers } from "redux";
 
 import {
-  SET_CALENDARS,
-  SET_DEVICES,
-  SET_USER_DETAILS,
-  CONNECT_DEVICE_WIZARD,
-  EDIT_DEVICE_DIALOG,
-  REMOVE_DEVICE_DIALOG
+  adminActions,
+  editDeviceDialogActions,
+  connectDeviceWizardActions,
+  removeDeviceDialogActions
 } from "apps/admin/store/actions";
 
 const user = (state = { displayName: "", avatarUrl: undefined }, action) => {
   switch (action.type) {
-    case SET_USER_DETAILS:
+    case adminActions.setUserDetails:
       return { displayName: action.user.displayName, avatarUrl: action.user.avatarUrl };
     default:
       return state;
@@ -20,7 +18,7 @@ const user = (state = { displayName: "", avatarUrl: undefined }, action) => {
 
 const devices = (state = { isLoaded: false, data: [] }, action) => {
   switch (action.type) {
-    case SET_DEVICES:
+    case adminActions.setDevices:
       return { isLoaded: true, data: action.devices };
     default:
       return state;
@@ -29,7 +27,7 @@ const devices = (state = { isLoaded: false, data: [] }, action) => {
 
 const calendars = (state = {}, action) => {
   switch (action.type) {
-    case SET_CALENDARS:
+    case adminActions.setCalendars:
       return action.calendars.reduce((acc, calendar) => ({ ...acc, [calendar.id]: calendar }), {});
     default:
       return state;
@@ -38,17 +36,17 @@ const calendars = (state = {}, action) => {
 
 const editedDevice = (state = { data: null, isSaving: false }, action) => {
   switch (action.type) {
-    case EDIT_DEVICE_DIALOG.SHOW:
+    case editDeviceDialogActions.show:
       return { data: JSON.parse(JSON.stringify(action.device)) };
-    case EDIT_DEVICE_DIALOG.HIDE:
+    case editDeviceDialogActions.hide:
       return { data: null };
-    case EDIT_DEVICE_DIALOG.START_SUBMITTING:
+    case editDeviceDialogActions.startSubmitting:
       return { data: state.data, isSaving: true };
-    case EDIT_DEVICE_DIALOG.SET_DEVICE_TYPE:
+    case editDeviceDialogActions.setDeviceType:
       return { data: { ...state.data, deviceType: action.deviceType } };
-    case EDIT_DEVICE_DIALOG.SET_CALENDAR:
+    case editDeviceDialogActions.setCalendarId:
       return { data: { ...state.data, calendarId: action.calendarId } };
-    case EDIT_DEVICE_DIALOG.SET_LANGUAGE:
+    case editDeviceDialogActions.setLanguage:
       return { data: { ...state.data, language: action.language } };
     default:
       return state;
@@ -57,9 +55,9 @@ const editedDevice = (state = { data: null, isSaving: false }, action) => {
 
 const removedDevice = (state = null, action) => {
   switch (action.type) {
-    case REMOVE_DEVICE_DIALOG.SHOW:
+    case removeDeviceDialogActions.show:
       return action.deviceId;
-    case REMOVE_DEVICE_DIALOG.HIDE:
+    case removeDeviceDialogActions.hide:
       return null;
     default:
       return state;
@@ -79,29 +77,29 @@ const defaultConnectDeviceWizardState = {
 
 const connectDeviceWizard = (state = defaultConnectDeviceWizardState, action) => {
   switch (action.type) {
-    case CONNECT_DEVICE_WIZARD.SHOW:
+    case connectDeviceWizardActions.show:
       return { ...defaultConnectDeviceWizardState, currentStep: "connection-code" };
-    case CONNECT_DEVICE_WIZARD.HIDE:
+    case connectDeviceWizardActions.hide:
       return defaultConnectDeviceWizardState;
-    case CONNECT_DEVICE_WIZARD.FIRST_STEP.SET_CONNECTION_CODE:
+    case connectDeviceWizardActions.firstStep.setConnectionCode:
       return { ...state, connectionCode: action.connectionCode.replace(/\D/g, "") };
-    case CONNECT_DEVICE_WIZARD.FIRST_STEP.START_SUBMITTING:
+    case connectDeviceWizardActions.firstStep.startSubmitting:
       return { ...state, errorMessage: null, isSubmitting: true };
-    case CONNECT_DEVICE_WIZARD.FIRST_STEP.SUBMIT_SUCCESS:
+    case connectDeviceWizardActions.firstStep.submitSuccess:
       return { ...state, currentStep: "device-type", isSubmitting: false, deviceId: action.deviceId };
-    case CONNECT_DEVICE_WIZARD.FIRST_STEP.SUBMIT_ERROR:
+    case connectDeviceWizardActions.firstStep.submitError:
       return { ...state, errorMessage: action.errorMessage, isSubmitting: false };
-    case CONNECT_DEVICE_WIZARD.SECOND_STEP.SET_DEVICE_TYPE:
+    case connectDeviceWizardActions.secondStep.setDeviceType:
       return { ...state, deviceType: action.deviceType };
-    case CONNECT_DEVICE_WIZARD.SECOND_STEP.NEXT_STEP:
+    case connectDeviceWizardActions.secondStep.nextStep:
       return { ...state, currentStep: "configuration" };
-    case CONNECT_DEVICE_WIZARD.THIRD_STEP.PREVIOUS_STEP:
+    case connectDeviceWizardActions.thirdStep.previousStep:
       return { ...state, currentStep: "device-type" };
-    case CONNECT_DEVICE_WIZARD.THIRD_STEP.SET_CALENDAR:
+    case connectDeviceWizardActions.thirdStep.setCalendarId:
       return { ...state, calendarId: action.calendarId };
-    case CONNECT_DEVICE_WIZARD.THIRD_STEP.SET_LANGUAGE:
+    case connectDeviceWizardActions.thirdStep.setLanguage:
       return { ...state, language: action.language };
-    case CONNECT_DEVICE_WIZARD.THIRD_STEP.START_SUBMITTING:
+    case connectDeviceWizardActions.thirdStep.startSubmitting:
       return { ...state, errorMessage: null, isSubmitting: true };
     default:
       return state;

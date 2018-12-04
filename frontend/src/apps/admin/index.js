@@ -1,13 +1,13 @@
 import React from "react";
 import { Provider } from "react-redux";
 
-import { initialFetch } from "apps/admin/store/actions";
+import { adminActions } from "apps/admin/store/actions";
 
 import store from "./store";
 
 class AdminApp extends React.PureComponent {
   componentDidMount() {
-    store.dispatch(initialFetch());
+    store.dispatch(adminActions.initialFetch());
 
     if (module.hot) {
       module.hot.accept("./Dashboard", () => this.forceUpdate());

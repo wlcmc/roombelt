@@ -14,7 +14,7 @@ import SingleCalendar from "./single-calendar";
 import ConnectionCode from "./connect/ConnectionCode";
 import NoCalendar from "./connect/NoCalendar";
 import FatalError from "theme/layouts/FatalError";
-import { disconnectDevice } from "apps/device/store/actions";
+import { deviceActions } from "apps/device/store/actions";
 
 const Router = ({ connectionCode, isDashboardDevice, isCalendarSelected, isDeviceConnected, isDeviceRemoved, isOffline, unexpectedError, disconnectDevice }) => {
   if (unexpectedError) return <FatalError title={unexpectedError.message}/>;
@@ -43,7 +43,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  disconnectDevice: () => dispatch(disconnectDevice())
+  disconnectDevice: () => dispatch(deviceActions.disconnectDevice())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Router);

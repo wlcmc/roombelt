@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import WizardStepLayout from "./WizardStepLayout";
 import { Text, Select, Button } from "theme";
-import { connectDeviceWizard } from "apps/admin/store/actions";
+import { connectDeviceWizardActions } from "apps/admin/store/actions";
 import { useWizard } from "./Wizard";
 import { PaidDisclaimer } from "apps/admin/Paid";
 
@@ -46,8 +46,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setDeviceType: type => dispatch(connectDeviceWizard.secondStep.setDeviceType(type)),
-  onSubmit: () => dispatch(connectDeviceWizard.secondStep.nextStep())
+  setDeviceType: type => dispatch(connectDeviceWizardActions.secondStep.setDeviceType(type)),
+  onSubmit: () => dispatch(connectDeviceWizardActions.secondStep.nextStep())
 });
 
 export default {

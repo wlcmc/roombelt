@@ -3,7 +3,7 @@ import { Text, Select, Button, LoaderButton } from "theme";
 import WizardStepLayout from "./WizardStepLayout";
 import { PaidDisclaimer } from "apps/admin/Paid";
 import { translations } from "../../../i18n";
-import { connectDeviceWizard } from "apps/admin/store/actions";
+import { connectDeviceWizardActions } from "apps/admin/store/actions";
 import { connect } from "react-redux";
 import { useWizard } from "apps/admin/wizard/Wizard";
 
@@ -78,10 +78,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onBack: () => dispatch(connectDeviceWizard.thirdStep.previousStep()),
-  onSubmit: () => dispatch(connectDeviceWizard.thirdStep.submit()),
-  onSetCalendar: calendarId => dispatch(connectDeviceWizard.thirdStep.setCalendarId(calendarId)),
-  onSetLanguage: language => dispatch(connectDeviceWizard.thirdStep.setLanguage(language))
+  onBack: () => dispatch(connectDeviceWizardActions.thirdStep.previousStep()),
+  onSubmit: () => dispatch(connectDeviceWizardActions.thirdStep.submit()),
+  onSetCalendar: calendarId => dispatch(connectDeviceWizardActions.thirdStep.setCalendarId(calendarId)),
+  onSetLanguage: language => dispatch(connectDeviceWizardActions.thirdStep.setLanguage(language))
 });
 
 export default {

@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 
 import { LoaderButton, Button } from "theme";
 import { prettyFormatMinutes } from "services/formatting";
-import { endMeeting, extendMeeting, runMeetingAction } from "apps/device/store/meeting-actions";
 import {
   currentActionSourceSelector,
   currentMeetingSelector,
@@ -13,6 +12,7 @@ import {
 
 import ButtonSet from "./components/ButtonSet";
 import ConfirmBar from "./components/ConfirmBar";
+import { meetingActions } from "apps/device/store/actions";
 
 class MeetingCheckedIn extends React.PureComponent {
   state = { idOfMeetingToEnd: null };
@@ -77,8 +77,14 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  extendMeeting: (minutes, source) => dispatch(runMeetingAction(extendMeeting(minutes), source)),
-  endMeeting: (source) => dispatch(runMeetingAction(endMeeting(), source))
+  extendMeeting: (minutes, source) => {
+    dispatch(meetingActions.extendMeeting(minutes));
+    dispatch(meetingActions.setActionSource(source));
+  },
+  endMeeting: (source) => {
+    dispatch(meetingActions.endMeeting());
+    dispatch(meetingActions.setActionSource(source));
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MeetingCheckedIn);
