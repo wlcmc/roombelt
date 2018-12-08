@@ -79,11 +79,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   extendMeeting: (minutes, source) => {
     dispatch(meetingActions.extendMeeting(minutes));
-    dispatch(meetingActions.setActionSource(source));
+    dispatch(meetingActions.$setActionSource(source));
   },
   endMeeting: (source) => {
     dispatch(meetingActions.endMeeting());
-    dispatch(meetingActions.setActionSource(source));
+    dispatch(meetingActions.$setActionSource(source));
   }
 });
 

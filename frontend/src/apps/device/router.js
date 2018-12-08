@@ -16,8 +16,7 @@ import NoCalendar from "./connect/NoCalendar";
 import FatalError from "theme/layouts/FatalError";
 import { deviceActions } from "apps/device/store/actions";
 
-const Router = ({ connectionCode, isDashboardDevice, isCalendarSelected, isDeviceConnected, isDeviceRemoved, isOffline, unexpectedError, disconnectDevice }) => {
-  if (unexpectedError) return <FatalError title={unexpectedError.message}/>;
+const Router = ({ connectionCode, isDashboardDevice, isCalendarSelected, isDeviceConnected, isDeviceRemoved, isOffline, disconnectDevice }) => {
   if (isOffline) return <FatalError title={i18next.t("errors.unable-to-connect-server")}/>;
   if (isDeviceRemoved) return <FatalError title={i18next.t("errors.device-disconnected-title")}
                                           subtitle={i18next.t("errors.device-disconnected-message")}
@@ -33,7 +32,6 @@ const Router = ({ connectionCode, isDashboardDevice, isCalendarSelected, isDevic
 
 const mapStateToProps = state => ({
   language: state.language,
-  unexpectedError: state.appState.unexpectedError,
   isOffline: state.appState.isOffline,
   connectionCode: connectionCodeSelector(state),
   isDeviceConnected: isDeviceConnectedSelector(state),

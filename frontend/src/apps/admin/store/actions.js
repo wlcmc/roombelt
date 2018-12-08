@@ -12,9 +12,9 @@ import {
 import { newDeviceData, editDeviceData, removedDeviceId } from "./selectors";
 
 export const adminActions = {
-  setDevices: action(devices => ({ devices })),
-  setCalendars: action(calendars => ({ calendars })),
-  setUserDetails: action(user => ({ user })),
+  $setDevices: action(devices => ({ devices })),
+  $setCalendars: action(calendars => ({ calendars })),
+  $setUserDetails: action(user => ({ user })),
   initialFetch: () => async dispatch => {
     const [calendars, devices, user] = await Promise.all([
       getCalendars(),
@@ -22,9 +22,9 @@ export const adminActions = {
       getUserDetails()
     ]);
 
-    dispatch(adminActions.setCalendars(calendars));
-    dispatch(adminActions.setUserDetails(user));
-    dispatch(adminActions.setDevices(devices));
+    dispatch(adminActions.$setCalendars(calendars));
+    dispatch(adminActions.$setUserDetails(user));
+    dispatch(adminActions.$setDevices(devices));
   }
 };
 
@@ -33,22 +33,22 @@ export const connectDeviceWizardActions = {
   hide: action(),
   firstStep: {
     setConnectionCode: action(connectionCode => ({ connectionCode })),
-    startSubmitting: action(),
-    submitSuccess: action(deviceId => ({ deviceId })),
-    submitError: action(errorMessage => ({ errorMessage })),
+    $startSubmitting: action(),
+    $submitSuccess: action(deviceId => ({ deviceId })),
+    $submitError: action(errorMessage => ({ errorMessage })),
     submit: () => async (dispatch, getState) => {
-      dispatch(connectDeviceWizardActions.firstStep.startSubmitting());
+      dispatch(connectDeviceWizardActions.firstStep.$startSubmitting());
 
       try {
         const { connectionCode } = newDeviceData(getState());
         const device = await connectDevice(connectionCode);
 
-        dispatch(connectDeviceWizardActions.firstStep.submitSuccess(device.id));
+        dispatch(connectDeviceWizardActions.firstStep.$submitSuccess(device.id));
       } catch (error) {
         const isInvalidConnectionCode = error.response && error.response.status === 404;
         const errorMessage = isInvalidConnectionCode ? "Invalid connection code" : "Unknown error. Please try again later";
 
-        dispatch(connectDeviceWizardActions.firstStep.submitError(errorMessage));
+        dispatch(connectDeviceWizardActions.firstStep.$submitError(errorMessage));
       }
     }
   },
@@ -60,14 +60,14 @@ export const connectDeviceWizardActions = {
     setCalendarId: action(calendarId => ({ calendarId })),
     setLanguage: action(language => ({ language })),
     previousStep: action(),
-    startSubmitting: action(),
+    $startSubmitting: action(),
     submit: () => async (dispatch, getState) => {
-      dispatch(connectDeviceWizardActions.thirdStep.startSubmitting());
+      dispatch(connectDeviceWizardActions.thirdStep.$startSubmitting());
 
       const { deviceId, deviceType, calendarId, language } = newDeviceData(getState());
       await setOptionsForDevice(deviceId, deviceType, calendarId, language);
 
-      dispatch(adminActions.setDevices(await getConnectedDevices()));
+      dispatch(adminActions.$setDevices(await getConnectedDevices()));
       dispatch(connectDeviceWizardActions.hide());
     }
   }
@@ -79,14 +79,14 @@ export const editDeviceDialogActions = {
   setDeviceType: action(deviceType => ({ deviceType })),
   setCalendarId: action(calendarId => ({ calendarId })),
   setLanguage: action(language => ({ language })),
-  startSubmitting: action(),
+  $startSubmitting: action(),
   submit: () => async (dispatch, getState) => {
     const { deviceId, deviceType, calendarId, language } = editDeviceData(getState());
 
-    dispatch(editDeviceDialogActions.startSubmitting());
+    dispatch(editDeviceDialogActions.$startSubmitting());
     await setOptionsForDevice(deviceId, deviceType, calendarId, language);
 
-    dispatch(adminActions.setDevices(await getConnectedDevices()));
+    dispatch(adminActions.$setDevices(await getConnectedDevices()));
     dispatch(editDeviceDialogActions.hide());
   }
 };
@@ -97,7 +97,7 @@ export const removeDeviceDialogActions = {
   submit: () => async (dispatch, getState) => {
     await disconnectDevice(removedDeviceId(getState()));
 
-    dispatch(adminActions.setDevices(await getConnectedDevices()));
+    dispatch(adminActions.$setDevices(await getConnectedDevices()));
     dispatch(removeDeviceDialogActions.hide());
   }
 };

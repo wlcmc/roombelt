@@ -2,7 +2,7 @@ import React from "react";
 import { Text, Select, Button, LoaderButton } from "theme";
 import WizardStepLayout from "./WizardStepLayout";
 import { PaidDisclaimer } from "apps/admin/Paid";
-import { translations } from "../../../i18n";
+import { translations } from "i18n";
 import { connectDeviceWizardActions } from "apps/admin/store/actions";
 import { connect } from "react-redux";
 import { useWizard } from "apps/admin/wizard/Wizard";
