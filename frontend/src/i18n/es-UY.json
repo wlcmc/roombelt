@@ -50,8 +50,6 @@
     "starts-in": "Comienza en {{ time }}",
     "starts-now": "Comienza ahora",
     "started-ago": "Comenzó hace {{ time }}",
-    "ends-in": "Termina en {{ time }}",
-    "free-for": "Disponible por {{ time }}",
-    "no-meetings-today": "No hay reuniones hoy"
+    "ends-in": "Termina en {{ time }}"
   }
 }

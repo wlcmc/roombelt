@@ -18,8 +18,8 @@ const Dashboard = ({ calendarIds }) => <Layout title={i18next.t("dashboard.page-
       <Table style={{ background: "white" }}>
         <TableHeader>
           <TableRow>
-            <TableHeaderColumn style={{ width: "30%" }}>{i18next.t("dashboard.calendar")}</TableHeaderColumn>
             <TableHeaderColumn>{i18next.t("dashboard.meeting")}</TableHeaderColumn>
+            <TableHeaderColumn style={{ width: "30%" }}>{i18next.t("dashboard.calendar")}</TableHeaderColumn>
             <TableHeaderColumn style={{ width: "28%", overflow: "hidden" }}>{i18next.t("dashboard.status")}</TableHeaderColumn>
           </TableRow>
         </TableHeader>

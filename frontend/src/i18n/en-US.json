@@ -50,8 +50,6 @@
     "starts-in": "Starts in {{ time }}",
     "starts-now": "Starts now",
     "started-ago": "Started {{ time }} ago",
-    "ends-in": "Ends in {{ time }}",
-    "free-for": "Free for {{ time }}",
-    "no-meetings-today": "No meetings today"
+    "ends-in": "Ends in {{ time }}"
   }
 }

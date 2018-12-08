@@ -50,8 +50,6 @@
     "starts-in": "Startar om {{ time }}",
     "starts-now": "Börjar nu",
     "started-ago": "Startade för {{ time }} sedan",
-    "ends-in": "Slutar om {{ time }}",
-    "free-for": "Ledig i {{ time }}",
-    "no-meetings-today": "Inga möten idag"
+    "ends-in": "Slutar om {{ time }}"
   }
 }
