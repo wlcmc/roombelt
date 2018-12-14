@@ -52,8 +52,8 @@ export function setOptionsForDevice(deviceId, deviceType, calendarId, language) 
   return axios.put(`/api/admin/device/${encodeURIComponent(deviceId)}`, { deviceType, calendarId, language });
 }
 
-export function getDeviceDetails() {
-  return axios.get("/api/device");
+export function getDeviceDetails(getAllCalendars) {
+  return axios.get("/api/device", { params: { "all-calendars": getAllCalendars } });
 }
 
 export function createMeeting(timeInMinutes, summary) {

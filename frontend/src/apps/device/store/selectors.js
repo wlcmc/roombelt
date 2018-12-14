@@ -6,23 +6,25 @@ export const isInitializedSelector = state => state.appState.isInitialized;
 export const timestampSelector = state => state.timestamp;
 export const deviceSelector = state => state.device;
 export const isInOfflineModeSelector = state => state.appState.isOffline;
+export const showAllCalendarsViewSelector = state => state.appState.showAllCalendarsView;
 export const connectionCodeSelector = state => state.device && state.device.connectionCode;
 export const currentActionSelector = state => state.currentMeetingActions.currentAction;
 export const currentActionSourceSelector = state => state.currentMeetingActions.source;
 export const isActionErrorSelector = state => state.currentMeetingActions.isError;
 export const isRetryingActionSelector = state => state.currentMeetingActions.isRetrying;
+export const calendarIdsSelector = state => state.device ? state.device.allCalendars.map(calendar => calendar.id) : [];
 
 export const calendarSelector = (state, props) => {
   if (!props || !props.calendarId) {
-    return state.device.calendars[0];
+    return state.device.calendar;
   }
 
-  return state.device.calendars.find(calendar => calendar.id === props.calendarId);
+  return state.device.allCalendars.find(calendar => calendar.id === props.calendarId);
 };
 
 export const isDeviceConnectedSelector = createSelector(deviceSelector, device => device && !device.connectionCode);
 export const isDashboardDeviceSelector = createSelector(deviceSelector, device => device && device.deviceType === "dashboard");
-export const isCalendarSelectedSelector = createSelector(deviceSelector, device => device && !!device.calendars[0]);
+export const isCalendarSelectedSelector = createSelector(deviceSelector, device => device && !!device.calendar);
 
 export const calendarNameSelector = createSelector(calendarSelector, calendar => calendar && calendar.name);
 
