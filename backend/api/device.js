@@ -17,7 +17,7 @@ router.use("/device", async function(req, res) {
 async function getCalendarInfo(calendarId, calendarProvider) {
   const calendar = calendarId && await calendarProvider.getCalendar(calendarId);
   const calendarEvents = calendarId && await calendarProvider.getEvents(calendarId);
-  const events = calendarId && calendarEvents.filter(event => event.endTimestamp > Date.now()).slice(0, 3);
+  const events = calendarId && calendarEvents.filter(event => event.endTimestamp > Date.now()).slice(0, 5);
 
   return calendar && {
     id: calendarId,

@@ -11,7 +11,6 @@ export const currentActionSelector = state => state.currentMeetingActions.curren
 export const currentActionSourceSelector = state => state.currentMeetingActions.source;
 export const isActionErrorSelector = state => state.currentMeetingActions.isError;
 export const isRetryingActionSelector = state => state.currentMeetingActions.isRetrying;
-export const calendarIdsSelector = state => state.device ? state.device.calendars.map(calendar => calendar.id) : [];
 
 export const calendarSelector = (state, props) => {
   if (!props || !props.calendarId) {
@@ -56,4 +55,16 @@ export const minutesAvailableTillNextMeetingSelector = createSelector(
 export const hasCurrentMeetingStartedSelector = createSelector(
   [timestampSelector, currentMeetingSelector],
   (currentTimestamp, currentMeeting) => currentTimestamp > currentMeeting.startTimestamp
+);
+
+export const dashBoardMeetingsSelector = createSelector(
+  [timestampSelector, deviceSelector],
+  (currentTimestamp, device) => {
+    const eventsByCalendars = device.calendars.map(calendar => calendar.events.map(event => ({ ...event, calendar })));
+    const allEvents = [].concat(...eventsByCalendars);
+
+    return allEvents
+      .filter(event => event.startTimestamp > currentTimestamp || event.endTimestamp > currentTimestamp)
+      .sort((eventA, eventB) => eventA.startTimestamp - eventB.startTimestamp);
+  }
 );
