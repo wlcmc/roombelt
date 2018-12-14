@@ -34,7 +34,8 @@ const currentMeetingActions = (state = defaultCurrentMeetingActionsState, action
 const appState = (state = {
   isRemoved: false,
   isInitialized: false,
-  isOffline: false
+  isOffline: false,
+  showAllCalendarsView: false
 }, action) => {
   switch (action.type) {
     case deviceActions.$markInitialized:
@@ -43,6 +44,8 @@ const appState = (state = {
       return { ...state, isRemoved: true };
     case deviceActions.$updateOfflineStatus:
       return { ...state, isOffline: action.isOffline };
+    case deviceActions.$updateShowAllCalendarsView:
+      return { ...state, showAllCalendarsView: action.showAllCalendarsView };
     default:
       return state;
   }

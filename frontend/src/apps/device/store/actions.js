@@ -1,4 +1,5 @@
 import { action } from "utils/redux";
+import cancellationToken from "utils/cancellation-token";
 import screenfull from "screenfull";
 import axios from "axios";
 
@@ -8,9 +9,9 @@ import {
   calendarNameSelector,
   currentActionSelector,
   currentMeetingSelector,
-  isCalendarSelectedSelector,
+  isCalendarSelectedSelector, isDashboardDeviceSelector,
   isInitializedSelector,
-  isInOfflineModeSelector
+  isInOfflineModeSelector, showAllCalendarsViewSelector
 } from "apps/device/store/selectors";
 import { changeLanguage } from "i18n";
 
@@ -42,8 +43,15 @@ export const deviceActions = {
 
   $updateDeviceData: action(device => ({ device })),
   $fetchDeviceData: () => async (dispatch, getState) => {
+    const token = cancellationToken(deviceActions.$fetchDeviceData).cancelOthers();
+
     try {
-      const device = await getDeviceDetails();
+      const shouldGetAllCalendars = showAllCalendarsViewSelector(getState());
+      const device = await getDeviceDetails(shouldGetAllCalendars);
+
+      if (token.isCancelled()) {
+        return;
+      }
 
       dispatch(deviceActions.$updateDeviceData(device));
       dispatch(deviceActions.setLanguage(device.language));
@@ -53,8 +61,14 @@ export const deviceActions = {
       }
     }
 
-    const timeout = isCalendarSelectedSelector(getState()) ? 30000 : 5000;
-    setTimeout(() => dispatch(deviceActions.$fetchDeviceData()), timeout);
+    const timeout = (isDashboardDeviceSelector(getState()) || isCalendarSelectedSelector(getState())) ? 30000 : 5000;
+    await new Promise(resolve => setTimeout(resolve, timeout));
+
+    if (token.isCancelled()) {
+      return;
+    }
+
+    dispatch(deviceActions.$fetchDeviceData());
   },
 
   $updateClock: action(timestamp => ({ timestamp })),
@@ -110,7 +124,16 @@ export const deviceActions = {
     window.location.reload();
   },
 
-  setLanguage: language => () => changeLanguage(language)
+  setLanguage: language => () => changeLanguage(language),
+
+  $updateShowAllCalendarsView: action(showAllCalendarsView => ({ showAllCalendarsView })),
+  showAllCalendarsView: () => dispatch => {
+    dispatch(deviceActions.$updateShowAllCalendarsView(true));
+    dispatch(deviceActions.$fetchDeviceData());
+  },
+  closeAllCalendarsView: () => dispatch => {
+    dispatch(deviceActions.$updateShowAllCalendarsView(false));
+  }
 };
 
 export const meetingActions = {
