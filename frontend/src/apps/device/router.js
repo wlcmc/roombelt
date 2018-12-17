@@ -10,11 +10,11 @@ import {
   showAllCalendarsViewSelector
 } from "./store/selectors";
 
-import Dashboard from "./dashboard";
-import SingleCalendar from "./single-calendar";
-import AllCalendars from "./all-calendars";
-import ConnectionCode from "./connect/ConnectionCode";
-import NoCalendar from "./connect/NoCalendar";
+import Dashboard from "./views/dashboard";
+import SingleCalendar from "./views/single-calendar";
+import AllCalendars from "./views/find-room";
+import ConnectionCode from "./views/connect/ConnectionCode";
+import NoCalendar from "./views/connect/NoCalendar";
 import FatalError from "theme/layouts/FatalError";
 import { deviceActions } from "apps/device/store/actions";
 

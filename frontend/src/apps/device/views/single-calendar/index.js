@@ -1,14 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components/macro";
-import { calendarNameSelector, currentMeetingSelector, nextMeetingSelector } from "../store/selectors";
+import { calendarNameSelector, currentMeetingSelector, nextMeetingSelector } from "../../store/selectors";
 
 import NextMeeting from "./NextMeeting";
 import CurrentMeeting from "./CurrentMeeting";
 import RoomAvailable from "./RoomAvailable";
-import ActionsBar from "./actions-bar";
-import Layout from "../components/Layout";
+import ActionsBar from "./actions-bar/index";
+import Layout from "../../components/Layout";
 import { deviceActions } from "apps/device/store/actions";
+import { Button } from "theme";
 
 const ActionsBarWrapper = styled.div`
   margin: 1rem 0;
@@ -24,7 +25,7 @@ const CalendarView = ({ calendarName, style, nextMeeting, currentMeeting, showAl
     <Content>
       {currentMeeting ? <CurrentMeeting/> : <RoomAvailable/>}
       <ActionsBarWrapper><ActionsBar/></ActionsBarWrapper>
-      <button onClick={showAllCalendarsView}>All rooms</button>
+      <Button onClick={showAllCalendarsView} primary>Find another room</Button>
     </Content>
   </Layout>
 );

@@ -4,7 +4,7 @@ import i18next from "i18next";
 import styled from "styled-components/macro";
 import { dashBoardMeetingsSelector, timestampSelector } from "apps/device/store/selectors";
 import DashboardRow from "./DashboardRow";
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout";
 import { Table, TableHeader, TableBody, TableRow, TableHeaderColumn } from "theme";
 
 const DashboardWrapper = styled.div`

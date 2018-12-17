@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 
-import { PageLoaded } from "../../../theme";
+import { PageLoaded } from "../../../../theme/index";
 
-import Logo from "../../Logo";
-import CardAndFooterLayout from "../../../theme/layouts/CardAndFooter";
-import Footer from "../../Footer";
-import Button from "../../../theme/components/Button";
+import Logo from "../../../Logo";
+import CardAndFooterLayout from "../../../../theme/layouts/CardAndFooter";
+import Footer from "../../../Footer";
+import Button from "../../../../theme/components/Button";
 
 const PageLogo = styled(Logo)`
   margin-bottom: 40px;

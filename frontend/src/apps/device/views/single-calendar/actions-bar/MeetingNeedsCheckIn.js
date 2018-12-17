@@ -1,7 +1,7 @@
 import React from "react";
 import i18next from "i18next";
 import { connect } from "react-redux";
-import { LoaderButton, Button } from "theme";
+import { LoaderButton, Button } from "theme/index";
 import {
   currentActionSourceSelector,
   currentMeetingSelector,

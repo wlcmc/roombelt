@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components/macro";
 
-import { PageLoaded } from "../../../theme";
+import { PageLoaded } from "../../../../theme/index";
 
-import Logo from "../../Logo";
-import CardAndFooterLayout from "../../../theme/layouts/CardAndFooter";
-import Footer from "../../Footer";
+import Logo from "../../../Logo";
+import CardAndFooterLayout from "../../../../theme/layouts/CardAndFooter";
+import Footer from "../../../Footer";
 
 const PageLogo = styled(Logo)`
   margin-bottom: 40px;

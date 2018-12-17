@@ -2,7 +2,7 @@ import React from "react";
 import i18next from "i18next";
 import { connect } from "react-redux";
 
-import { LoaderButton, Button } from "theme";
+import { LoaderButton, Button } from "theme/index";
 import { prettyFormatMinutes } from "services/formatting";
 import {
   currentActionSourceSelector,

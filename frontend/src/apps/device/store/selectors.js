@@ -12,7 +12,6 @@ export const currentActionSelector = state => state.currentMeetingActions.curren
 export const currentActionSourceSelector = state => state.currentMeetingActions.source;
 export const isActionErrorSelector = state => state.currentMeetingActions.isError;
 export const isRetryingActionSelector = state => state.currentMeetingActions.isRetrying;
-export const calendarIdsSelector = state => state.device ? state.device.allCalendars.map(calendar => calendar.id) : [];
 
 export const calendarSelector = (state, props) => {
   if (!props || !props.calendarId) {
@@ -25,6 +24,9 @@ export const calendarSelector = (state, props) => {
 export const isDeviceConnectedSelector = createSelector(deviceSelector, device => device && !device.connectionCode);
 export const isDashboardDeviceSelector = createSelector(deviceSelector, device => device && device.deviceType === "dashboard");
 export const isCalendarSelectedSelector = createSelector(deviceSelector, device => device && !!device.calendar);
+
+export const allCalendarsSelector = createSelector(deviceSelector, device => (device && device.allCalendars) || []);
+export const areAllCalendarsLoadedSelector = createSelector(deviceSelector, device => device && !!device.allCalendars);
 
 export const calendarNameSelector = createSelector(calendarSelector, calendar => calendar && calendar.name);
 
@@ -60,9 +62,9 @@ export const hasCurrentMeetingStartedSelector = createSelector(
 );
 
 export const dashBoardMeetingsSelector = createSelector(
-  [timestampSelector, deviceSelector],
-  (currentTimestamp, device) => {
-    const eventsByCalendars = device.calendars.map(calendar => calendar.events.map(event => ({ ...event, calendar })));
+  [timestampSelector, allCalendarsSelector],
+  (currentTimestamp, allCalendars) => {
+    const eventsByCalendars = allCalendars.map(calendar => calendar.events.map(event => ({ ...event, calendar })));
     const allEvents = [].concat(...eventsByCalendars);
 
     return allEvents

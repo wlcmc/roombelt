@@ -1,9 +1,9 @@
 import React from "react";
 import i18next from "i18next";
 import { connect } from "react-redux";
-import { Badge, Time } from "../../../theme";
+import { Badge, Time } from "../../../../theme/index";
 import { MeetingHeader, MeetingTitle, MeetingSubtitle } from "./Components";
-import { currentMeetingSelector, nextMeetingSelector } from "../store/selectors";
+import { currentMeetingSelector, nextMeetingSelector } from "../../store/selectors";
 
 const CurrentMeeting = props => {
   const { attendees, organizer, isCheckedIn, startTimestamp, endTimestamp, summary } = props.currentMeeting;

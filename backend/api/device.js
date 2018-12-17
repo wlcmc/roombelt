@@ -40,8 +40,12 @@ async function getUserCalendars(req) {
 router.get("/device", async function(req, res) {
   const device = req.context.device;
 
-  const allCalendars = req.query["all-calendars"] === "true" || device.deviceType === "dashboard" ? await getUserCalendars(req) : [];
-  const calendar = device.calendarId && await getCalendarInfo(device.calendarId, req.context.calendarProvider);
+  const isDashboard = device.deviceType === "dashboard";
+  const isCalendarSelected = device.calendarId;
+  const getAllCalendars = isDashboard || (isCalendarSelected && req.query["all-calendars"] === "true");
+
+  const calendar = isCalendarSelected ? await getCalendarInfo(device.calendarId, req.context.calendarProvider) : null;
+  const allCalendars = getAllCalendars ? await getUserCalendars(req) : null;
 
   res.json({
     deviceType: req.context.device.deviceType,
