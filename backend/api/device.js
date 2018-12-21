@@ -61,14 +61,25 @@ router.get("/device", async function(req, res) {
 router.use("/device/meeting", (req, res, next) => (req.context.device.calendarId ? next() : res.sendStatus(400)));
 
 router.post("/device/meeting", async function(req, res) {
-  const calendar = await req.context.calendarProvider.getCalendar(req.context.device.calendarId);
-  const events = await req.context.calendarProvider.getEvents(req.context.device.calendarId);
+  if (req.body.calendarId) {
+    const devices = await req.context.storage.devices.getDevicesForUser(req.context.session.userId);
+    const device = devices.find(device => device.deviceType === "calendar" && device.calendarId === req.body.calendarId);
+
+    if (!device) {
+      return res.sendStatus(404);
+    }
+  }
+
+  const calendarId = req.body.calendarId || req.context.device.calendarId;
+
+  const calendar = await req.context.calendarProvider.getCalendar(calendarId);
+  const events = await req.context.calendarProvider.getEvents(calendarId);
   const nextEvent = events.find(event => event.startTimestamp > Date.now());
 
   const desiredStartTime = Date.now() + (req.body.timeInMinutes || 15) * 60 * 1000;
   const nextEventStartTime = nextEvent ? nextEvent.startTimestamp : Number.POSITIVE_INFINITY;
 
-  await req.context.calendarProvider.createEvent(req.context.device.calendarId, {
+  await req.context.calendarProvider.createEvent(calendarId, {
     startTimestamp: Date.now(),
     endTimestamp: Math.min(desiredStartTime, nextEventStartTime),
     isCheckedIn: true,

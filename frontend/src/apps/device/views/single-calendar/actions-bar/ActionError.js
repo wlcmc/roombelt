@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { LoaderButton, Button } from "theme/index";
 import { isActionErrorSelector, isRetryingActionSelector } from "apps/device/store/selectors";
 
-import ButtonSet from "./components/ButtonSet";
+import ButtonSet from "../../../components/ButtonSet";
 import { meetingActions } from "apps/device/store/actions";
 
 const ErrorTitle = styled.div`

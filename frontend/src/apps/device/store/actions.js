@@ -11,12 +11,13 @@ import {
   currentMeetingSelector,
   isCalendarSelectedSelector, isDashboardDeviceSelector,
   isInitializedSelector,
-  isInOfflineModeSelector, showAllCalendarsViewSelector
+  isInOfflineModeSelector, lastActivityOnShowCalendarsViewSelector, showAllCalendarsViewSelector
 } from "apps/device/store/selectors";
 import { changeLanguage } from "i18n";
 
 import i18next from "i18next";
 import * as api from "services/api";
+import { wait, waitUntilTrue } from "utils/time";
 
 export const deviceActions = {
   $markInitialized: action(),
@@ -62,7 +63,8 @@ export const deviceActions = {
     }
 
     const timeout = (isDashboardDeviceSelector(getState()) || isCalendarSelectedSelector(getState())) ? 30000 : 5000;
-    await new Promise(resolve => setTimeout(resolve, timeout));
+
+    await wait(timeout);
 
     if (token.isCancelled()) {
       return;
@@ -127,11 +129,19 @@ export const deviceActions = {
   setLanguage: language => () => changeLanguage(language),
 
   $updateShowAllCalendarsView: action(showAllCalendarsView => ({ showAllCalendarsView })),
-  showAllCalendarsView: () => dispatch => {
+  $allCalendarsViewActivity: action(() => ({ timestamp: Date.now() })),
+
+  showAllCalendarsView: () => async (dispatch, getState) => {
     dispatch(deviceActions.$updateShowAllCalendarsView(true));
+    dispatch(deviceActions.$allCalendarsViewActivity());
     dispatch(deviceActions.$fetchDeviceData());
+
+    await waitUntilTrue(() => lastActivityOnShowCalendarsViewSelector(getState()) < Date.now() - 30 * 1000);
+
+    dispatch(deviceActions.closeAllCalendarsView());
   },
   closeAllCalendarsView: () => dispatch => {
+    dispatch(meetingActions.endAction());
     dispatch(deviceActions.$updateShowAllCalendarsView(false));
   }
 };
@@ -142,13 +152,14 @@ export const meetingActions = {
   $setActionError: action(),
   $setActionSource: action(source => ({ source })),
   $setActionIsRetrying: action(),
+  $setActionSuccess: action(),
 
   retry: () => (dispatch, getState) => {
     dispatch(currentActionSelector(getState()));
     dispatch(meetingActions.$setActionIsRetrying());
   },
 
-  createMeeting: timeInMinutes => (dispatch, getState) => {
+  createMeeting: (timeInMinutes) => (dispatch, getState) => {
     dispatch(meetingActions.$startAction(meetingActions.createMeeting(timeInMinutes)));
 
     const roomName = calendarNameSelector(getState());
@@ -201,8 +212,23 @@ export const meetingActions = {
     try {
       await actionPromise;
 
-      dispatch(deviceActions.$updateDeviceData(await api.getDeviceDetails()));
+      dispatch(deviceActions.$fetchDeviceData());
       dispatch(meetingActions.endAction());
+    } catch (error) {
+      console.error(error);
+      dispatch(meetingActions.$setActionError());
+    }
+  },
+
+  createMeetingInAnotherRoom: (calendarId, timeInMinutes) => async (dispatch, getState) => {
+    dispatch(meetingActions.$startAction(meetingActions.createMeetingInAnotherRoom(calendarId, timeInMinutes)));
+
+    const roomName = calendarNameSelector(getState(), { calendarId });
+
+    try {
+      await api.createMeeting(timeInMinutes, i18next.t("meeting.quick-meeting-title", { roomName }), calendarId);
+      dispatch(meetingActions.$setActionSuccess());
+      dispatch(deviceActions.$fetchDeviceData());
     } catch (error) {
       console.error(error);
       dispatch(meetingActions.$setActionError());

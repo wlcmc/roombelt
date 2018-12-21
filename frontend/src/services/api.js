@@ -56,8 +56,8 @@ export function getDeviceDetails(getAllCalendars) {
   return axios.get("/api/device", { params: { "all-calendars": getAllCalendars } });
 }
 
-export function createMeeting(timeInMinutes, summary) {
-  return axios.post("/api/device/meeting", { timeInMinutes, summary });
+export function createMeeting(timeInMinutes, summary, calendarId) {
+  return axios.post("/api/device/meeting", { timeInMinutes, summary, calendarId });
 }
 
 export function updateMeeting(meetingId, { startNow, endNow, extensionTime, checkIn }) {
