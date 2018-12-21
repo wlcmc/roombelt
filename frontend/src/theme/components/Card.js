@@ -29,12 +29,12 @@ const CardFooter = styled.div`
 `;
 
 const CardContent = styled.div`
-  padding: ${props => (props.compact ? "0" : "25px 15px")};
+  padding: ${props => (props.compact ? "0" : "1.2em 0.8em")};
   text-align: ${props => (props.centerContent ? "center" : "inherit")};
 `;
 
 const Card = props => (
-  <CardWrapper style={props.style} block={props.block}>
+  <CardWrapper style={props.style} className={props.className} block={props.block}>
     {props.header && <CardHeader>{props.header}</CardHeader>}
     <CardContent compact={props.compact} centerContent={props.centerContent}>
       {props.children}

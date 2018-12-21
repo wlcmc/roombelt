@@ -10,7 +10,7 @@ import {
   minutesAvailableTillNextMeetingSelector
 } from "apps/device/store/selectors";
 
-import ButtonSet from "./components/ButtonSet";
+import ButtonSet from "../../../components/ButtonSet";
 import ConfirmBar from "./components/ConfirmBar";
 import { meetingActions } from "apps/device/store/actions";
 

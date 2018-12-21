@@ -1,4 +1,4 @@
-import React from "react";
+import React  from "react";
 import styled from "styled-components/macro";
 import { connect } from "react-redux";
 import { deviceActions } from "apps/device/store/actions";
@@ -6,19 +6,33 @@ import { allCalendarsSelector, areAllCalendarsLoadedSelector } from "apps/device
 
 import Layout from "../../components/Layout";
 import CalendarRow from "./CalendarRow";
-import { Button } from "theme";
+import { Button, Loader } from "theme";
 
-const Footer = styled.div`
-  padding: 10px;
+import IoIosArrowBack from "react-icons/lib/io/ios-arrow-back";
+
+const Content = styled.div`
+  padding: 0 0.3em;
+  overflow-y: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
-const AllCalendarsView = ({ closeAllCalendarsView, calendars, areAllCalendarsLoaded }) => {
-  const footer = <Footer children={<Button primary onClick={closeAllCalendarsView}>Back</Button>}/>;
+const AllCalendarsView = ({ closeAllCalendarsView, calendars, areAllCalendarsLoaded, markUserActivity }) => {
+  const header = <div>
+    <Button compact primary onClick={closeAllCalendarsView} style={{ minWidth: 0 }}>
+      <IoIosArrowBack/>
+      <span style={{ verticalAlign: "middle", marginRight: "0.3em" }}>Back</span>
+    </Button>
+    <span style={{ verticalAlign: "middle", marginLeft: "1em" }}>Find room</span>
+  </div>;
 
   return (
-    <Layout title={"Find a room"} footer={footer}>
-      {areAllCalendarsLoaded ? null : <div>Loading...</div>}
-      {calendars.map(calendar => <CalendarRow key={calendar.id} calendarId={calendar.id}/>)}
+    <Layout title={header}>
+      <Content onScroll={markUserActivity}>
+        {!areAllCalendarsLoaded && <div style={{ alignSelf: "center", margin: "auto" }}><Loader/></div>}
+        {calendars.map(calendar => <CalendarRow key={calendar.id} calendarId={calendar.id}/>)}
+      </Content>
     </Layout>
   );
 };
@@ -29,7 +43,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  closeAllCalendarsView: () => dispatch(deviceActions.closeAllCalendarsView())
+  closeAllCalendarsView: () => dispatch(deviceActions.closeAllCalendarsView()),
+  markUserActivity: () => dispatch(deviceActions.$allCalendarsViewActivity())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllCalendarsView);

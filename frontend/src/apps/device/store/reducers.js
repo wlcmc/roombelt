@@ -11,7 +11,8 @@ const defaultCurrentMeetingActionsState = {
   source: null,
   currentAction: null,
   isRetrying: false,
-  isError: false
+  isError: false,
+  isSuccess: false
 };
 
 const currentMeetingActions = (state = defaultCurrentMeetingActionsState, action) => {
@@ -24,6 +25,8 @@ const currentMeetingActions = (state = defaultCurrentMeetingActionsState, action
       return { ...state, isRetrying: true };
     case meetingActions.$setActionError:
       return { ...state, isError: true, isRetrying: false };
+    case meetingActions.$setActionSuccess:
+      return { ...state, isSuccess: true, isRetrying: false };
     case meetingActions.endAction:
       return defaultCurrentMeetingActionsState;
     default:
@@ -35,7 +38,8 @@ const appState = (state = {
   isRemoved: false,
   isInitialized: false,
   isOffline: false,
-  showAllCalendarsView: false
+  showAllCalendarsView: false,
+  lastActivityOnShowCalendarsView: null
 }, action) => {
   switch (action.type) {
     case deviceActions.$markInitialized:
@@ -46,6 +50,8 @@ const appState = (state = {
       return { ...state, isOffline: action.isOffline };
     case deviceActions.$updateShowAllCalendarsView:
       return { ...state, showAllCalendarsView: action.showAllCalendarsView };
+    case deviceActions.$allCalendarsViewActivity:
+      return { ...state, lastActivityOnShowCalendarsView: action.timestamp };
     default:
       return state;
   }

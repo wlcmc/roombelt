@@ -25,7 +25,7 @@ const CalendarView = ({ calendarName, style, nextMeeting, currentMeeting, showAl
     <Content>
       {currentMeeting ? <CurrentMeeting/> : <RoomAvailable/>}
       <ActionsBarWrapper><ActionsBar/></ActionsBarWrapper>
-      <Button onClick={showAllCalendarsView} primary>Find another room</Button>
+      <Button onClick={showAllCalendarsView} primary>Find room</Button>
     </Content>
   </Layout>
 );

@@ -5,7 +5,7 @@ import { prettyFormatMinutes } from "services/formatting";
 import { currentActionSourceSelector, minutesAvailableTillNextMeetingSelector } from "apps/device/store/selectors";
 import { meetingActions } from "apps/device/store/actions";
 
-import ButtonSet from "./components/ButtonSet";
+import ButtonSet from "../../../components/ButtonSet";
 
 const RoomAvailable = props => {
   const CreateButton = ({ value, name }) => (
