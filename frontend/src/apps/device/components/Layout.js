@@ -69,6 +69,20 @@ const CurrentTime = styled.span`
   padding: 0.3em;
 `;
 
+const ContentWrapper = styled.div`
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ContentSidebar = styled.div`
+  width: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+`;
+
 const MainContent = styled.div`
   flex: 1 1 auto;
   display: flex;
@@ -80,14 +94,17 @@ const Footer = styled.div`
   flex: 0 0 auto;
 `;
 
-const CalendarView = ({ currentTimestamp, style, title, children, footer }) => (
+const CalendarView = ({ currentTimestamp, style, title, children, sidebar, footer }) => (
   <Wrapper style={style}>
     <PageLoaded/>
     <Header>
       <PageTitle>{title}</PageTitle>
       <CurrentTime><Time timestamp={currentTimestamp} blinking/></CurrentTime>
     </Header>
-    <MainContent>{children}</MainContent>
+    <ContentWrapper>
+      <MainContent>{children}</MainContent>
+      {sidebar && <ContentSidebar>{sidebar}</ContentSidebar>}
+    </ContentWrapper>
     <Footer>{footer}</Footer>
     <FullScreenToggle/>
   </Wrapper>

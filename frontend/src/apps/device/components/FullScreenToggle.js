@@ -6,7 +6,7 @@ import IoAndroidExpand from "react-icons/lib/io/android-expand";
 import { deviceActions } from "apps/device/store/actions";
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   right: 0;
   bottom: 0;
   opacity: 0.5;

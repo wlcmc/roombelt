@@ -29,6 +29,7 @@
   "devDependencies": {
     "@babel/polyfill": "^7.0.0",
     "axios": "^0.18.0",
+    "babel-plugin-macros": "^2.4.3",
     "babel-plugin-styled-components": "^1.9.2",
     "cross-env": "^5.1.4",
     "enzyme": "^3.7.0",
@@ -51,6 +52,7 @@
     "react-test-renderer": "^16.6.3",
     "react-testing-library": "^5.3.1",
     "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
     "screenfull": "^3.3.2",

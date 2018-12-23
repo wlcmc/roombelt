@@ -19,6 +19,7 @@ import i18next from "i18next";
 import * as api from "services/api";
 import { wait, waitUntilTrue } from "utils/time";
 
+
 export const deviceActions = {
   $markInitialized: action(),
   initialize: () => async (dispatch, getState) => {
@@ -140,6 +141,7 @@ export const deviceActions = {
 
     dispatch(deviceActions.closeAllCalendarsView());
   },
+
   closeAllCalendarsView: () => dispatch => {
     dispatch(meetingActions.endAction());
     dispatch(deviceActions.$updateShowAllCalendarsView(false));
@@ -155,8 +157,8 @@ export const meetingActions = {
   $setActionSuccess: action(),
 
   retry: () => (dispatch, getState) => {
-    dispatch(currentActionSelector(getState()));
     dispatch(meetingActions.$setActionIsRetrying());
+    dispatch(currentActionSelector(getState()));
   },
 
   createMeeting: (timeInMinutes) => (dispatch, getState) => {
@@ -212,7 +214,7 @@ export const meetingActions = {
     try {
       await actionPromise;
 
-      dispatch(deviceActions.$fetchDeviceData());
+      dispatch(deviceActions.$updateDeviceData(await getDeviceDetails()));
       dispatch(meetingActions.endAction());
     } catch (error) {
       console.error(error);
@@ -227,8 +229,9 @@ export const meetingActions = {
 
     try {
       await api.createMeeting(timeInMinutes, i18next.t("meeting.quick-meeting-title", { roomName }), calendarId);
+
+      dispatch(deviceActions.$updateDeviceData(await getDeviceDetails(true)));
       dispatch(meetingActions.$setActionSuccess());
-      dispatch(deviceActions.$fetchDeviceData());
     } catch (error) {
       console.error(error);
       dispatch(meetingActions.$setActionError());
