@@ -3,13 +3,14 @@ import styled from "styled-components/macro";
 import { connect } from "react-redux";
 import {
   calendarNameSelector, currentActionSourceSelector,
-  currentMeetingSelector, isActionSuccessSelector,
+  currentMeetingSelector, isActionErrorSelector, isActionSuccessSelector, isRetryingActionSelector,
   nextMeetingSelector, timestampSelector
 } from "apps/device/store/selectors";
 import { prettyFormatMinutes, timeDifferenceInMinutes } from "services/formatting";
-import { Card, Badge, Button, LoaderButton, Text } from "theme";
+import { Card, Badge, Button, LoaderButton, Text, Time } from "theme";
 import ButtonSet from "../../components/ButtonSet";
 import { deviceActions, meetingActions } from "apps/device/store/actions";
+import ActionError from "../../components/ActionError";
 
 const Header = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ const getAvailability = (timeToStart, minutesAvailable) => {
 };
 
 
-const CalendarRow = ({ calendarId, calendarName, currentMeeting, nextMeeting, timestamp, currentActionSource, isCurrentActionSuccess, createMeeting, acknowledgeMeetingCreated }) => {
+const CalendarRow = ({ calendarId, calendarName, currentMeeting, nextMeeting, timestamp, currentActionSource, isCurrentActionSuccess, isCurrentActionError, isRetryingAction, createMeeting, acknowledgeMeetingCreated }) => {
   const startTimestamp = currentMeeting ? currentMeeting.endTimestamp : timestamp;
   const endTimestamp = nextMeeting ? nextMeeting.startTimestamp : Number.POSITIVE_INFINITY;
 
@@ -43,8 +44,10 @@ const CalendarRow = ({ calendarId, calendarName, currentMeeting, nextMeeting, ti
 
   const isCurrentActionFromThisCalendar = currentActionSource && currentActionSource.indexOf(calendarId) === 0;
 
+  const showError = isCurrentActionFromThisCalendar && isCurrentActionError;
   const showSuccessInfo = isCurrentActionFromThisCalendar && isCurrentActionSuccess;
-  const showButtons = isAvailable && !showSuccessInfo;
+  const showMeetingDetails = !isAvailable && !showSuccessInfo && !showError;
+  const showButtons = isAvailable && !showSuccessInfo && !showError;
 
   const header = (
     <Header>
@@ -65,13 +68,18 @@ const CalendarRow = ({ calendarId, calendarName, currentMeeting, nextMeeting, ti
   return (
     <Row block>
       {header}
+      {showMeetingDetails && <Text style={{ fontSize: "0.8em" }}>
+        {currentMeeting.summary}{" "}
+        <Time timestamp={currentMeeting.startTimestamp}/> -{" "}
+        <Time timestamp={currentMeeting.endTimestamp}/>
+      </Text>}
       {showSuccessInfo && <>
-        <Text style={{ marginRight: "1em" }}>Meeting created. Go to the room now.</Text>
+        <Text style={{ marginRight: "1em", fontSize: '0.8em' }}>Meeting created. Go to the room now.</Text>
         <ButtonSet style={{ fontSize: "0.6em" }}>
           <Button primary onClick={acknowledgeMeetingCreated}>OK</Button>
         </ButtonSet>
       </>}
-
+      {showError && <ActionError style={{ fontSize: "0.6em" }}/>}
       {showButtons && <ButtonSet style={{ fontSize: "0.6em" }}>
         <Button disabled success>Start</Button>
         {minutesAvailable > 20 && <CreateButton value={15} name={`${calendarId}-create-15`}/>}
@@ -89,6 +97,8 @@ const mapStateToProps = (state, { calendarId }) => ({
   calendarName: calendarNameSelector(state, { calendarId }),
   currentMeeting: currentMeetingSelector(state, { calendarId }),
   nextMeeting: nextMeetingSelector(state, { calendarId }),
+  isRetryingAction: isRetryingActionSelector(state),
+  isCurrentActionError: isActionErrorSelector(state),
   isCurrentActionSuccess: isActionSuccessSelector(state),
   currentActionSource: currentActionSourceSelector(state)
 });

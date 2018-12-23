@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { LoaderButton, Button } from "theme/index";
 import { isActionErrorSelector, isRetryingActionSelector } from "apps/device/store/selectors";
 
-import ButtonSet from "../../../components/ButtonSet";
+import ButtonSet from "./ButtonSet";
 import { meetingActions } from "apps/device/store/actions";
 
 const ErrorTitle = styled.div`
@@ -21,8 +21,8 @@ const ErrorSubtitle = styled.div`
   margin-top: 1em;
 `;
 
-const ActionError = ({ isActionError, isRetryingAction, cancelAction, retryAction }) => (
-  <ButtonSet>
+const ActionError = ({ isActionError, isRetryingAction, cancelAction, retryAction, style }) => (
+  <ButtonSet style={style}>
     <ErrorTitle>{i18next.t("errors.action-error-title")}</ErrorTitle>
     <LoaderButton primary onClick={retryAction} isLoading={isRetryingAction}>
       {i18next.t("actions.retry")}

@@ -1,10 +1,6 @@
 import axios from "axios";
 
-axios.interceptors.request.use(config => ({
-  ...config,
-  url: config.url + "?_ts=" + Date.now()
-}));
-
+axios.interceptors.request.use(config => ({ ...config, url: config.url + "?_ts=" + Date.now() }));
 axios.interceptors.response.use(response => response.data);
 
 export async function isOnline() {
