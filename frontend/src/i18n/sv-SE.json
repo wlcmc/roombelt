@@ -4,6 +4,7 @@
   "availability": {
     "available": "Ledig",
     "available-for": "Ledig i {{ time }}",
+    "available-in": "Ledig om {{ time }}",
     "whole-day": "Ledig hel dag",
     "occupied": "Upptagen",
     "starts": {
@@ -30,7 +31,8 @@
     "retry": "Försök igen",
     "check-in": "Checka in",
     "start-early": "Börja tidigare",
-    "cancel-meeting": "Avbryta mötet"
+    "cancel-meeting": "Avbryta mötet",
+    "find-room": "Hitta rum"
   },
   "full-screen": "Fullskärm",
   "errors": {
@@ -51,5 +53,6 @@
     "starts-now": "Börjar nu",
     "started-ago": "Startade för {{ time }} sedan",
     "ends-in": "Slutar om {{ time }}"
-  }
+  },
+  "meeting-created": "Möte skapades. Gå till rummet nu."
 }

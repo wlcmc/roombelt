@@ -4,6 +4,7 @@
   "availability": {
     "available": "Available",
     "available-for": "Available for {{ time }}",
+    "available-in": "Available in {{ time }}",
     "whole-day": "Available whole day",
     "occupied": "Occupied",
     "starts": {
@@ -30,7 +31,8 @@
     "retry": "Retry",
     "check-in": "Check in",
     "start-early": "Start early",
-    "cancel-meeting": "Cancel meeting"
+    "cancel-meeting": "Cancel meeting",
+    "find-room": "Find room"
   },
   "full-screen": "Full screen",
   "errors": {
@@ -51,5 +53,6 @@
     "starts-now": "Starts now",
     "started-ago": "Started {{ time }} ago",
     "ends-in": "Ends in {{ time }}"
-  }
+  },
+  "meeting-created": "Meeting created. Go to the room now."
 }

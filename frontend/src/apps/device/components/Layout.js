@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components/macro";
 import { Time, PageLoaded } from "../../../theme";
 import FullScreenToggle from "../components/FullScreenToggle";
+import { Button } from "theme";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -75,12 +76,19 @@ const ContentWrapper = styled.div`
   flex-direction: row;
 `;
 
-const ContentSidebar = styled.div`
-  width: 1.2em;
+const Sidebar = styled.div`
+  width: 3em;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+`;
+
+const SidebarContent = styled.div`
+  height: 3em;
+  display: flex;
+  align-items: flex-end;
+  transform: rotate(-90deg);
 `;
 
 const MainContent = styled.div`
@@ -94,6 +102,13 @@ const Footer = styled.div`
   flex: 0 0 auto;
 `;
 
+export const SidebarButton = styled(Button)`
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 0 0.75em;
+  line-height: 1.5em;
+`;
+
 const CalendarView = ({ currentTimestamp, style, title, children, sidebar, footer }) => (
   <Wrapper style={style}>
     <PageLoaded/>
@@ -103,7 +118,7 @@ const CalendarView = ({ currentTimestamp, style, title, children, sidebar, foote
     </Header>
     <ContentWrapper>
       <MainContent>{children}</MainContent>
-      {sidebar && <ContentSidebar>{sidebar}</ContentSidebar>}
+      {sidebar && <Sidebar><SidebarContent>{sidebar}</SidebarContent></Sidebar>}
     </ContentWrapper>
     <Footer>{footer}</Footer>
     <FullScreenToggle/>

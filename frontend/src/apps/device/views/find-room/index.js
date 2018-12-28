@@ -1,6 +1,7 @@
 import React  from "react";
 import styled from "styled-components/macro";
 import { connect } from "react-redux";
+import i18next from "i18next";
 import { deviceActions } from "apps/device/store/actions";
 import { allCalendarsSelector, areAllCalendarsLoadedSelector } from "apps/device/store/selectors";
 
@@ -22,9 +23,9 @@ const AllCalendarsView = ({ closeAllCalendarsView, calendars, areAllCalendarsLoa
   const header = <div>
     <Button compact primary onClick={closeAllCalendarsView} style={{ minWidth: 0 }}>
       <IoIosArrowBack/>
-      <span style={{ verticalAlign: "middle", marginRight: "0.3em" }}>Back</span>
+      <span style={{ verticalAlign: "middle", marginRight: "0.3em" }}>{i18next.t("actions.back")}</span>
     </Button>
-    <span style={{ verticalAlign: "middle", marginLeft: "1em" }}>Find room</span>
+    <span style={{ verticalAlign: "middle", marginLeft: "1em" }}>{i18next.t("actions.find-room")}</span>
   </div>;
 
   return (

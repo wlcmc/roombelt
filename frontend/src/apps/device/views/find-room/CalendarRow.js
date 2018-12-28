@@ -1,4 +1,5 @@
 import React from "react";
+import i18next from "i18next";
 import styled from "styled-components/macro";
 import { connect } from "react-redux";
 import {
@@ -26,10 +27,15 @@ const Row = styled(Card)`
 `;
 
 const getAvailability = (timeToStart, minutesAvailable) => {
-  if (timeToStart >= 15 || minutesAvailable < 5) return <Badge danger>Occupied</Badge>;
-  if (timeToStart >= 1) return <Badge warning>Available in {prettyFormatMinutes(Math.ceil(timeToStart))}</Badge>;
+  if (timeToStart >= 15 || minutesAvailable < 5) {
+    return <Badge danger>{i18next.t("availability.occupied")}</Badge>;
+  }
+  if (timeToStart >= 1) {
+    return <Badge
+      warning>{i18next.t("availability.available-in", { time: prettyFormatMinutes(Math.ceil(timeToStart)) })}</Badge>;
+  }
 
-  return <Badge success>Available</Badge>;
+  return <Badge success>{i18next.t("availability.available")}</Badge>;
 };
 
 
@@ -74,7 +80,7 @@ const CalendarRow = ({ calendarId, calendarName, currentMeeting, nextMeeting, ti
         <Time timestamp={currentMeeting.endTimestamp}/>
       </Text>}
       {showSuccessInfo && <>
-        <Text style={{ marginRight: "1em", fontSize: '0.8em' }}>Meeting created. Go to the room now.</Text>
+        <Text style={{ marginRight: "1em", fontSize: "0.8em" }}>{i18next.t("meeting-created")}</Text>
         <ButtonSet style={{ fontSize: "0.6em" }}>
           <Button primary onClick={acknowledgeMeetingCreated}>OK</Button>
         </ButtonSet>

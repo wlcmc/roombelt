@@ -4,6 +4,7 @@
   "availability": {
     "available": "Wolne",
     "available-for": "Wolne przez {{ time }}",
+    "available-in": "Wolne za {{ time }}",
     "whole-day": "Wolne przez cały dzień",
     "occupied": "Zajęte",
     "starts": {
@@ -33,7 +34,8 @@
     "retry": "Spróbuj ponownie",
     "check-in": "Zamelduj się",
     "start-early": "Zacznij wcześniej",
-    "cancel-meeting": "Odwołaj spotkanie"
+    "cancel-meeting": "Odwołaj spotkanie",
+    "find-room": "Znajdź pokój"
   },
   "full-screen": "Pełen ekran",
   "errors": {
@@ -54,5 +56,6 @@
     "starts-now": "Zaczyna się teraz",
     "started-ago": "Zaczęło się {{ time }} temu",
     "ends-in": "Kończy się za {{ time }}"
-  }
+  },
+  "meeting-created": "Utworzono spotkanie. Udaj się teraz do tej sali."
 }
