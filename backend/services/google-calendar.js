@@ -1,5 +1,6 @@
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
+const Cache = require("./cache");
 
 const getTimestamp = time => time && time && new Date(time.dateTime || time.date).getTime();
 const mapEvent = ({ id, summary, start, end, organizer, attendees, extendedProperties }) => ({
@@ -9,9 +10,10 @@ const mapEvent = ({ id, summary, start, end, organizer, attendees, extendedPrope
   startTimestamp: getTimestamp(start),
   endTimestamp: getTimestamp(end),
   attendees: attendees || [],
-  isCheckedIn:
-    extendedProperties && extendedProperties.private && extendedProperties.private.roombeltIsCheckedIn === "true"
+  isCheckedIn: extendedProperties && extendedProperties.private && extendedProperties.private.roombeltIsCheckedIn === "true"
 });
+
+const cache = new Cache(30);
 
 module.exports = class {
   constructor(keys, credentials) {
@@ -64,14 +66,30 @@ module.exports = class {
   }
 
   async getCalendars() {
+    const cacheKey = `calendars-${this.clientId}`;
+    const cachedValue = cache.get(cacheKey);
+
+    if (cachedValue) {
+      return cachedValue;
+    }
+
     const { data } = await new Promise((res, rej) =>
       this.calendarClient.calendarList.list((err, data) => (err ? rej(err) : res(data)))
     );
+
+    cache.set(cacheKey, data.items);
 
     return data.items;
   }
 
   async getCalendar(calendarId) {
+    const cacheKey = `calendar-${this.clientId}-${calendarId}`;
+    const cachedValue = cache.get(cacheKey);
+
+    if (cachedValue) {
+      return cachedValue;
+    }
+
     const { data } = await new Promise((res, rej) =>
       this.calendarClient.calendarList.get(
         { calendarId: encodeURIComponent(calendarId) },
@@ -79,10 +97,19 @@ module.exports = class {
       )
     );
 
+    cache.set(cacheKey, data);
+
     return data;
   }
 
   async getEvents(calendarId) {
+    const cacheKey = `events-${this.clientId}-${calendarId}`;
+    const cachedValue = cache.get(cacheKey);
+
+    if (cachedValue) {
+      return cachedValue;
+    }
+
     const query = {
       calendarId: encodeURIComponent(calendarId),
       timeMin: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
@@ -94,10 +121,16 @@ module.exports = class {
       this.calendarClient.events.list(query, (err, data) => (err ? rej(err) : res(data)))
     );
 
-    return data.items.map(mapEvent).sort((a, b) => a.startTimestamp - b.startTimestamp);
+    const result = data.items.map(mapEvent).sort((a, b) => a.startTimestamp - b.startTimestamp);
+
+    cache.set(cacheKey, result);
+
+    return result;
   }
 
   async createEvent(calendarId, { startTimestamp, endTimestamp, isCheckedIn, summary }) {
+    cache.delete(`events-${this.clientId}-${calendarId}`);
+
     const query = {
       calendarId: encodeURIComponent(calendarId),
       resource: {
@@ -114,6 +147,8 @@ module.exports = class {
   }
 
   async patchEvent(calendarId, eventId, { startTimestamp, endTimestamp, isCheckedIn }) {
+    cache.delete(`events-${this.clientId}-${calendarId}`);
+
     const resource = {};
     if (startTimestamp) resource.start = { dateTime: new Date(startTimestamp).toISOString() };
     if (endTimestamp) resource.end = { dateTime: new Date(endTimestamp).toISOString() };
@@ -131,6 +166,8 @@ module.exports = class {
   }
 
   async deleteEvent(calendarId, eventId) {
+    cache.delete(`events-${this.clientId}-${calendarId}`);
+
     const query = {
       calendarId: encodeURIComponent(calendarId),
       eventId: encodeURIComponent(eventId)

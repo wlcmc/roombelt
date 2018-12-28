@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const bearerToken = require("express-bearer-token");
-const config = require ('./config')
+const config = require("./config");
 
 const app = express();
 
