@@ -20,6 +20,10 @@ export function getAuth() {
   return axios.get("/api/auth");
 }
 
+export function getApiVersion() {
+  return axios.get("/api/version");
+}
+
 export function createDevice() {
   return axios.put("/api/auth/device");
 }

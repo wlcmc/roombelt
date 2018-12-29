@@ -27,6 +27,7 @@ export const deviceActions = {
       return;
     }
 
+    dispatch(deviceActions.$initializeApiVersionObserver());
     dispatch(deviceActions.$markInitialized());
 
     try {
@@ -119,6 +120,25 @@ export const deviceActions = {
     };
 
     axios.interceptors.response.use(successCallback, errorCallback);
+  },
+
+  $initializeApiVersionObserver: () => async () => {
+    let currentVersion = undefined;
+
+    const checkVersion = async () => {
+      const response = await api.getApiVersion();
+
+      if (response && response.version && currentVersion && currentVersion !== response.version) {
+        window.location.reload();
+      }
+
+      if(response) {
+        currentVersion = response.version;
+      }
+    };
+
+    setInterval(checkVersion, 1000 * 60 * 5);
+    await checkVersion();
   },
 
   $markRemoved: action(),
