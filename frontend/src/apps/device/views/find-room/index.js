@@ -1,4 +1,4 @@
-import React  from "react";
+import React from "react";
 import styled from "styled-components/macro";
 import { connect } from "react-redux";
 import i18next from "i18next";
@@ -12,11 +12,9 @@ import { Button, Loader } from "theme";
 import IoIosArrowBack from "react-icons/lib/io/ios-arrow-back";
 
 const Content = styled.div`
+  flex-grow: 1;
   padding: 0 0.3em;
   overflow-y: auto;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
 `;
 
 const AllCalendarsView = ({ closeAllCalendarsView, calendars, areAllCalendarsLoaded, markUserActivity }) => {
@@ -31,7 +29,7 @@ const AllCalendarsView = ({ closeAllCalendarsView, calendars, areAllCalendarsLoa
   return (
     <Layout title={header}>
       <Content onScroll={markUserActivity}>
-        {!areAllCalendarsLoaded && <div style={{ alignSelf: "center", margin: "auto" }}><Loader/></div>}
+        {!areAllCalendarsLoaded && <div style={{ textAlign: "center", margin: "10em auto 0 auto" }}><Loader/></div>}
         {calendars.map(calendar => <CalendarRow key={calendar.id} calendarId={calendar.id}/>)}
       </Content>
     </Layout>
