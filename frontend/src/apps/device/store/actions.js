@@ -9,9 +9,13 @@ import {
   calendarNameSelector,
   currentActionSelector,
   currentMeetingSelector,
-  isCalendarSelectedSelector, isDashboardDeviceSelector,
+  isCalendarSelectedSelector,
+  isDashboardDeviceSelector,
   isInitializedSelector,
-  isInOfflineModeSelector, lastActivityOnShowCalendarsViewSelector, showAllCalendarsViewSelector
+  isInOfflineModeSelector,
+  lastActivityOnShowCalendarsViewSelector, minutesForCheckInSelector, requireCheckInSelector,
+  showAllCalendarsViewSelector,
+  timestampSelector
 } from "apps/device/store/selectors";
 import { changeLanguage } from "i18n";
 
@@ -58,6 +62,7 @@ export const deviceActions = {
 
       dispatch(deviceActions.$updateDeviceData(device));
       dispatch(deviceActions.setLanguage(device.language));
+      dispatch(deviceActions.$removeCurrentMeetingIfNotCheckedIn());
     } catch (error) {
       if (error.response && error.response.status === 404) {
         dispatch(deviceActions.$markRemoved());
@@ -72,6 +77,33 @@ export const deviceActions = {
       return;
     }
 
+    dispatch(deviceActions.$fetchDeviceData());
+  },
+  $removeCurrentMeetingIfNotCheckedIn: () => async (dispatch, getState) => {
+    if (!requireCheckInSelector(getState())) {
+      return;
+    }
+
+    const meeting = currentMeetingSelector(getState());
+    if (!meeting || meeting.isCheckedIn) {
+      return;
+    }
+
+    // Don't remove meetings 2 minutes after `minutesForCheckIn`
+    // This is to avoid removing meetings in-progress after Roombelt renews connection to the server
+    const minutesForCheckIn = minutesForCheckInSelector(getState());
+    const timeFromStartInMinutes = (timestampSelector(getState()) - meeting.startTimestamp) / 1000 / 60;
+    if (timeFromStartInMinutes <= minutesForCheckIn || timeFromStartInMinutes >= minutesForCheckIn + 2) {
+      return;
+    }
+
+    // Don't automatically remove very long meetings (e.g. whole day events)
+    const meetingDurationInMinutes = (meeting.endTimestamp - meeting.startTimestamp) / 1000 / 60;
+    if (meetingDurationInMinutes >= 240) {
+      return;
+    }
+
+    await api.deleteMeeting(meeting.id);
     dispatch(deviceActions.$fetchDeviceData());
   },
 
@@ -132,7 +164,7 @@ export const deviceActions = {
         window.location.reload();
       }
 
-      if(response) {
+      if (response) {
         currentVersion = response.version;
       }
     };

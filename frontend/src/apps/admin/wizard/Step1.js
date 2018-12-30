@@ -23,7 +23,9 @@ const Content = ({ connectionCode, connectionError, onChangeConnectionCode, onSu
     if (event.key === "Escape") onCancel();
   };
 
-  useEffect(() => connectionError && input.current.focus(), [connectionError]);
+  useEffect(() => {
+    if (connectionError) input.current.focus();
+  }, [connectionError]);
 
   return (
     <WizardStepLayout img={require("./tablet.png")}>

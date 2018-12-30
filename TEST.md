@@ -51,8 +51,8 @@ This is plan for manual tests run before every release.
 ### Start early 
 1. Go to Google Calendar and remove all meetings for today.
 2. Create a meeting without a title in Google Calendar in 4 minutes. 
-3. Wait 30s and validate that the "Check in" button is visible.
-4. Click "check in".
+3. Wait 30s and validate that the "Start early" button is visible.
+4. Click "Start early".
 
 ### Cancel meeting that will start
 1. Go to Google Calendar and remove all meetings for today.

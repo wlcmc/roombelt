@@ -10,7 +10,8 @@ module.exports = class {
       deviceType: { type: Sequelize.STRING, defaultValue: "calendar" },
       calendarId: Sequelize.STRING,
       createdAt: Sequelize.DATE,
-      updatedAt: Sequelize.DATE
+      updatedAt: Sequelize.DATE,
+      minutesForCheckIn: { type: Sequelize.INTEGER, defaultValue: 0 }
     });
   }
 
@@ -54,5 +55,9 @@ module.exports = class {
 
   async setLanguageForDevice(deviceId, language) {
     await this.Model.update({ language }, { where: { deviceId } });
+  }
+
+  async setMinutesForCheckIn(deviceId, minutesForCheckIn) {
+    await this.Model.update({ minutesForCheckIn }, { where: { deviceId } });
   }
 };

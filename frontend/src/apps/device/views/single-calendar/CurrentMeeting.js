@@ -4,23 +4,28 @@ import { connect } from "react-redux";
 import { Badge, Time } from "../../../../theme/index";
 import { MeetingHeader, MeetingTitle, MeetingSubtitle } from "./Components";
 import { currentMeetingSelector, nextMeetingSelector } from "../../store/selectors";
+import { requireCheckInSelector } from "apps/device/store/selectors";
 
 const CurrentMeeting = props => {
+  const { requireCheckIn } = props;
   const { attendees, organizer, isCheckedIn, startTimestamp, endTimestamp, summary } = props.currentMeeting;
 
   const guestsCount = attendees.filter(u => u.displayName !== organizer.displayName).length;
   const fromStart = Math.floor((props.currentTimestamp - startTimestamp) / 1000 / 60);
 
+  const getHeader = () => {
+    if (isCheckedIn) return <Badge danger>{i18next.t("availability.occupied")}</Badge>;
+
+    if (fromStart < 0) return <Badge info>{i18next.t("availability.starts.in", { count: -fromStart })}</Badge>;
+    if (fromStart === 0) return <Badge info>{i18next.t("availability.starts.now")}</Badge>;
+    if (requireCheckIn) return <Badge warning>{i18next.t("availability.starts.ago", { count: fromStart })}</Badge>;
+
+    return <Badge danger>{i18next.t("availability.occupied")}</Badge>;
+  };
+
   return (
     <React.Fragment>
-      <MeetingHeader>
-        {isCheckedIn && <Badge danger>{i18next.t("availability.occupied")}</Badge>}
-        {!isCheckedIn && fromStart === 0 && <Badge info>{i18next.t("availability.starts.now")}</Badge>}
-        {!isCheckedIn && fromStart > 0 &&
-        <Badge warning>{i18next.t("availability.starts.ago", { count: fromStart })}</Badge>}
-        {!isCheckedIn && fromStart < 0 &&
-        <Badge info>{i18next.t("availability.starts.in", { count: -fromStart })}</Badge>}
-      </MeetingHeader>
+      <MeetingHeader>{getHeader()}</MeetingHeader>
       <MeetingTitle>
         {summary || i18next.t("meeting.no-title")} <Time timestamp={startTimestamp}/> - <Time timestamp={endTimestamp}/>
       </MeetingTitle>
@@ -34,7 +39,8 @@ const CurrentMeeting = props => {
 const mapStateToProps = state => ({
   currentTimestamp: state.timestamp,
   currentMeeting: currentMeetingSelector(state),
-  nextMeeting: nextMeetingSelector(state)
+  nextMeeting: nextMeetingSelector(state),
+  requireCheckIn: requireCheckInSelector(state)
 });
 
 export default connect(mapStateToProps)(CurrentMeeting);

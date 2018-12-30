@@ -10,7 +10,8 @@ export const editDeviceData = state => ({
   deviceId: state.editedDevice.data.id,
   deviceType: state.editedDevice.data.deviceType,
   calendarId: state.editedDevice.data.calendarId,
-  language: state.editedDevice.data.language
+  language: state.editedDevice.data.language,
+  minutesForCheckIn: state.editedDevice.data.minutesForCheckIn
 });
 
 export const removedDeviceId = state => state.removedDevice;

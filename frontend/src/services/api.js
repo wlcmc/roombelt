@@ -48,8 +48,8 @@ export function getCalendars() {
   return axios.get("/api/admin/calendar");
 }
 
-export function setOptionsForDevice(deviceId, deviceType, calendarId, language) {
-  return axios.put(`/api/admin/device/${encodeURIComponent(deviceId)}`, { deviceType, calendarId, language });
+export function setOptionsForDevice(deviceId, deviceType, calendarId, language, minutesForCheckIn) {
+  return axios.put(`/api/admin/device/${encodeURIComponent(deviceId)}`, { deviceType, calendarId, language, minutesForCheckIn });
 }
 
 export function getDeviceDetails(getAllCalendars) {

@@ -22,7 +22,11 @@ export const Input = React.forwardRef(({ autofocus, ...props }, fwRef) => {
   const innerRef = useRef();
   const ref = fwRef || innerRef;
 
-  useEffect(() => autofocus && ref.current && ref.current.focus(), [autofocus]);
+  useEffect(() => {
+    if (autofocus) {
+      ref.current && ref.current.focus();
+    }
+  }, [autofocus]);
 
   return <InnerInput {...props} ref={ref}/>;
 });

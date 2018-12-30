@@ -30,10 +30,12 @@ export const isCalendarSelectedSelector = createSelector(deviceSelector, device 
 export const allCalendarsSelector = createSelector(deviceSelector, device => (device && device.allCalendars) || []);
 export const areAllCalendarsLoadedSelector = createSelector(deviceSelector, device => device && !!device.allCalendars);
 
+export const requireCheckInSelector = createSelector(deviceSelector, device => device && device.minutesForCheckIn > 0);
+export const minutesForCheckInSelector = createSelector(deviceSelector, device => device && device.minutesForCheckIn);
 export const calendarNameSelector = createSelector(calendarSelector, calendar => calendar && calendar.name);
 
 export const currentMeetingSelector = createSelector([calendarSelector, timestampSelector],
-  (calendar, currentTimestamp) => calendar.events.find(
+  (calendar, currentTimestamp) => calendar && calendar.events.find(
     event => event.startTimestamp < currentTimestamp + 5 * 60 * 1000 && event.endTimestamp > currentTimestamp
   ));
 
@@ -58,7 +60,7 @@ export const minutesAvailableTillNextMeetingSelector = createSelector(
   }
 );
 
-export const hasCurrentMeetingStartedSelector = createSelector(
+export const isAfterCurrentMeetingStartTimeSelector = createSelector(
   [timestampSelector, currentMeetingSelector],
   (currentTimestamp, currentMeeting) => currentTimestamp > currentMeeting.startTimestamp
 );

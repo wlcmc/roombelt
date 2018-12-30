@@ -48,6 +48,8 @@ const editedDevice = (state = { data: null, isSaving: false }, action) => {
       return { data: { ...state.data, calendarId: action.calendarId } };
     case editDeviceDialogActions.setLanguage:
       return { data: { ...state.data, language: action.language } };
+    case editDeviceDialogActions.setMinutesForCheckIn:
+      return { data: { ...state.data, minutesForCheckIn: action.minutesForCheckIn } };
     default:
       return state;
   }
@@ -71,6 +73,7 @@ const defaultConnectDeviceWizardState = {
   deviceType: "calendar",
   calendarId: null,
   language: "en-US",
+  minutesForCheckIn: 0,
   errorMessage: null,
   isSubmitting: false
 };

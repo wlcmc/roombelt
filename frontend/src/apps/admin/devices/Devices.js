@@ -49,6 +49,12 @@ const SingleDeviceRow = props => (
       </Text>
     </TableRowColumn>
     <TableRowColumn onClick={props.onRowClicked} style={{ cursor: "pointer" }}>
+      <Text>
+        {props.device.deviceType === "dashboard" && "-"}
+        {props.device.deviceType === "calendar" && (props.device.minutesForCheckIn ? "Yes" : "No")}
+      </Text>
+    </TableRowColumn>
+    <TableRowColumn onClick={props.onRowClicked} style={{ cursor: "pointer" }}>
       <Text block>
         <StatusIcon success={props.device.isOnline} danger={!props.device.isOnline}/>
         {props.device.isOnline ? "Online" : "Offline"}
@@ -98,6 +104,7 @@ const Devices = props => {
           <TableRow>
             <TableHeaderColumn>Calendar</TableHeaderColumn>
             <TableHeaderColumn>Language</TableHeaderColumn>
+            <TableHeaderColumn>Require check-in</TableHeaderColumn>
             <TableHeaderColumn>Status</TableHeaderColumn>
             <TableHeaderColumn style={{ width: 50 }}/>
           </TableRow>

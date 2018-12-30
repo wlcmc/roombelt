@@ -5,7 +5,9 @@ const Select2 = React.forwardRef(({ autofocus, ...props }, fwRef) => {
     const innerRef = useRef();
     const ref = fwRef || innerRef;
 
-    useEffect(() => autofocus && ref.current && ref.current.focus(), [autofocus]);
+    useEffect(() => {
+      if(autofocus) ref.current && ref.current.focus();
+    }, [autofocus]);
 
     function findSelectedOption(options) {
       for (let option of options) {

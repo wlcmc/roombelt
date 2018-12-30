@@ -79,12 +79,13 @@ export const editDeviceDialogActions = {
   setDeviceType: action(deviceType => ({ deviceType })),
   setCalendarId: action(calendarId => ({ calendarId })),
   setLanguage: action(language => ({ language })),
+  setMinutesForCheckIn: action(minutesForCheckIn => ({ minutesForCheckIn })),
   $startSubmitting: action(),
   submit: () => async (dispatch, getState) => {
-    const { deviceId, deviceType, calendarId, language } = editDeviceData(getState());
+    const { deviceId, deviceType, calendarId, language, minutesForCheckIn } = editDeviceData(getState());
 
     dispatch(editDeviceDialogActions.$startSubmitting());
-    await setOptionsForDevice(deviceId, deviceType, calendarId, language);
+    await setOptionsForDevice(deviceId, deviceType, calendarId, language, minutesForCheckIn);
 
     dispatch(adminActions.$setDevices(await getConnectedDevices()));
     dispatch(editDeviceDialogActions.hide());

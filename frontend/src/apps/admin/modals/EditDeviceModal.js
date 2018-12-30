@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import styled from "styled-components/macro";
 import { connect } from "react-redux";
 
-import { Modal, Button, LoaderButton, Select } from "theme";
+import { Modal, Button, LoaderButton, Select, Text } from "theme";
 import { PaidDisclaimer } from "apps/admin/Paid";
 import { translations } from "i18n";
 import { editDeviceDialogActions } from "apps/admin/store/actions";
@@ -17,9 +17,11 @@ const FormFieldLabel = styled.label`
   color: #333;
 `;
 
-const EditDeviceModal = ({ isVisible, isSaving, device, calendars, onCancel, onSubmit, onChangeType, onChangeCalendar, onChangeLanguage }) => {
+const EditDeviceModal = ({ isVisible, isSaving, device, calendars, onCancel, onSubmit, onChangeType, onChangeCalendar, onChangeLanguage, onChangeMinutesForCheckIn }) => {
   const select = useRef();
-  useEffect(() => isVisible && select.current.focus(), [isVisible]);
+  useEffect(() => {
+    if (isVisible) select.current.focus();
+  }, [isVisible]);
 
   const footer = (
     <>
@@ -82,6 +84,19 @@ const EditDeviceModal = ({ isVisible, isSaving, device, calendars, onCancel, onS
           onChange={translation => onChangeLanguage && onChangeLanguage(translation && translation.key)}
         />
       </FormField>
+
+      {device && device.deviceType === "calendar" && <FormField>
+        <FormFieldLabel>Require check-in</FormFieldLabel>
+        <Select
+          instanceId="edit-device-require-check-in"
+          value={device && device.minutesForCheckIn}
+          options={[{ label: "No", value: 0 }, { label: "Yes", value: 10 }]}
+          onChange={option => onChangeMinutesForCheckIn(option.value)}
+        />
+        <Text block small muted style={{ marginTop: 5 }}>
+          Enable to remove meetings automatically if nobody checks-in during first 10 minutes.
+        </Text>
+      </FormField>}
     </Modal>
   );
 };
@@ -98,7 +113,8 @@ const mapDispatchToProps = dispatch => ({
   onCancel: () => dispatch(editDeviceDialogActions.hide()),
   onChangeType: deviceType => dispatch(editDeviceDialogActions.setDeviceType(deviceType)),
   onChangeCalendar: calendarId => dispatch(editDeviceDialogActions.setCalendarId(calendarId)),
-  onChangeLanguage: language => dispatch(editDeviceDialogActions.setLanguage(language))
+  onChangeLanguage: language => dispatch(editDeviceDialogActions.setLanguage(language)),
+  onChangeMinutesForCheckIn: minutes => dispatch(editDeviceDialogActions.setMinutesForCheckIn(minutes))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditDeviceModal);
