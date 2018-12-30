@@ -17,6 +17,13 @@ const Content = styled.div`
   overflow-y: auto;
 `;
 
+const LoaderWrapper = styled.div`
+  position: absolute; 
+  top: 50%;
+  left: 50%; 
+  transform: translateX(-50%);
+`;
+
 const AllCalendarsView = ({ closeAllCalendarsView, calendars, areAllCalendarsLoaded, markUserActivity }) => {
   const header = <div>
     <Button compact primary onClick={closeAllCalendarsView} style={{ minWidth: 0 }}>
@@ -29,7 +36,7 @@ const AllCalendarsView = ({ closeAllCalendarsView, calendars, areAllCalendarsLoa
   return (
     <Layout title={header}>
       <Content onScroll={markUserActivity}>
-        {!areAllCalendarsLoaded && <div style={{ textAlign: "center", margin: "10em auto 0 auto" }}><Loader/></div>}
+        {!areAllCalendarsLoaded && <LoaderWrapper><Loader/></LoaderWrapper>}
         {calendars.map(calendar => <CalendarRow key={calendar.id} calendarId={calendar.id}/>)}
       </Content>
     </Layout>
