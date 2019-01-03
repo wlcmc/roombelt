@@ -73,6 +73,7 @@ export const dashBoardMeetingsSelector = createSelector(
 
     return allEvents
       .filter(event => event.startTimestamp > currentTimestamp || event.endTimestamp > currentTimestamp)
+      .filter(event => new Date(event.startTimestamp).toDateString() === new Date(currentTimestamp).toDateString())
       .sort((eventA, eventB) => eventA.startTimestamp - eventB.startTimestamp);
   }
 );
