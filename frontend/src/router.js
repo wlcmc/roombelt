@@ -16,9 +16,9 @@ class Login extends React.PureComponent {
 
 class Admin extends React.PureComponent {
   async componentDidMount() {
-    const { scope, adminUrl } = await getAuth();
+    const { scope, adminUrl, isAccessTokenValid } = await getAuth();
 
-    if (scope !== "admin") {
+    if (scope !== "admin" || !isAccessTokenValid) {
       window.location = adminUrl;
     }
   }

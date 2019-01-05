@@ -57,6 +57,15 @@ module.exports = class {
     };
   }
 
+  async isAccessTokenValid() {
+    try {
+      await this.getCalendars();
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
   async getUserDetails() {
     const { data } = await new Promise((res, rej) =>
       this.plusClient.people.get({ userId: "me" }, (err, data) => (err ? rej(err) : res(data)))

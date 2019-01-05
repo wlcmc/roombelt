@@ -1,10 +1,11 @@
 const router = require("express-promise-router")();
 
-router.get("/auth", (req, res) => {
+router.get("/auth", async (req, res) => {
   res.json({
     scope: req.context.session.scope,
     adminUrl: req.context.calendarProvider.getAuthUrl(),
-    isLinked: !!req.context.session.userId
+    isLinked: !!req.context.session.userId,
+    isAccessTokenValid: await req.context.calendarProvider.isAccessTokenValid()
   });
 });
 
