@@ -19,16 +19,15 @@ module.exports = class {
   constructor(keys, credentials) {
     this.oauthClient = new OAuth2(keys.clientId, keys.clientSecret, keys.redirectUrl);
 
-    if (credentials) {
-      this.oauthClient.setCredentials({
-        access_token: credentials.accessToken,
-        refresh_token: credentials.refreshToken
-      });
-    }
+    this.oauthClient.setCredentials({
+      access_token: credentials && credentials.accessToken,
+      refresh_token: credentials && credentials.refreshToken
+    });
 
     this.calendarClient = google.calendar({ version: "v3", auth: this.oauthClient });
     this.plusClient = google.plus({ version: "v1", auth: this.oauthClient });
 
+    this.cacheKey = credentials && credentials.refreshToken;
     this.clientId = keys.clientId;
   }
 
@@ -75,7 +74,7 @@ module.exports = class {
   }
 
   async getCalendars() {
-    const cacheKey = `calendars-${this.clientId}`;
+    const cacheKey = `calendars-${this.cacheKey}`;
     const cachedValue = cache.get(cacheKey);
 
     if (cachedValue) {
@@ -92,7 +91,7 @@ module.exports = class {
   }
 
   async getCalendar(calendarId) {
-    const cacheKey = `calendar-${this.clientId}-${calendarId}`;
+    const cacheKey = `calendar-${this.cacheKey}-${calendarId}`;
     const cachedValue = cache.get(cacheKey);
 
     if (cachedValue) {
@@ -112,7 +111,7 @@ module.exports = class {
   }
 
   async getEvents(calendarId) {
-    const cacheKey = `events-${this.clientId}-${calendarId}`;
+    const cacheKey = `events-${this.cacheKey}-${calendarId}`;
     const cachedValue = cache.get(cacheKey);
 
     if (cachedValue) {
@@ -138,7 +137,7 @@ module.exports = class {
   }
 
   async createEvent(calendarId, { startTimestamp, endTimestamp, isCheckedIn, summary }) {
-    cache.delete(`events-${this.clientId}-${calendarId}`);
+    cache.delete(`events-${this.cacheKey}-${calendarId}`);
 
     const query = {
       calendarId: encodeURIComponent(calendarId),
@@ -156,7 +155,7 @@ module.exports = class {
   }
 
   async patchEvent(calendarId, eventId, { startTimestamp, endTimestamp, isCheckedIn }) {
-    cache.delete(`events-${this.clientId}-${calendarId}`);
+    cache.delete(`events-${this.cacheKey}-${calendarId}`);
 
     const resource = {};
     if (startTimestamp) resource.start = { dateTime: new Date(startTimestamp).toISOString() };
@@ -175,7 +174,7 @@ module.exports = class {
   }
 
   async deleteEvent(calendarId, eventId) {
-    cache.delete(`events-${this.clientId}-${calendarId}`);
+    cache.delete(`events-${this.cacheKey}-${calendarId}`);
 
     const query = {
       calendarId: encodeURIComponent(calendarId),
