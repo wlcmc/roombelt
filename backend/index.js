@@ -7,7 +7,7 @@ const config = require("./config");
 
 const app = express();
 
-app.use(helmet());
+app.use(helmet({ frameguard: !config.disableFrameGuard }));
 app.use(require("./force-ssl"));
 app.use("/api", bearerToken());
 app.use("/api", cookieParser());
