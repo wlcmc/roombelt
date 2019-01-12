@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Button, PageLoaded } from "../theme";
 import Logo from "./Logo";
@@ -19,11 +19,13 @@ const MenuButton = styled(Button)`
   text-decoration: none;
 `;
 
-export default withRouter(({ history }) => (
+const SimpleLink = ({ to, className, children }) => <Link to={to} className={className} children={children}/>;
+
+export default () => (
   <CardAndFooterLayout footer={<Footer/>}>
     <PageLoaded/>
     <PageLogo withName size={30}/>
-    <MenuButton block primary onClick={() => history.push("/admin")}>Log in to admin panel</MenuButton>
-    <MenuButton block onClick={() => history.push("/device")}>Register device</MenuButton>
+    <MenuButton block to={"/admin"} as={SimpleLink} primary>Log in to admin panel</MenuButton>
+    <MenuButton block to={"/device"} as={SimpleLink}>Register device</MenuButton>
   </CardAndFooterLayout>
-));
+);
